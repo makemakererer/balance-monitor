@@ -1,0 +1,35 @@
+{
+	"name": "balance-monitor",
+	"version": "0.1.0",
+	"main": "dist/src/start.js",
+	"type": "commonjs",
+	"description": "Daily balance snapshot bot for v3Pools-Arb (EVM + SVM wallets, vaults, CEX accounts)",
+	"license": "ISC",
+	"scripts": {
+		"start": "tsc && node --disable-warning=DEP0040 dist/src/start.js",
+		"typecheck": "tsc --noEmit",
+		"format": "prettier --write \"src/**/*.{ts,json}\"",
+		"format:check": "prettier --check \"src/**/*.{ts,json}\""
+	},
+	"dependencies": {
+		"@solana/spl-token": "^0.4.14",
+		"@solana/web3.js": "1.95.8",
+		"ccxt": "^4.5.44",
+		"chalk": "^4.1.0",
+		"dotenv": "^16.4.7",
+		"ethers": "^6.13.7",
+		"node-cron": "^3.0.3",
+		"node-telegram-bot-api": "^0.66.0"
+	},
+	"overrides": {
+		"@solana/web3.js": "1.95.8"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/node-cron": "^3.0.11",
+		"@types/node-telegram-bot-api": "^0.64.13",
+		"prettier": "^3.6.2",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3"
+	}
+}
