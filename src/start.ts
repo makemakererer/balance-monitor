@@ -1,11 +1,16 @@
 import "dotenv/config";
+import { SchedulerService } from "./services/scheduler/scheduler.service";
+import { log } from "./utils";
 
-async function main(): Promise<void> {
-	console.log("[balance-monitor] starting...");
-	console.log("[balance-monitor] skeleton ready — scheduler and services not yet implemented");
+function main(): void {
+	const scheduler = new SchedulerService();
+	scheduler.start();
 }
 
-main().catch((err) => {
-	console.error("[balance-monitor] fatal:", err);
+try {
+	main();
+} catch (error) {
+	const message = error instanceof Error ? error.message : String(error);
+	log.error(`fatal: ${message}`);
 	process.exit(1);
-});
+}

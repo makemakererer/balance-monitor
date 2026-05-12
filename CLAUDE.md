@@ -38,7 +38,7 @@ src/
 ## Schedule + Idempotency
 
 - Cron fires daily at 00:00 **UTC**.
-- Each run writes `data/snapshots/YYYY-MM-DD.json` (gitignored).
+- Each run writes `data/snapshots/YYYY-MM-DD.json` (committed to git — historical data for debug and day-over-day diff).
 - On startup: if today's snapshot is missing AND we are past 00:00, run immediately (catch-up). Otherwise wait for the next cron tick.
 - If today's snapshot already exists → skip. Restarts must never duplicate work or messages.
 - Telegram send must be atomic with snapshot write: write JSON first → send message → if send fails, log but do not delete the snapshot (next cron tick won't retry the message; manual resend if needed).
@@ -57,7 +57,7 @@ Verified against v3Pools-Arb source (`src/services/arbitrage/state/managers/bala
 
 ## Storage
 
-- One JSON file per day in `data/snapshots/` (gitignored).
+- One JSON file per day in `data/snapshots/` (committed to git).
 - Logs in `src/logs/` (gitignored), chalk-coloured stdout + file.
 
 ## Code Standards

@@ -1,0 +1,4 @@
+const PRECISION = 10n ** 18n;
+const COMMON_DECIMALS = 18;
+
+export { PRECISION, COMMON_DECIMALS };

@@ -1,0 +1,1389 @@
+{
+  "date": "2026-05-12",
+  "generatedAt": "2026-05-12T16:06:37.120Z",
+  "chains": [
+    {
+      "chain": "ETH",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "173160589593700820",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "amount": "1000000",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "1055178143106851",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ANON",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "1760030162304281887487",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "3883865681",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault RIVER",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "2190514494054287",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "54673380127744986228",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "amount": "2926644066",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "RIVER": "54673380127744986228",
+          "ANON": "1760030162304281887487",
+          "USDT": "2927644066",
+          "USDC": "3883865681",
+          "ETH": "0"
+        },
+        "native": {
+          "symbol": "ETH",
+          "address": "native",
+          "amount": "176406282230861958",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "SONIC",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "SONIC",
+            "address": "native",
+            "amount": "254823473529354589689",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "SONIC",
+              "address": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "WAGMI",
+              "address": "0x0e0Ce4D450c705F8a0B6Dd9d5123e3df2787D16B",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "SONIC",
+            "address": "native",
+            "amount": "77616560054816968862",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ANON",
+          "native": {
+            "symbol": "SONIC",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "2311476746752363444931",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x29219dd400f2Bf60E5a23d13Be72B486D4038894",
+              "amount": "4230778604",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "SONIC",
+              "address": "0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "WAGMI",
+              "address": "0x0e0Ce4D450c705F8a0B6Dd9d5123e3df2787D16B",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ANON": "2311476746752363444931",
+          "USDC": "4230778604",
+          "SONIC": "0",
+          "WAGMI": "0"
+        },
+        "native": {
+          "symbol": "SONIC",
+          "address": "native",
+          "amount": "332440033584171558551",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "BASE",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "6279222490349488",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x4200000000000000000000000000000000000006",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "2117502162084739",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ANON",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "3046481337509",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "2311476746920343694461",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "amount": "3081254135",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x4200000000000000000000000000000000000006",
+              "amount": "1",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault RIVER",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "54672048556899578055",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "amount": "2235311607",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x4200000000000000000000000000000000000006",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ETH",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+              "amount": "90",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x4200000000000000000000000000000000000006",
+              "amount": "51314844965674",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ANON": "2311476746920343694461",
+          "RIVER": "54672048556899578055",
+          "ZRO": "0",
+          "USDC": "5316565832",
+          "ETH": "51314844965675"
+        },
+        "native": {
+          "symbol": "ETH",
+          "address": "native",
+          "amount": "8399771133771736",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "AVAX",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "AVAX",
+            "address": "native",
+            "amount": "2103055585720764826",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+              "amount": "10",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "AVAX",
+              "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "AVAX",
+            "address": "native",
+            "amount": "253342957852033912",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ANON",
+          "native": {
+            "symbol": "AVAX",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "2372648358415586357713",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+              "amount": "3348577968",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "AVAX",
+              "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ANON": "2372648358415586357713",
+          "USDC": "3348577978",
+          "AVAX": "0"
+        },
+        "native": {
+          "symbol": "AVAX",
+          "address": "native",
+          "amount": "2356398543572798738",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "BSC",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "BNB",
+            "address": "native",
+            "amount": "18621653725851492",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ETH",
+              "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "922932387381",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0x55d398326f99059fF775485246999027B3197955",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+              "amount": "419927335600000",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "BNB",
+              "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "BNB",
+            "address": "native",
+            "amount": "3432484425948188",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ANON",
+          "native": {
+            "symbol": "BNB",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ETH",
+              "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "27931042961610",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0x55d398326f99059fF775485246999027B3197955",
+              "amount": "34520125196899",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+              "amount": "82597452496694",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "BNB",
+              "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault RIVER",
+          "native": {
+            "symbol": "BNB",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ETH",
+              "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "54674714058969082497",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0x55d398326f99059fF775485246999027B3197955",
+              "amount": "2015041027694295599169",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+              "amount": "599636678000000000000",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "BNB",
+              "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ETH",
+          "native": {
+            "symbol": "BNB",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ETH",
+              "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "RIVER",
+              "address": "0xdA7AD9dea9397cffdDAE2F8a052B82f1484252B3",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "0x55d398326f99059fF775485246999027B3197955",
+              "amount": "33307802274357",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "BNB",
+              "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ETH": "0",
+          "ANON": "27931042961610",
+          "RIVER": "54674714058969082497",
+          "ZRO": "922932387381",
+          "USDT": "2015041095522223070425",
+          "USDC": "599637180524788096694",
+          "BNB": "0"
+        },
+        "native": {
+          "symbol": "BNB",
+          "address": "native",
+          "amount": "22054138151799680",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "ARB",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "6893840323572269",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT0",
+              "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "1047787751777427",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ETH",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT0",
+              "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+              "amount": "174015",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+              "amount": "8441313882165720632",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ANON",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "0x79bbF4508B1391af3A0F4B30bb5FC4aa9ab0E07C",
+              "amount": "2188513413669310311233",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "ZRO",
+              "address": "0x6985884C4392D348587B19cb9eAAf157F13271cd",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT0",
+              "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+              "amount": "3638046544",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1",
+              "amount": "19050517716574",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ANON": "2188513413669310311233",
+          "ZRO": "0",
+          "USDT0": "0",
+          "USDC": "3638220559",
+          "ETH": "8441332932683437206"
+        },
+        "native": {
+          "symbol": "ETH",
+          "address": "native",
+          "amount": "7941628075349696",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "SONEIUM",
+      "chainType": "EVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Arb wallet",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "2999031137135778967",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "USDC",
+              "address": "0xbA9986D2381edf1DA03B0B9c1f8b00dc4AacC369",
+              "amount": "0",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x4200000000000000000000000000000000000006",
+              "amount": "0",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "wallet_rebalancer",
+          "label": "Rebalancer",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "1150373759503504",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [],
+          "error": null
+        },
+        {
+          "type": "vault",
+          "label": "Vault ETH",
+          "native": {
+            "symbol": "ETH",
+            "address": "native",
+            "amount": "0",
+            "decimals": 18,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "USDC",
+              "address": "0xbA9986D2381edf1DA03B0B9c1f8b00dc4AacC369",
+              "amount": "5854714944",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "0x4200000000000000000000000000000000000006",
+              "amount": "394958347598440728",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "USDC": "5854714944",
+          "ETH": "394958347598440728"
+        },
+        "native": {
+          "symbol": "ETH",
+          "address": "native",
+          "amount": "3000181510895282471",
+          "decimals": 18,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "SOLANA",
+      "chainType": "SVM",
+      "sources": [
+        {
+          "type": "wallet_arb",
+          "label": "Solana wallet",
+          "native": {
+            "symbol": "SOL",
+            "address": "native",
+            "amount": "2102851305",
+            "decimals": 9,
+            "error": null
+          },
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "9McvH6w97oewLmPxqQEoHUAv3u5iYMyQ9AeZZhguYf1T",
+              "amount": "2924715057849",
+              "decimals": 9,
+              "error": null
+            },
+            {
+              "symbol": "USDC",
+              "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "amount": "2730170872",
+              "decimals": 6,
+              "error": null
+            },
+            {
+              "symbol": "WSOL",
+              "address": "So11111111111111111111111111111111111111112",
+              "amount": "0",
+              "decimals": 9,
+              "error": null
+            },
+            {
+              "symbol": "ETH",
+              "address": "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",
+              "amount": "110524842",
+              "decimals": 8,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ANON": "2924715057849",
+          "USDC": "2730170872",
+          "WSOL": "0",
+          "ETH": "110524842"
+        },
+        "native": {
+          "symbol": "SOL",
+          "address": "native",
+          "amount": "2102851305",
+          "decimals": 9,
+          "error": null
+        }
+      }
+    },
+    {
+      "chain": "MEXC",
+      "chainType": "CEX",
+      "sources": [
+        {
+          "type": "cex_account",
+          "label": "MEXC_ANON",
+          "native": null,
+          "tokens": [
+            {
+              "symbol": "ANON",
+              "address": "ANON",
+              "amount": "3926710000000000000000",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "USDT",
+              "amount": "5149871225000000000",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        },
+        {
+          "type": "cex_account",
+          "label": "MEXC_RIVER",
+          "native": null,
+          "tokens": [
+            {
+              "symbol": "RIVER",
+              "address": "RIVER",
+              "amount": "442024430150000000000",
+              "decimals": 18,
+              "error": null
+            },
+            {
+              "symbol": "USDT",
+              "address": "USDT",
+              "amount": "6821515650000000000",
+              "decimals": 18,
+              "error": null
+            }
+          ],
+          "error": null
+        }
+      ],
+      "chainTotals": {
+        "tokens": {
+          "ANON": "3926710000000000000000",
+          "USDT": "11971386875000000000",
+          "RIVER": "442024430150000000000"
+        },
+        "native": null
+      }
+    }
+  ],
+  "grandTotals": {
+    "tokens": {
+      "ANON": "17795570513841928657435",
+      "RIVER": "606044572893613646780",
+      "USDC": "29602531650524788096694",
+      "USDT": "4954656548397223070425",
+      "ETH": "9941571964609127034",
+      "WSOL": "0"
+    },
+    "stablesTotal": "34557188198922011167119",
+    "natives": {
+      "ETH": {
+        "symbol": "ETH",
+        "address": "native",
+        "amount": "176406282230861958",
+        "decimals": 18,
+        "error": null
+      },
+      "SONIC": {
+        "symbol": "SONIC",
+        "address": "native",
+        "amount": "332440033584171558551",
+        "decimals": 18,
+        "error": null
+      },
+      "BASE": {
+        "symbol": "ETH",
+        "address": "native",
+        "amount": "8399771133771736",
+        "decimals": 18,
+        "error": null
+      },
+      "AVAX": {
+        "symbol": "AVAX",
+        "address": "native",
+        "amount": "2356398543572798738",
+        "decimals": 18,
+        "error": null
+      },
+      "BSC": {
+        "symbol": "BNB",
+        "address": "native",
+        "amount": "22054138151799680",
+        "decimals": 18,
+        "error": null
+      },
+      "ARB": {
+        "symbol": "ETH",
+        "address": "native",
+        "amount": "7941628075349696",
+        "decimals": 18,
+        "error": null
+      },
+      "SONEIUM": {
+        "symbol": "ETH",
+        "address": "native",
+        "amount": "3000181510895282471",
+        "decimals": 18,
+        "error": null
+      },
+      "SOLANA": {
+        "symbol": "SOL",
+        "address": "native",
+        "amount": "2102851305",
+        "decimals": 9,
+        "error": null
+      }
+    }
+  }
+}
