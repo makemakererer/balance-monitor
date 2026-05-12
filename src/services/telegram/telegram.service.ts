@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api";
 import { getStableForToken, isStableSymbol, tokenAliases } from "../../config";
-import { Snapshot, TokenBalance, TokenSymbol } from "../../types";
+import { RemintReport, RemintWindow, Snapshot, TokenBalance, TokenSymbol } from "../../types";
 import {
 	COMMON_DECIMALS,
 	PreviousTotals,
@@ -40,6 +40,78 @@ class TelegramService {
 			await this.bot.sendMessage(this.chatId, message, { parse_mode: "HTML" });
 		}
 		log.success(`telegram: sent ${messages.length} message(s)`);
+	}
+
+	public async sendDailyRunStart(date: string): Promise<void> {
+		const text = `⏰ <b>Daily run started</b> — ${date}`;
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: daily run start signal sent");
+	}
+
+	public async sendRemintStart(date: string, window: RemintWindow): Promise<void> {
+		const windowLine = `${this.formatWindowEdge(window.fromIso)} → ${this.formatWindowEdge(window.toIso)} UTC`;
+		const text = `🔄 <b>Remint started</b> — ${date}\n<i>Window: ${windowLine}</i>`;
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: remint start signal sent");
+	}
+
+	private formatWindowEdge(iso: string): string {
+		// ISO is always `YYYY-MM-DDTHH:MM:SS.sssZ` (UTC); take date + HH:MM.
+		return `${iso.slice(0, 10)} ${iso.slice(11, 16)}`;
+	}
+
+	public async sendRemintFinish(report: RemintReport): Promise<void> {
+		const text = this.buildRemintFinishMessage(report);
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: remint finish report sent");
+	}
+
+	private buildRemintFinishMessage(report: RemintReport): string {
+		const lines: string[] = [`✅ <b>Remint finished</b> — ${report.date}`, ""];
+
+		const mintedChains = report.perChain.filter((chain) => chain.newMintedRaw > 0n);
+		if (mintedChains.length > 0) {
+			for (const chain of mintedChains) {
+				lines.push(`  ${chain.network}: ${this.formatUsdc(chain.newMintedRaw)} USDC`);
+			}
+			lines.push("");
+			lines.push(`<b>Total: ${this.formatUsdc(report.totalMintedRaw)} USDC</b>`);
+		} else {
+			lines.push("No new mints — no missed bridges in the last 24h.");
+		}
+
+		const failedChains = report.perChain.filter((chain) => chain.failedCount > 0);
+		if (failedChains.length > 0) {
+			lines.push("");
+			lines.push("⚠️ <b>Failed mints (manual retry needed):</b>");
+			for (const chain of failedChains) {
+				lines.push(`  ${chain.network}: ${chain.failedCount}`);
+			}
+		}
+
+		lines.push("");
+		lines.push(`<i>Duration: ${this.formatDuration(report.durationMs)}</i>`);
+
+		return lines.join("\n");
+	}
+
+	private formatUsdc(rawAmount: bigint): string {
+		return (Number(rawAmount) / 1e6).toLocaleString(undefined, {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 6
+		});
+	}
+
+	private formatDuration(ms: number): string {
+		const totalSeconds = Math.floor(ms / 1000);
+		const hours = Math.floor(totalSeconds / 3600);
+		const minutes = Math.floor((totalSeconds % 3600) / 60);
+		const seconds = totalSeconds % 60;
+		const parts: string[] = [];
+		if (hours > 0) parts.push(`${hours}h`);
+		if (minutes > 0) parts.push(`${minutes}m`);
+		if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
+		return parts.join(" ");
 	}
 
 	private buildMessages(snapshot: Snapshot, previousTotals: PreviousTotals | null): string[] {

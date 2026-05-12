@@ -2,8 +2,12 @@ import * as cron from "node-cron";
 import { schedulerConfig } from "../../config";
 import { log, snapshotExists } from "../../utils";
 import { BalanceCollectorService } from "../balance-collector/balance-collector.service";
+import { RemintService } from "../remint/remint.service";
+import { TelegramService } from "../telegram/telegram.service";
 
 class SchedulerService {
+	private readonly telegram = new TelegramService();
+	private readonly remint = new RemintService();
 	private readonly collector = new BalanceCollectorService();
 	private isRunning = false;
 	private retryTimer: NodeJS.Timeout | null = null;
@@ -33,6 +37,8 @@ class SchedulerService {
 		this.isRunning = true;
 		this.cancelPendingRetry();
 		try {
+			if (attempt === 0) await this.notifyDailyRunStart(targetDate);
+			await this.runRemintSafely(targetDate);
 			await this.collector.collectBalance(targetDate);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
@@ -46,6 +52,25 @@ class SchedulerService {
 			log.info(`scheduler: day rolled over to ${todayUtcDate()} during run, re-evaluating`);
 			this.cancelPendingRetry();
 			void this.runIfNeeded(0);
+		}
+	}
+
+	private async notifyDailyRunStart(targetDate: string): Promise<void> {
+		try {
+			await this.telegram.sendDailyRunStart(targetDate);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			log.error(`telegram daily-run-start signal failed: ${message}`);
+		}
+	}
+
+	// Remint must never block the snapshot — log loudly on failure and continue.
+	private async runRemintSafely(targetDate: string): Promise<void> {
+		try {
+			await this.remint.remint(targetDate);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			log.error(`REMINT FAILED — manual review required: ${message}`);
 		}
 	}
 
