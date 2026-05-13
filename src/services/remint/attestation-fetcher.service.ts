@@ -24,22 +24,47 @@ class AttestationFetcherService {
 
 			log.important(`[${network}] fetching ${burns.length} attestation(s)`);
 			const attested: AttestationEntry[] = [];
-			let bucket = -1;
 
-			for (let i = 0; i < burns.length; i++) {
-				const burn = burns[i];
-				try {
-					const attestationData = await retrieveAttestation(burn.transactionHash, sourceDomain);
-					attested.push({ ...burn, attestationData });
-				} catch (error) {
-					const message = error instanceof Error ? error.message : String(error);
-					log.error(`[${network}] attestation failed for ${burn.transactionHash.slice(0, 10)}…: ${message}`);
+			let pending = burns;
+			for (let pass = 1; pass <= cctpRateLimits.attestationMaxPasses; pass++) {
+				if (pending.length === 0) break;
+				if (pass > 1) {
+					log.warning(
+						`[${network}] phase 2 retry pass ${pass}/${cctpRateLimits.attestationMaxPasses}: re-fetching ${pending.length} attestation(s) that timed out earlier`
+					);
 				}
-				await sleep(cctpRateLimits.attestationInterTxDelayMs);
-				bucket = reportProgress(`[${network}] phase 2`, i + 1, burns.length, bucket);
+
+				const stillFailing: BurnTx[] = [];
+				let bucket = -1;
+				for (let i = 0; i < pending.length; i++) {
+					const burn = pending[i];
+					try {
+						const attestationData = await retrieveAttestation(burn.transactionHash, sourceDomain);
+						attested.push({ ...burn, attestationData });
+					} catch (error) {
+						const message = error instanceof Error ? error.message : String(error);
+						log.warning(`[${network}] attestation failed for ${burn.transactionHash.slice(0, 10)}…: ${message}`);
+						stillFailing.push(burn);
+					}
+					await sleep(cctpRateLimits.attestationInterTxDelayMs);
+					if (pass === 1) {
+						bucket = reportProgress(`[${network}] phase 2`, i + 1, pending.length, bucket);
+					}
+				}
+
+				if (pass > 1) {
+					const recovered = pending.length - stillFailing.length;
+					log.info(`[${network}] phase 2 retry pass ${pass}: recovered ${recovered}/${pending.length} attestation(s)`);
+				}
+				pending = stillFailing;
 			}
 
 			attestationsByNetwork.set(network, attested);
+			if (pending.length > 0) {
+				log.error(
+					`[${network}] phase 2 permanently lost ${pending.length} attestation(s) after ${cctpRateLimits.attestationMaxPasses} pass(es); these burns won't be minted in this run (recorded in reclaim-pending for manual handling)`
+				);
+			}
 			log.success(`[${network}] attestations: ${attested.length}/${burns.length}`);
 		}
 

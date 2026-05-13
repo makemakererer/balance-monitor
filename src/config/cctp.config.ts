@@ -39,18 +39,29 @@ const cctpRateLimits = {
 	evmChunkSize: 5000,
 	evmChunkRetries: 30,
 	evmChunkRetryDelayMs: 1000,
+	// Total passes over the chunk list (1 = no retry pass; 2 = main + one re-fetch
+	// of chunks that exhausted evmChunkRetries on the first sweep). Guarantees we
+	// don't silently drop a block range if the RPC has a transient glitch.
+	evmChunkMaxPasses: 2,
 
 	// SVM phase 1 (signature scan): public RPC.
 	svmSignaturesPerCall: 1000,
 	svmSignatureCallDelayMs: 1000,
 	svmRateLimitBackoffMs: 5000,
 	svmGenericErrorBackoffMs: 2000,
+	// Hard cap on consecutive errors before we give up on signature collection.
+	// Without this the loop can spin forever if the public RPC dies mid-scan.
+	// 30 × ~30s backoff = ~15 min of sustained failure tolerated before abort.
+	svmSignatureMaxConsecutiveErrors: 30,
 
 	// SVM phase 1 (parsed tx fetch): private RPC.
 	svmTransactionsBatchSize: 15,
 	svmTransactionsBatchRetries: 5,
 	svmTransactionsBatchRetryDelayMs: 3000,
 	svmTransactionsBatchInterDelayMs: 2000,
+	// Same two-pass guarantee as EVM chunks: batches that exhaust per-batch retries
+	// on pass 1 get a fresh re-fetch on pass 2 instead of silently being skipped.
+	svmTransactionsBatchMaxPasses: 2,
 
 	// Attestation API polling cadence.
 	attestationInitialDelayMs: 5000,
@@ -59,6 +70,13 @@ const cctpRateLimits = {
 	// Hard cap so one stuck tx can't hang the daily run forever.
 	// 60 polls × 5s = ~5 min per attestation before we give up and continue.
 	attestationMaxPollAttempts: 60,
+	// Heartbeat: every N silent polls (no HTTP error, just status != complete) emit
+	// an info line so a stuck tx is visible in logs without spamming every 5s.
+	attestationHeartbeatEveryNPolls: 6,
+	// Outer retry passes over the burn list: a tx whose 60-poll inner loop ran out
+	// on pass 1 gets a fresh 60-poll attempt on pass 2 (~10 min total worst case
+	// per stubborn tx) before being declared unmintable for this run.
+	attestationMaxPasses: 2,
 
 	// Solana mint compute budget.
 	svmMintComputeUnitLimit: 400_000
