@@ -90,26 +90,33 @@ CCTP-active chains (`cctp.config.ts:cctpDomainIds`): ETH, SONIC, BASE, AVAX, ARB
 
 ```
 FACADE (per enabled trading token, sequentially)
-  Telegram: 🔍 Profit · <TOKEN> started (i/N)
-  Promise.all([
-    evm-fetcher  → scan Input/OutputArbitrageExecuted on all enabled chains for vaultExecutorAddresses[net][token]
-    svm-fetcher  → signatures of SOLANA_WALLET_ADDRESS → parsed-txs invoking executor program → pre/post token deltas
-    cex-fetcher  → for each cexMarkets[token]: ccxt fetchMyTrades paged, group fills by orderId
-  ])
-  → ArbitrageMatcherService.match (SELL legs ↔ BUY legs, 1h time window, 0.5% tolerance when CEX involved)
-  → StatsCalculatorService.calculate (totals, profit stats, best/worst, byRoute, byNetwork, unmatched, open-position breakeven)
-  → write data/profits/<date>.json (perToken[<TOKEN>] entry appended)
-  → Telegram: 💰 Profit — <TOKEN> full report
+  Telegram: 📈 Profit calculation started — window + vertical token list (─ TOKEN per line)
+  Per token (i/N):
+    Telegram: <b>Profit calculating #i TOKEN</b>
+    Promise.all([
+      evm-fetcher  → scan Input/OutputArbitrageExecuted on all enabled chains for vaultExecutorAddresses[net][token]
+      svm-fetcher  → signatures of SOLANA_WALLET_ADDRESS → parsed-txs invoking executor program → pre/post token deltas
+      cex-fetcher  → for each cexMarkets[token]: ccxt fetchMyTrades paged, group fills by orderId
+    ])
+    → ArbitrageMatcherService.match (SELL legs ↔ BUY legs, 1h time window, 0.5% tolerance when CEX involved)
+    → StatsCalculatorService.calculate (totals, profit stats, best/worst, byRoute, byNetwork, unmatchedStats with signed netTarget + VWAP break-even)
+    → write data/profits/<date>.json (perToken[<TOKEN>] entry appended)
+    → Telegram: 💰 Profit — <TOKEN> · top-line "Profit: $X.XX" + expandable blocks (🧾 Stats, 🔀 Routes, ⚖️ Position imbalance, 🚨 Scan failures)
 
 AFTER LOOP
   → compute grandTotals (profit-by-token, top routes, top networks, totals)
   → write data/profits/<date>.json with grandTotals filled
-  → Telegram: 🏆 Profit-calc complete (grand totals)
+  → Telegram: 🏆 Profit calculation complete · top-line "Total profit: $X.XX" + expandable blocks (💵 Profit by token, ⚖️ Position imbalance, 🧾 Stats, 🔀 Top routes, 🌐 Activity by network, 🚨 Scan failures)
+  → Telegram: 📎 profit-<date>.json — attached via sendDocument (separate message)
 ```
 
 Trading tokens (`enabled.config.ts:tradingTokens`) and per-token CEX markets (`cex.config.ts:cexMarkets`) are independently configurable.
 
 `profitToken` on `MatchedArbitrage` / `StatsProfit` is always a `TokenSymbol` enum member (never a free string). Same stable on both legs → that stable (e.g. USDC). Mixed stables → `TokenSymbol.USD` as the abstract marker. Default for no-matches aggregation → `TokenSymbol.USDC`.
+
+**Telegram report formatting (per-token + grand totals):** sections rendered as `<blockquote expandable>` — same dropdown pattern as the balance snapshot. All monetary values are always `$X.XX` via `formatUsd` (2 decimals, `<$0.01` for sub-cent dust — HTML-encoded as `&lt;$0.01`); never mixed `USDC`/`USD` labels. Token quantities use `formatTokenAmount` (ticker stays implicit inside the per-token block; 2–5 decimals).
+
+**Position imbalance block** (per-token + totals): shows leftover from unmatched legs only. Per-token has `Bought / Sold / Net / Avg price`; totals block has one line per token `TOKEN: ±N (avg $X.XX)`. `Net` is signed (`+` over-bought, `-` over-sold). `Avg price` is the volume-weighted cost basis computed from the real prices on the unmatched trades themselves — i.e. the price at which closing the leftover nets zero P&L. Block is hidden when `closing.action === "NONE"` (balanced position).
 
 ## Retry strategy ("nothing is missed silently")
 
