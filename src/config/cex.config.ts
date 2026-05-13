@@ -1,4 +1,4 @@
-import { CexAccountConfig, CexAccountId, CexExchangeId, Network } from "../types";
+import { CexAccountConfig, CexAccountId, CexExchangeId, Network, TokenSymbol } from "../types";
 
 const exchangeIdToNetwork: Record<CexExchangeId, Network> = {
 	[CexExchangeId.MEXC]: Network.MEXC,
@@ -33,4 +33,22 @@ const cexAccounts: Record<CexAccountId, CexAccountConfig> = {
 	}
 };
 
-export { cexAccounts, exchangeIdToNetwork };
+interface CexMarket {
+	accountId: CexAccountId;
+	symbol: string;
+}
+
+// Per-token CEX accounts + ccxt market symbols the profit-calculator scans.
+// Empty/absent = token has no CEX leg.
+const cexMarkets: Partial<Record<TokenSymbol, CexMarket[]>> = {
+	[TokenSymbol.ANON]: [
+		{ accountId: CexAccountId.MEXC_ANON, symbol: "ANON/USDT" },
+		{ accountId: CexAccountId.KRAKEN, symbol: "ANON/USD" },
+		{ accountId: CexAccountId.GATE, symbol: "ANON/USDT" }
+	],
+	[TokenSymbol.RIVER]: [
+		{ accountId: CexAccountId.MEXC_RIVER, symbol: "RIVER/USDT" }
+	]
+};
+
+export { cexAccounts, exchangeIdToNetwork, cexMarkets, CexMarket };

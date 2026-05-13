@@ -2,12 +2,14 @@ import * as cron from "node-cron";
 import { schedulerConfig } from "../../config";
 import { log, snapshotExists } from "../../utils";
 import { BalanceCollectorService } from "../balance-collector/balance-collector.service";
+import { ProfitCalculatorService } from "../profit-calculator/profit-calculator.service";
 import { RemintService } from "../remint/remint.service";
 import { TelegramService } from "../telegram/telegram.service";
 
 class SchedulerService {
 	private readonly telegram = new TelegramService();
 	private readonly remint = new RemintService();
+	private readonly profitCalculator = new ProfitCalculatorService();
 	private readonly collector = new BalanceCollectorService();
 	private isRunning = false;
 	private retryTimer: NodeJS.Timeout | null = null;
@@ -39,6 +41,7 @@ class SchedulerService {
 		try {
 			if (attempt === 0) await this.notifyDailyRunStart(targetDate);
 			await this.runRemintSafely(targetDate);
+			await this.runProfitCalculatorSafely(targetDate);
 			await this.collector.collectBalance(targetDate);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
@@ -71,6 +74,16 @@ class SchedulerService {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			log.error(`REMINT FAILED — manual review required: ${message}`);
+		}
+	}
+
+	// Profit-calc must never block the snapshot either — same safety contract as remint.
+	private async runProfitCalculatorSafely(targetDate: string): Promise<void> {
+		try {
+			await this.profitCalculator.calculate(targetDate);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			log.error(`PROFIT-CALC FAILED — manual review required: ${message}`);
 		}
 	}
 

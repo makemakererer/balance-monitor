@@ -15,7 +15,7 @@ import {
 	cctpEvmMessageTransmitterAddress,
 	cctpNetworkByDomainId,
 	cctpRateLimits,
-	cctpSolanaPrivateRpcUrl,
+	svmScanPrivateRpcUrl,
 	cctpSvmMasterLookupTable,
 	cctpSvmMessageTransmitterProgramId,
 	evmChainMetadata,
@@ -110,7 +110,7 @@ class MinterService {
 	}
 
 	private async isSvmNonceUsed(nonce: string): Promise<boolean> {
-		const connection = new Connection(cctpSolanaPrivateRpcUrl, "confirmed");
+		const connection = new Connection(svmScanPrivateRpcUrl, "confirmed");
 		const messageTransmitter = new PublicKey(cctpSvmMessageTransmitterProgramId);
 		const nonceBuffer = Buffer.from(nonce.slice(2), "hex");
 		const [usedNoncePda] = PublicKey.findProgramAddressSync([Buffer.from("used_nonce"), nonceBuffer], messageTransmitter);
@@ -133,7 +133,7 @@ class MinterService {
 	}
 
 	private async claimSvm(sourceNetwork: Network, attestation: ApiCctpMessage): Promise<string> {
-		const connection = new Connection(cctpSolanaPrivateRpcUrl, "confirmed");
+		const connection = new Connection(svmScanPrivateRpcUrl, "confirmed");
 		const payer = Keypair.fromSecretKey(bs58.decode(process.env.SVM_PRIVATE_KEY as string));
 
 		const usdcMint = new PublicKey(tokensToChain[Network.SOLANA].USDC);

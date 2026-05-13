@@ -1,6 +1,19 @@
+import * as fs from "fs";
 import TelegramBot from "node-telegram-bot-api";
 import { getStableForToken, isStableSymbol, tokenAliases } from "../../config";
-import { RemintReport, RemintWindow, Snapshot, TokenBalance, TokenSymbol } from "../../types";
+import {
+	ProfitSnapshot,
+	ProfitWindow,
+	RemintReport,
+	RemintWindow,
+	RouteStats,
+	Snapshot,
+	TokenBalance,
+	TokenProfitEntry,
+	TokenProfitStatistics,
+	TokenSymbol,
+	UnmatchedStats
+} from "../../types";
 import {
 	COMMON_DECIMALS,
 	PreviousTotals,
@@ -14,7 +27,8 @@ import {
 	hasAnyVault,
 	isHiddenZero,
 	log,
-	orderedChains
+	orderedChains,
+	profitSnapshotPath
 } from "../../utils";
 
 const TELEGRAM_MESSAGE_LIMIT = 4000;
@@ -64,6 +78,205 @@ class TelegramService {
 		const text = this.buildRemintFinishMessage(report);
 		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
 		log.success("telegram: remint finish report sent");
+	}
+
+	public async sendProfitCalcStart(window: ProfitWindow, tokens: TokenSymbol[]): Promise<void> {
+		const windowLine = `${this.formatWindowEdge(window.fromIso)} → ${this.formatWindowEdge(window.toIso)} UTC`;
+		const tokenLines = tokens.map((token) => `─ ${token}`).join("\n");
+		const text =
+			`📈 <b>Profit calculation started</b>\n` +
+			`<i>Window: ${windowLine}</i>\n\n` +
+			`Tokens to process:\n${tokenLines}`;
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: profit-calc start signal sent");
+	}
+
+	public async sendTokenProfitStart(token: TokenSymbol, index: number): Promise<void> {
+		const text = `<b>Profit calculating #${index} ${token}</b>`;
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success(`telegram: profit start signal sent for ${token}`);
+	}
+
+	public async sendTokenProfitReport(entry: TokenProfitEntry): Promise<void> {
+		const text = this.buildTokenProfitMessage(entry);
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success(`telegram: profit report sent for ${entry.token}`);
+	}
+
+	public async sendProfitGrandTotals(snapshot: ProfitSnapshot): Promise<void> {
+		const text = this.buildProfitGrandTotalsMessage(snapshot);
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: profit grand totals sent");
+	}
+
+	public async sendProfitSnapshotFile(date: string): Promise<void> {
+		const filePath = profitSnapshotPath(date);
+		const caption =
+			`📎 <b>profit-${date}.json</b>\n` +
+			"Full snapshot with per-token matched pairs, stats, routes, and raw transaction list.";
+		await this.bot.sendDocument(
+			this.chatId,
+			fs.createReadStream(filePath),
+			{ caption, parse_mode: "HTML" },
+			{ filename: `profit-${date}.json`, contentType: "application/json" }
+		);
+		log.success(`telegram: profit snapshot file sent for ${date}`);
+	}
+
+	private buildTokenProfitMessage(entry: TokenProfitEntry): string {
+		const stats = entry.stats;
+		const sections: string[] = [];
+		sections.push(`💰 <b>Profit — ${entry.token}</b>`);
+		sections.push(`Profit: <b>${this.formatUsd(stats.profit.total)}</b>`);
+		sections.push(this.buildPerTokenStatsBlock(stats));
+		if (stats.byRoute.length > 0) {
+			sections.push(this.buildRoutesBlock(stats.byRoute, "🔀 <b>Routes</b>"));
+		}
+		const imbalanceBlock = this.buildPositionImbalanceBlock(stats.unmatchedStats);
+		if (imbalanceBlock) sections.push(imbalanceBlock);
+		if (entry.scanFailures.length > 0) {
+			const failureLines = entry.scanFailures.map(
+				(failure) => `  ${failure.network}: ${this.escapeHtml(failure.detail)}`
+			);
+			sections.push(this.buildFailuresBlock(failureLines, "🚨 <b>Scan failures — data is INCOMPLETE</b>"));
+		}
+		sections.push(`<i>Duration: ${this.formatDuration(entry.durationMs)}</i>`);
+		return sections.join("\n\n");
+	}
+
+	private buildPerTokenStatsBlock(stats: TokenProfitStatistics): string {
+		const lines: string[] = [];
+		lines.push(`  Trades: ${stats.totals.transactions}`);
+		lines.push(`  Matched: ${stats.totals.matchedPairs}`);
+		lines.push(`  Unmatched: ${stats.totals.unmatched}`);
+		lines.push(`  Match rate: ${stats.totals.matchRate}`);
+		lines.push("  ─────────");
+		lines.push(`  Avg: ${this.formatUsd(stats.profit.avg)}`);
+		lines.push(`  Median: ${this.formatUsd(stats.profit.median)}`);
+		lines.push(`  Min: ${this.formatUsd(stats.profit.min)}`);
+		lines.push(`  Max: ${this.formatUsd(stats.profit.max)}`);
+		if (stats.bestArbitrage || stats.worstArbitrage) {
+			lines.push("  ─────────");
+			if (stats.bestArbitrage) {
+				lines.push(
+					`  Best: ${this.formatUsd(stats.bestArbitrage.profit)} · ${this.escapeHtml(stats.bestArbitrage.route)}`
+				);
+			}
+			if (stats.worstArbitrage) {
+				lines.push(
+					`  Worst: ${this.formatUsd(stats.worstArbitrage.profit)} · ${this.escapeHtml(stats.worstArbitrage.route)}`
+				);
+			}
+		}
+		return `${BLOCKQUOTE_OPEN}🧾 <b>Stats</b>\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	private buildRoutesBlock(routes: RouteStats[], title: string): string {
+		const lines = routes.map(
+			(route) => `  ${this.escapeHtml(route.route)}: ${route.count}× · ${this.formatUsd(route.totalProfit)}`
+		);
+		return `${BLOCKQUOTE_OPEN}${title}\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	private buildPositionImbalanceBlock(unmatched: UnmatchedStats): string | null {
+		if (unmatched.closing.action === "NONE" || !unmatched.targetToken) return null;
+		const net = unmatched.netTarget;
+		const netSign = net > 0 ? "+" : "";
+		const lines: string[] = [];
+		lines.push(`  Bought: ${this.formatTokenAmount(unmatched.targetBought)}`);
+		lines.push(`  Sold: ${this.formatTokenAmount(unmatched.targetSold)}`);
+		lines.push(`  Net: ${netSign}${this.formatTokenAmount(net)}`);
+		lines.push(`  Avg price: ${this.formatUsd(unmatched.closing.breakEvenPrice)}`);
+		return `${BLOCKQUOTE_OPEN}⚖️ <b>Position imbalance</b>\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	private buildTotalsImbalanceBlock(snapshot: ProfitSnapshot): string | null {
+		const lines: string[] = [];
+		for (const entry of Object.values(snapshot.perToken)) {
+			if (!entry) continue;
+			const unmatched = entry.stats.unmatchedStats;
+			if (unmatched.closing.action === "NONE" || !unmatched.targetToken) continue;
+			const netSign = unmatched.netTarget > 0 ? "+" : "";
+			lines.push(
+				`  ${entry.token}: ${netSign}${this.formatTokenAmount(unmatched.netTarget)}  (avg ${this.formatUsd(unmatched.closing.breakEvenPrice)})`
+			);
+		}
+		if (lines.length === 0) return null;
+		return `${BLOCKQUOTE_OPEN}⚖️ <b>Position imbalance</b>\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	private buildFailuresBlock(failureLines: string[], title: string): string {
+		return `${BLOCKQUOTE_OPEN}${title}\n${failureLines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	private buildProfitGrandTotalsMessage(snapshot: ProfitSnapshot): string {
+		const totals = snapshot.grandTotals;
+		if (!totals) return `🏆 <b>Profit calculation complete</b>\n<i>(grand totals not computed)</i>`;
+
+		const totalProfitUsd = totals.byToken.reduce((sum, t) => sum + t.total, 0);
+
+		const sections: string[] = [];
+		sections.push(`🏆 <b>Profit calculation complete</b>`);
+		sections.push(`Total profit: <b>${this.formatUsd(totalProfitUsd)}</b>`);
+
+		if (totals.byToken.length > 0) {
+			const lines = totals.byToken.map(
+				(t) => `  ${t.token}: ${this.formatUsd(t.total)}  (${t.matchedPairs} matched)`
+			);
+			sections.push(`${BLOCKQUOTE_OPEN}💵 <b>Profit by token</b>\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		const imbalanceBlock = this.buildTotalsImbalanceBlock(snapshot);
+		if (imbalanceBlock) sections.push(imbalanceBlock);
+
+		const statsLines: string[] = [
+			`  Transactions: ${totals.totalTransactions}`,
+			`  Matched: ${totals.totalMatched}`,
+			`  Unmatched: ${totals.totalUnmatched}`,
+			`  Match rate: ${totals.overallMatchRate}`
+		];
+		sections.push(`${BLOCKQUOTE_OPEN}🧾 <b>Stats</b>\n${statsLines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+
+		if (totals.byRoute.length > 0) {
+			sections.push(this.buildRoutesBlock(totals.byRoute.slice(0, 8), "🔀 <b>Top routes</b>"));
+		}
+
+		if (totals.byNetwork.length > 0) {
+			const lines = totals.byNetwork.map(
+				(n) => `  ${n.network}: ${n.totalCount}× (in ${n.inputCount} / out ${n.outputCount})`
+			);
+			sections.push(`${BLOCKQUOTE_OPEN}🌐 <b>Activity by network</b>\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		const failuresByToken = Object.values(snapshot.perToken)
+			.filter((entry): entry is NonNullable<typeof entry> => Boolean(entry && entry.scanFailures.length > 0));
+		if (failuresByToken.length > 0) {
+			const failureLines: string[] = [];
+			for (const entry of failuresByToken) {
+				for (const failure of entry.scanFailures) {
+					failureLines.push(`  ${entry.token} · ${failure.network}: ${this.escapeHtml(failure.detail)}`);
+				}
+			}
+			sections.push(this.buildFailuresBlock(failureLines, "🚨 <b>Scan failures — totals are PARTIAL</b>"));
+		}
+
+		sections.push(`<i>Duration: ${this.formatDuration(totals.durationMs)}</i>`);
+		return sections.join("\n\n");
+	}
+
+	private formatUsd(value: number): string {
+		if (!Number.isFinite(value)) return "—";
+		const absolute = Math.abs(value);
+		const sign = value < 0 ? "-" : "";
+		if (absolute > 0 && absolute < 0.01) {
+			return `${sign}&lt;$0.01`;
+		}
+		return `${sign}$${absolute.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+	}
+
+	private formatTokenAmount(value: number): string {
+		if (!Number.isFinite(value)) return "—";
+		return value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 5 });
 	}
 
 	private buildRemintFinishMessage(report: RemintReport): string {

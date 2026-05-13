@@ -6,4 +6,3 @@ export * from "./report-utils";
 export * from "./json-helper";
 export * from "./timestamp-to-block";
 export * from "./retrieve-attestation";
-export * from "./reclaim-storage";

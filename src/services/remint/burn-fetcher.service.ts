@@ -4,14 +4,14 @@ import { TOKEN_MESSENGER_V2_ABI } from "../../abis";
 import {
 	cctpDomainIds,
 	cctpEvmTokenMessengerAddress,
-	cctpRateLimits,
-	cctpSolanaPublicRpcUrl,
-	cctpSolanaPrivateRpcUrl,
 	cctpSvmTokenMessengerProgramId,
 	enabledNetworks,
 	evmChainMetadata,
 	loadMonitoredSvmWallet,
 	networkRpcUrls,
+	rpcScanLimits,
+	svmScanPrivateRpcUrl,
+	svmScanPublicRpcUrl,
 	vaultExecutorAddresses
 } from "../../config";
 import { BurnTx, Network, RemintWindow } from "../../types";
@@ -66,7 +66,7 @@ class BurnFetcherService {
 				log.warning(`[${network}] window empty (fromBlock=${fromBlock} > toBlock=${toBlock})`);
 				return [];
 			}
-			log.info(`[${network}] scanning blocks ${fromBlock}…${toBlock} (${(toBlock - fromBlock).toLocaleString()}) over ${vaults.length} vault(s)`);
+			log.info(`[${network}] scanning blocks ${fromBlock} → ${toBlock} (${(toBlock - fromBlock).toLocaleString()} blocks) over ${vaults.length} vault(s)`);
 
 			const allEvents: BurnTx[] = [];
 			for (const vault of vaults) {
@@ -92,17 +92,17 @@ class BurnFetcherService {
 		const totalBlocks = toBlock - fromBlock;
 
 		const allChunks: Array<{ start: number; end: number }> = [];
-		for (let start = fromBlock; start <= toBlock; start += cctpRateLimits.evmChunkSize) {
-			allChunks.push({ start, end: Math.min(start + cctpRateLimits.evmChunkSize - 1, toBlock) });
+		for (let start = fromBlock; start <= toBlock; start += rpcScanLimits.evmChunkSize) {
+			allChunks.push({ start, end: Math.min(start + rpcScanLimits.evmChunkSize - 1, toBlock) });
 		}
 		const totalChunks = allChunks.length;
 
 		let pending = allChunks;
-		for (let pass = 1; pass <= cctpRateLimits.evmChunkMaxPasses; pass++) {
+		for (let pass = 1; pass <= rpcScanLimits.evmChunkMaxPasses; pass++) {
 			if (pending.length === 0) break;
 			if (pass > 1) {
 				log.warning(
-					`[${network}] phase 1 retry pass ${pass}/${cctpRateLimits.evmChunkMaxPasses}: re-fetching ${pending.length} chunk(s) that failed earlier`
+					`[${network}] phase 1 retry pass ${pass}/${rpcScanLimits.evmChunkMaxPasses}: re-fetching ${pending.length} chunk(s) that failed earlier`
 				);
 			}
 
@@ -130,7 +130,7 @@ class BurnFetcherService {
 		if (pending.length > 0) {
 			const droppedBlocks = pending.reduce((sum, { start, end }) => sum + (end - start + 1), 0);
 			log.error(
-				`[${network}] phase 1 permanently lost ${pending.length}/${totalChunks} chunk(s) = ${droppedBlocks.toLocaleString()} block(s) after ${cctpRateLimits.evmChunkMaxPasses} pass(es); burns inside that range will be missing from this run`
+				`[${network}] phase 1 permanently lost ${pending.length}/${totalChunks} chunk(s) = ${droppedBlocks.toLocaleString()} block(s) after ${rpcScanLimits.evmChunkMaxPasses} pass(es); burns inside that range will be missing from this run`
 			);
 		}
 
@@ -147,7 +147,7 @@ class BurnFetcherService {
 		start: number,
 		end: number
 	): Promise<BurnTx[] | null> {
-		let retries: number = cctpRateLimits.evmChunkRetries;
+		let retries: number = rpcScanLimits.evmChunkRetries;
 		while (retries > 0) {
 			try {
 				const logs = await tokenMessenger.queryFilter(filter, start, end);
@@ -163,7 +163,7 @@ class BurnFetcherService {
 					log.error(`[${network}] gave up on chunk ${start}-${end}`);
 					return null;
 				}
-				await sleep(cctpRateLimits.evmChunkRetryDelayMs);
+				await sleep(rpcScanLimits.evmChunkRetryDelayMs);
 			}
 		}
 		return null;
@@ -171,11 +171,11 @@ class BurnFetcherService {
 
 	private async fetchSvmBurns(window: RemintWindow): Promise<BurnTx[]> {
 		const wallet = new PublicKey(loadMonitoredSvmWallet());
-		const publicConnection = new Connection(cctpSolanaPublicRpcUrl, {
+		const publicConnection = new Connection(svmScanPublicRpcUrl, {
 			commitment: "confirmed",
 			disableRetryOnRateLimit: true
 		});
-		const privateConnection = new Connection(cctpSolanaPrivateRpcUrl, "confirmed");
+		const privateConnection = new Connection(svmScanPrivateRpcUrl, "confirmed");
 
 		log.info(`[SOLANA] step 1: collecting signatures within window`);
 		const signatures = await this.collectSvmSignaturesInWindow(publicConnection, wallet, window);
@@ -183,7 +183,7 @@ class BurnFetcherService {
 
 		if (signatures.length === 0) return [];
 
-		log.info(`[SOLANA] step 2: fetching parsed transactions in batches of ${cctpRateLimits.svmTransactionsBatchSize}`);
+		log.info(`[SOLANA] step 2: fetching parsed transactions in batches of ${rpcScanLimits.svmTransactionsBatchSize}`);
 		return this.parseSvmBurnsFromSignatures(privateConnection, signatures);
 	}
 
@@ -200,7 +200,7 @@ class BurnFetcherService {
 		while (!stoppedByWindow) {
 			try {
 				const page: ConfirmedSignatureInfo[] = await connection.getSignaturesForAddress(wallet, {
-					limit: cctpRateLimits.svmSignaturesPerCall,
+					limit: rpcScanLimits.svmSignaturesPerCall,
 					before
 				});
 				consecutiveErrors = 0;
@@ -218,26 +218,26 @@ class BurnFetcherService {
 
 				before = page[page.length - 1].signature;
 				log.info(`[SOLANA] signatures scanned: page=${page.length} kept=${collected.length}`);
-				await sleep(cctpRateLimits.svmSignatureCallDelayMs);
+				await sleep(rpcScanLimits.svmSignatureCallDelayMs);
 			} catch (error) {
 				consecutiveErrors++;
 				const message = error instanceof Error ? error.message : String(error);
-				if (consecutiveErrors >= cctpRateLimits.svmSignatureMaxConsecutiveErrors) {
+				if (consecutiveErrors >= rpcScanLimits.svmSignatureMaxConsecutiveErrors) {
 					throw new Error(
 						`[SOLANA] signature scan aborted after ${consecutiveErrors} consecutive errors: ${message}`
 					);
 				}
 				if (message.includes("429")) {
 					log.warning(
-						`[SOLANA] rate limit (429) ${consecutiveErrors}/${cctpRateLimits.svmSignatureMaxConsecutiveErrors}, backing off ${cctpRateLimits.svmRateLimitBackoffMs}ms`
+						`[SOLANA] rate limit (429) ${consecutiveErrors}/${rpcScanLimits.svmSignatureMaxConsecutiveErrors}, backing off ${rpcScanLimits.svmRateLimitBackoffMs}ms`
 					);
-					await sleep(cctpRateLimits.svmRateLimitBackoffMs);
+					await sleep(rpcScanLimits.svmRateLimitBackoffMs);
 					continue;
 				}
 				log.warning(
-					`[SOLANA] signature page error ${consecutiveErrors}/${cctpRateLimits.svmSignatureMaxConsecutiveErrors}, retrying: ${message}`
+					`[SOLANA] signature page error ${consecutiveErrors}/${rpcScanLimits.svmSignatureMaxConsecutiveErrors}, retrying: ${message}`
 				);
-				await sleep(cctpRateLimits.svmGenericErrorBackoffMs);
+				await sleep(rpcScanLimits.svmGenericErrorBackoffMs);
 			}
 		}
 
@@ -252,17 +252,17 @@ class BurnFetcherService {
 		const signatureStrings = signatures.map((s) => s.signature);
 
 		const allBatches: string[][] = [];
-		for (let offset = 0; offset < signatureStrings.length; offset += cctpRateLimits.svmTransactionsBatchSize) {
-			allBatches.push(signatureStrings.slice(offset, offset + cctpRateLimits.svmTransactionsBatchSize));
+		for (let offset = 0; offset < signatureStrings.length; offset += rpcScanLimits.svmTransactionsBatchSize) {
+			allBatches.push(signatureStrings.slice(offset, offset + rpcScanLimits.svmTransactionsBatchSize));
 		}
 		const totalBatches = allBatches.length;
 
 		let pending = allBatches;
-		for (let pass = 1; pass <= cctpRateLimits.svmTransactionsBatchMaxPasses; pass++) {
+		for (let pass = 1; pass <= rpcScanLimits.svmTransactionsBatchMaxPasses; pass++) {
 			if (pending.length === 0) break;
 			if (pass > 1) {
 				log.warning(
-					`[SOLANA] phase 1 retry pass ${pass}/${cctpRateLimits.svmTransactionsBatchMaxPasses}: re-fetching ${pending.length} batch(es) that failed earlier`
+					`[SOLANA] phase 1 retry pass ${pass}/${rpcScanLimits.svmTransactionsBatchMaxPasses}: re-fetching ${pending.length} batch(es) that failed earlier`
 				);
 			}
 
@@ -292,7 +292,7 @@ class BurnFetcherService {
 		if (pending.length > 0) {
 			const droppedSigs = pending.reduce((sum, batch) => sum + batch.length, 0);
 			log.error(
-				`[SOLANA] phase 1 permanently lost ${pending.length}/${totalBatches} batch(es) = ${droppedSigs} signature(s) after ${cctpRateLimits.svmTransactionsBatchMaxPasses} pass(es); burns inside those sigs will be missing from this run`
+				`[SOLANA] phase 1 permanently lost ${pending.length}/${totalBatches} batch(es) = ${droppedSigs} signature(s) after ${rpcScanLimits.svmTransactionsBatchMaxPasses} pass(es); burns inside those sigs will be missing from this run`
 			);
 		}
 
@@ -303,7 +303,7 @@ class BurnFetcherService {
 	// svmTransactionsBatchRetries times. Returns null if all retries are exhausted —
 	// the caller will park the batch for the retry pass instead of dropping it.
 	private async tryFetchBatchBurns(connection: Connection, batch: string[]): Promise<BurnTx[] | null> {
-		let retries = cctpRateLimits.svmTransactionsBatchRetries;
+		let retries = rpcScanLimits.svmTransactionsBatchRetries;
 		while (retries > 0) {
 			try {
 				const txs = await connection.getParsedTransactions(batch, {
@@ -337,7 +337,7 @@ class BurnFetcherService {
 						eventAccount
 					});
 				}
-				await sleep(cctpRateLimits.svmTransactionsBatchInterDelayMs);
+				await sleep(rpcScanLimits.svmTransactionsBatchInterDelayMs);
 				return batchBurns;
 			} catch (error) {
 				retries--;
@@ -347,7 +347,7 @@ class BurnFetcherService {
 					log.error(`[SOLANA] gave up on batch of ${batch.length} signature(s)`);
 					return null;
 				}
-				await sleep(cctpRateLimits.svmTransactionsBatchRetryDelayMs);
+				await sleep(rpcScanLimits.svmTransactionsBatchRetryDelayMs);
 			}
 		}
 		return null;
