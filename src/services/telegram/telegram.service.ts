@@ -2,18 +2,30 @@ import * as fs from "fs";
 import TelegramBot from "node-telegram-bot-api";
 import { getStableForToken, isStableSymbol, tokenAliases } from "../../config";
 import {
+	FailedTotals,
+	IntentNetworkSpend,
+	IntentTotals,
+	NativeSpendSnapshot,
+	NativeSpendWindow,
+	Network,
 	ProfitSnapshot,
 	ProfitWindow,
+	RebalanceSpendEntry,
 	RemintReport,
 	RemintWindow,
 	RouteStats,
 	Snapshot,
+	SpendIntent,
+	SpendRecord,
+	SpendStatus,
+	TokenArbSpendEntry,
 	TokenBalance,
 	TokenProfitEntry,
 	TokenProfitStatistics,
 	TokenSymbol,
 	UnmatchedStats
 } from "../../types";
+import { evmChainMetadata, svmChainMetadata } from "../../config";
 import {
 	COMMON_DECIMALS,
 	PreviousTotals,
@@ -27,6 +39,7 @@ import {
 	hasAnyVault,
 	isHiddenZero,
 	log,
+	nativeSpendSnapshotPath,
 	orderedChains,
 	profitSnapshotPath
 } from "../../utils";
@@ -121,6 +134,547 @@ class TelegramService {
 			{ filename: `profit-${date}.json`, contentType: "application/json" }
 		);
 		log.success(`telegram: profit snapshot file sent for ${date}`);
+	}
+
+	public async sendNativeSpendStart(window: NativeSpendWindow, arbTokens: TokenSymbol[]): Promise<void> {
+		const windowLine = `${this.formatWindowEdge(window.fromIso)} → ${this.formatWindowEdge(window.toIso)} UTC`;
+		const arbList = arbTokens.map((token) => `  ─ ${token}`).join("\n");
+		const text =
+			`💸 <b>Native spend calculation started</b>\n` +
+			`<i>Window: ${windowLine}</i>\n\n` +
+			`📊 <b>Arbitrage — ${arbTokens.length} token(s):</b>\n${arbList}\n\n` +
+			`🔄 <b>Rebalance — scanning all vaults</b>`;
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: native-spend start signal sent");
+	}
+
+	public async sendNativeSpendTokenReport(entry: TokenArbSpendEntry): Promise<void> {
+		const text = this.buildNativeSpendTokenMessage(entry);
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success(`telegram: native-spend token report sent for ${entry.token}`);
+	}
+
+	public async sendNativeSpendRebalanceReport(entry: RebalanceSpendEntry): Promise<void> {
+		const text = this.buildNativeSpendRebalanceMessage(entry);
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: native-spend rebalance report sent");
+	}
+
+	public async sendNativeSpendGrandTotals(snapshot: NativeSpendSnapshot): Promise<void> {
+		const text = this.buildNativeSpendGrandTotalsMessage(snapshot);
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: native-spend grand totals sent");
+	}
+
+	public async sendNativeSpendFile(date: string): Promise<void> {
+		const filePath = nativeSpendSnapshotPath(date);
+		const caption =
+			`📎 <b>native-spend-${date}.json</b>\n` +
+			"Full snapshot with per-token arb spend, rebalance spend, and grand totals.";
+		await this.bot.sendDocument(
+			this.chatId,
+			fs.createReadStream(filePath),
+			{ caption, parse_mode: "HTML" },
+			{ filename: `native-spend-${date}.json`, contentType: "application/json" }
+		);
+		log.success(`telegram: native-spend snapshot file sent for ${date}`);
+	}
+
+	private buildNativeSpendTokenMessage(entry: TokenArbSpendEntry): string {
+		const aggregate = this.aggregateRecordsByNetwork(entry.records);
+		const sections: string[] = [];
+		sections.push(`💸 <b>Arbitrage native spend — ${entry.token}</b>`);
+		sections.push(this.formatStatusSplitHeader(aggregate, "Arbitrage"));
+
+		const networkLines = this.formatIntentNetworkLines(aggregate.byNetwork, false, "Arbitrage");
+		if (networkLines.length > 0) {
+			sections.push(`${BLOCKQUOTE_OPEN}🌐 <b>By network</b>\n\n${networkLines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		if (entry.scanFailures.length > 0) {
+			const failureLines = entry.scanFailures.map(
+				(failure) => `  ${failure.network} · ${failure.intent}: ${this.escapeHtml(failure.detail)}`
+			);
+			sections.push(this.buildFailuresBlock(failureLines, "🚨 <b>Scan failures — data is INCOMPLETE</b>"));
+		}
+
+		sections.push(`<i>Duration: ${this.formatDuration(entry.durationMs)}</i>`);
+		return sections.join("\n\n");
+	}
+
+	private buildNativeSpendRebalanceMessage(entry: RebalanceSpendEntry): string {
+		const aggregate = this.aggregateRecordsByNetwork(entry.records);
+		const sections: string[] = [];
+		sections.push(`🔄 <b>Rebalance spend</b>`);
+		sections.push(this.formatStatusSplitHeader(aggregate, "Rebalance"));
+
+		const networkLines = this.formatIntentNetworkLines(aggregate.byNetwork, true, "Rebalance");
+		if (networkLines.length > 0) {
+			sections.push(`${BLOCKQUOTE_OPEN}🌐 <b>By network</b>\n\n${networkLines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		const successRecords = entry.records.filter((r) => r.status === SpendStatus.SUCCESS);
+		const failedRecords = entry.records.filter((r) => r.status === SpendStatus.REVERTED);
+
+		const bridgeLines = this.formatBridgeLines(successRecords);
+		if (bridgeLines.length > 0) {
+			sections.push(`${BLOCKQUOTE_OPEN}🌉 <b>By bridge</b>\n\n${bridgeLines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		const tokenLines = this.formatRebalanceTokenLines(successRecords);
+		if (tokenLines.length > 0) {
+			sections.push(`${BLOCKQUOTE_OPEN}💵 <b>By token</b>\n\n${tokenLines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		const failedBridgeLines = this.formatBridgeLines(failedRecords);
+		if (failedBridgeLines.length > 0) {
+			sections.push(
+				`${BLOCKQUOTE_OPEN}🚨 <b>Failed by bridge → chain → token</b>\n\n${failedBridgeLines.join("\n")}${BLOCKQUOTE_CLOSE}`
+			);
+		}
+
+		if (entry.scanFailures.length > 0) {
+			const failureLines = entry.scanFailures.map(
+				(failure) => `  ${failure.network} · ${failure.intent}: ${this.escapeHtml(failure.detail)}`
+			);
+			sections.push(this.buildFailuresBlock(failureLines, "🚨 <b>Scan failures — data is INCOMPLETE</b>"));
+		}
+
+		sections.push(`<i>Duration: ${this.formatDuration(entry.durationMs)}</i>`);
+		return sections.join("\n\n");
+	}
+
+	// Top header for per-token + rebalance blocks: total line + success/failed split.
+	// successLabel = caller's intent label (e.g. "Arbitrage" / "Rebalance"); "Failed"
+	// covers the REVERTED records of that intent.
+	private formatStatusSplitHeader(
+		aggregate: {
+			usdTotal: number;
+			hasPricedRecord: boolean;
+			totalTxCount: number;
+			successUsd: number;
+			successTxCount: number;
+			failedUsd: number;
+			failedTxCount: number;
+		},
+		successLabel: string
+	): string {
+		const totalLine = `Total: <b>${aggregate.hasPricedRecord ? this.formatUsd(aggregate.usdTotal) : "—"}</b>  ·  ${aggregate.totalTxCount} tx`;
+		const successLine = `─ ${successLabel}: ${this.formatUsd(aggregate.successUsd)}  ·  ${aggregate.successTxCount} tx`;
+		const failedLine = `─ Failed: ${this.formatUsd(aggregate.failedUsd)}  ·  ${aggregate.failedTxCount} tx`;
+		return `${totalLine}\n${successLine}\n${failedLine}`;
+	}
+
+	private buildNativeSpendGrandTotalsMessage(snapshot: NativeSpendSnapshot): string {
+		const totals = snapshot.grandTotals;
+		if (!totals) return `🏁 <b>Native spend calculation complete</b>\n<i>(grand totals not computed)</i>`;
+
+		const sections: string[] = [];
+		sections.push(`🏁 <b>Native spend calculation complete</b>`);
+		sections.push(
+			`Total: <b>${this.formatUsd(totals.totalUsd)}</b>  ·  ${totals.totalTxCount} tx\n` +
+				`─ Arbitrage: ${this.formatUsd(totals.arbitrage.usdTotal)}  ·  ${totals.arbitrage.txCount} tx\n` +
+				`─ Rebalance: ${this.formatUsd(totals.rebalance.usdTotal)}  ·  ${totals.rebalance.txCount} tx\n` +
+				`─ Failed: ${this.formatUsd(totals.failed.usdTotal)}  ·  ${totals.failed.txCount} tx`
+		);
+
+		if (totals.byToken.length > 0) {
+			const lines: string[] = [];
+			for (let index = 0; index < totals.byToken.length; index++) {
+				const tokenTotals = totals.byToken[index];
+				lines.push(`  ${tokenTotals.token}: ${this.formatUsd(tokenTotals.usdTotal)}  ·  ${tokenTotals.txCount} tx`);
+				for (const intentEntry of tokenTotals.byIntent) {
+					const intentLabel = intentEntry.intent === SpendIntent.ARBITRAGE ? "Arbitrage" : "Rebalance";
+					lines.push(`    ${intentLabel}: ${this.formatUsd(intentEntry.usdAmount)}  ·  ${intentEntry.txCount} tx`);
+				}
+				if (tokenTotals.failedTxCount > 0) {
+					lines.push(`    Failed: ${this.formatUsd(tokenTotals.failedUsd)}  ·  ${tokenTotals.failedTxCount} tx`);
+				}
+				if (index < totals.byToken.length - 1) lines.push("");
+			}
+			sections.push(`${BLOCKQUOTE_OPEN}💵 <b>By token</b>\n\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		if (totals.byNativeToken.length > 0) {
+			const lines: string[] = [];
+			for (let index = 0; index < totals.byNativeToken.length; index++) {
+				const entry = totals.byNativeToken[index];
+				const native = `${formatAmount(BigInt(entry.nativeAmount), entry.nativeDecimals)} ${entry.nativeSymbol}`;
+				const usdPart = entry.usdAmount === null ? "" : ` (${this.formatUsd(entry.usdAmount)})`;
+				lines.push(`  ${entry.nativeSymbol}: ${native}${usdPart}`);
+				if (index < totals.byNativeToken.length - 1) lines.push("");
+			}
+			sections.push(`${BLOCKQUOTE_OPEN}🪙 <b>By native token</b>\n\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`);
+		}
+
+		const arbitrageBlock = this.buildIntentNetworkBlock(
+			"🌐 <b>Arbitrage — by network</b>",
+			totals.arbitrage,
+			false,
+			"Arbitrage"
+		);
+		if (arbitrageBlock) sections.push(arbitrageBlock);
+		const rebalanceBlock = this.buildIntentNetworkBlock(
+			"🌐 <b>Rebalance — by network</b>",
+			totals.rebalance,
+			true,
+			"Rebalance"
+		);
+		if (rebalanceBlock) sections.push(rebalanceBlock);
+
+		const failedBreakdownBlock = this.buildFailedBreakdownBlock(totals.failed);
+		if (failedBreakdownBlock) sections.push(failedBreakdownBlock);
+
+		const failureLines = this.collectAllNativeSpendFailures(snapshot);
+		if (failureLines.length > 0) {
+			sections.push(this.buildFailuresBlock(failureLines, "🚨 <b>Scan failures — totals are PARTIAL</b>"));
+		}
+
+		sections.push(`<i>Duration: ${this.formatDuration(totals.durationMs)}</i>`);
+		return sections.join("\n\n");
+	}
+
+	private buildFailedBreakdownBlock(failed: FailedTotals): string | null {
+		if (failed.txCount === 0) return null;
+		const lines: string[] = [];
+		lines.push(`  By type:`);
+		lines.push(`    Arbitrage: ${this.formatUsd(failed.byType.arbitrage.usdAmount)}  ·  ${failed.byType.arbitrage.txCount} tx`);
+		lines.push(`    Rebalance: ${this.formatUsd(failed.byType.rebalance.usdAmount)}  ·  ${failed.byType.rebalance.txCount} tx`);
+		lines.push(`    Unattributed: ${this.formatUsd(failed.byType.unattributed.usdAmount)}  ·  ${failed.byType.unattributed.txCount} tx`);
+		if (failed.byNetwork.length > 0) {
+			lines.push("");
+			lines.push(`  By chain:`);
+			for (const entry of failed.byNetwork) {
+				lines.push(`    ${entry.network}: ${this.formatUsd(entry.usdAmount)}  ·  ${entry.txCount} tx`);
+			}
+		}
+		return `${BLOCKQUOTE_OPEN}🚨 <b>Failed breakdown</b>\n\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	// Roll-up shaped like stats-calculator's IntentTotals; reused for per-token + rebalance
+	// messages that render BEFORE grand totals. byNetwork[*].usdAmount/txCount/byToken cover
+	// SUCCESS records; revertedUsd/revertedTxCount cover REVERTED in that (intent, chain).
+	// Totals at the top level break success vs failed so caller can show "Total / Arb / Failed".
+	private aggregateRecordsByNetwork(records: SpendRecord[]): {
+		usdTotal: number;
+		hasPricedRecord: boolean;
+		totalTxCount: number;
+		successUsd: number;
+		successTxCount: number;
+		failedUsd: number;
+		failedTxCount: number;
+		byNetwork: IntentNetworkSpend[];
+	} {
+		const buckets = new Map<
+			Network,
+			{
+				native: bigint;
+				successUsd: number;
+				successHasPriced: boolean;
+				successTxCount: number;
+				tokens: Map<TokenSymbol, { native: bigint; usd: number; hasPriced: boolean; txCount: number }>;
+				revertedUsd: number;
+				revertedTxCount: number;
+			}
+		>();
+		let successUsd = 0;
+		let failedUsd = 0;
+		let successTxCount = 0;
+		let failedTxCount = 0;
+		let anyPriced = false;
+		for (const record of records) {
+			const bucket = buckets.get(record.network) ?? {
+				native: 0n,
+				successUsd: 0,
+				successHasPriced: false,
+				successTxCount: 0,
+				tokens: new Map(),
+				revertedUsd: 0,
+				revertedTxCount: 0
+			};
+			bucket.native += BigInt(record.nativeAmount);
+			if (record.usdAmount !== null) anyPriced = true;
+			if (record.status === SpendStatus.SUCCESS) {
+				if (record.usdAmount !== null) {
+					bucket.successUsd += record.usdAmount;
+					bucket.successHasPriced = true;
+					successUsd += record.usdAmount;
+				}
+				bucket.successTxCount++;
+				successTxCount++;
+				const tokenBucket = bucket.tokens.get(record.token) ?? { native: 0n, usd: 0, hasPriced: false, txCount: 0 };
+				tokenBucket.native += BigInt(record.nativeAmount);
+				if (record.usdAmount !== null) {
+					tokenBucket.usd += record.usdAmount;
+					tokenBucket.hasPriced = true;
+				}
+				tokenBucket.txCount++;
+				bucket.tokens.set(record.token, tokenBucket);
+			} else {
+				bucket.revertedUsd += record.usdAmount ?? 0;
+				bucket.revertedTxCount++;
+				failedUsd += record.usdAmount ?? 0;
+				failedTxCount++;
+			}
+			buckets.set(record.network, bucket);
+		}
+		const byNetwork: IntentNetworkSpend[] = [];
+		for (const [network, bucket] of buckets) {
+			const meta = this.resolveNativeMeta(network);
+			const tokens = [...bucket.tokens.entries()].map(([token, t]) => ({
+				token,
+				nativeAmount: t.native.toString(),
+				usdAmount: t.hasPriced ? Math.round(t.usd * 100) / 100 : null,
+				txCount: t.txCount
+			}));
+			tokens.sort((a, b) => this.compareUsd(a.usdAmount, b.usdAmount, a.token, b.token));
+			byNetwork.push({
+				network,
+				nativeAmount: bucket.native.toString(),
+				nativeSymbol: meta.symbol,
+				nativeDecimals: meta.decimals,
+				usdAmount: bucket.successHasPriced ? Math.round(bucket.successUsd * 100) / 100 : null,
+				txCount: bucket.successTxCount,
+				byToken: tokens,
+				revertedUsd: Math.round(bucket.revertedUsd * 100) / 100,
+				revertedTxCount: bucket.revertedTxCount
+			});
+		}
+		byNetwork.sort((a, b) => {
+			const aTotal = (a.usdAmount ?? 0) + a.revertedUsd;
+			const bTotal = (b.usdAmount ?? 0) + b.revertedUsd;
+			return bTotal - aTotal || a.network.localeCompare(b.network);
+		});
+		return {
+			usdTotal: Math.round((successUsd + failedUsd) * 100) / 100,
+			hasPricedRecord: anyPriced,
+			totalTxCount: successTxCount + failedTxCount,
+			successUsd: Math.round(successUsd * 100) / 100,
+			successTxCount,
+			failedUsd: Math.round(failedUsd * 100) / 100,
+			failedTxCount,
+			byNetwork
+		};
+	}
+
+	private resolveNativeMeta(network: Network): { symbol: TokenSymbol; decimals: number } {
+		const evm = evmChainMetadata[network];
+		if (evm) return { symbol: evm.nativeSymbol, decimals: evm.nativeDecimals };
+		const svm = svmChainMetadata[network];
+		if (svm) return { symbol: svm.nativeSymbol, decimals: svm.nativeDecimals };
+		throw new Error(`[telegram native-spend] no chain metadata for network ${network}`);
+	}
+
+	private compareUsd(a: number | null, b: number | null, aKey: string, bKey: string): number {
+		if (a === null && b === null) return aKey.localeCompare(bKey);
+		if (a === null) return 1;
+		if (b === null) return -1;
+		return b - a;
+	}
+
+	private buildIntentNetworkBlock(
+		title: string,
+		intent: IntentTotals,
+		showSubTokens: boolean,
+		successLabel: string
+	): string | null {
+		if (intent.byNetwork.length === 0) return null;
+		const lines = this.formatIntentNetworkLines(intent.byNetwork, showSubTokens, successLabel);
+		return `${BLOCKQUOTE_OPEN}${title}\n\n${lines.join("\n")}${BLOCKQUOTE_CLOSE}`;
+	}
+
+	// Native amount first (with ticker) so the line is readable even when USD is missing.
+	// Chain row shows total (success + reverted). Nested success/Failed split only when
+	// reverted > 0 (otherwise single line is enough). Token sub-lines apply to success only.
+	private formatIntentNetworkLines(
+		networks: IntentNetworkSpend[],
+		showSubTokens: boolean,
+		successLabel: string
+	): string[] {
+		const lines: string[] = [];
+		for (let index = 0; index < networks.length; index++) {
+			const entry = networks[index];
+			const native = `${formatAmount(BigInt(entry.nativeAmount), entry.nativeDecimals)} ${entry.nativeSymbol}`;
+			const totalUsd = (entry.usdAmount ?? 0) + entry.revertedUsd;
+			const hasPriced = entry.usdAmount !== null || entry.revertedUsd > 0;
+			const totalTxCount = entry.txCount + entry.revertedTxCount;
+			const usdPart = hasPriced ? ` (${this.formatUsd(totalUsd)})` : "";
+			lines.push(`  ${entry.network}: ${native}${usdPart}  ·  ${totalTxCount} tx`);
+			if (entry.revertedTxCount > 0) {
+				const successUsd = entry.usdAmount ?? 0;
+				lines.push(`    ${successLabel}: ${this.formatUsd(successUsd)}  ·  ${entry.txCount} tx`);
+				lines.push(`    Failed: ${this.formatUsd(entry.revertedUsd)}  ·  ${entry.revertedTxCount} tx`);
+			}
+			if (showSubTokens) {
+				for (const tokenEntry of entry.byToken) {
+					const tokenNative = `${formatAmount(BigInt(tokenEntry.nativeAmount), entry.nativeDecimals)} ${entry.nativeSymbol}`;
+					const tokenUsd = tokenEntry.usdAmount === null ? "" : ` (${this.formatUsd(tokenEntry.usdAmount)})`;
+					lines.push(`    ${tokenEntry.token}: ${tokenNative}${tokenUsd}  ·  ${tokenEntry.txCount} tx`);
+				}
+			}
+			if (index < networks.length - 1) lines.push("");
+		}
+		return lines;
+	}
+
+	// Group rebalance records bridge → network → token. Three-level nesting keeps the
+	// readout legible even when a single network has multiple tokens under one bridge
+	// (flat "BSC · RIVER" labels would collapse into a mess once more tokens appear).
+	private formatBridgeLines(records: SpendRecord[]): string[] {
+		interface TokenCombo {
+			token: TokenSymbol;
+			native: bigint;
+			usd: number;
+			hasPriced: boolean;
+			count: number;
+		}
+		interface NetworkGroup {
+			network: Network;
+			usd: number;
+			count: number;
+			hasPriced: boolean;
+			tokens: Map<TokenSymbol, TokenCombo>;
+		}
+		interface BridgeBucket {
+			usd: number;
+			count: number;
+			hasPriced: boolean;
+			networks: Map<Network, NetworkGroup>;
+		}
+
+		const bridgeBuckets = new Map<string, BridgeBucket>();
+		for (const record of records) {
+			if (!record.bridge) continue;
+			let bucket = bridgeBuckets.get(record.bridge);
+			if (!bucket) {
+				bucket = { usd: 0, count: 0, hasPriced: false, networks: new Map() };
+				bridgeBuckets.set(record.bridge, bucket);
+			}
+			if (record.usdAmount !== null) {
+				bucket.usd += record.usdAmount;
+				bucket.hasPriced = true;
+			}
+			bucket.count++;
+
+			let networkGroup = bucket.networks.get(record.network);
+			if (!networkGroup) {
+				networkGroup = { network: record.network, usd: 0, count: 0, hasPriced: false, tokens: new Map() };
+				bucket.networks.set(record.network, networkGroup);
+			}
+			if (record.usdAmount !== null) {
+				networkGroup.usd += record.usdAmount;
+				networkGroup.hasPriced = true;
+			}
+			networkGroup.count++;
+
+			let combo = networkGroup.tokens.get(record.token);
+			if (!combo) {
+				combo = { token: record.token, native: 0n, usd: 0, hasPriced: false, count: 0 };
+				networkGroup.tokens.set(record.token, combo);
+			}
+			combo.native += BigInt(record.nativeAmount);
+			if (record.usdAmount !== null) {
+				combo.usd += record.usdAmount;
+				combo.hasPriced = true;
+			}
+			combo.count++;
+		}
+
+		const sortedBridges = [...bridgeBuckets.entries()].sort((a, b) => b[1].usd - a[1].usd);
+		const lines: string[] = [];
+		for (let bridgeIndex = 0; bridgeIndex < sortedBridges.length; bridgeIndex++) {
+			const [bridge, bucket] = sortedBridges[bridgeIndex];
+			const usd = bucket.hasPriced ? this.formatUsd(bucket.usd) : "—";
+			lines.push(`  ${bridge}: ${usd}  ·  ${bucket.count} tx`);
+			const sortedNetworks = [...bucket.networks.values()].sort(
+				(a, b) => (b.hasPriced ? b.usd : -1) - (a.hasPriced ? a.usd : -1)
+			);
+			for (const networkGroup of sortedNetworks) {
+				lines.push(`    ${networkGroup.network}`);
+				const meta = this.resolveNativeMeta(networkGroup.network);
+				const sortedCombos = [...networkGroup.tokens.values()].sort(
+					(a, b) => (b.hasPriced ? b.usd : -1) - (a.hasPriced ? a.usd : -1)
+				);
+				for (const combo of sortedCombos) {
+					const native = `${formatAmount(combo.native, meta.decimals)} ${meta.symbol}`;
+					const usdPart = combo.hasPriced ? ` (${this.formatUsd(combo.usd)})` : "";
+					lines.push(`      ${combo.token}: ${native}${usdPart}  ·  ${combo.count} tx`);
+				}
+			}
+			if (bridgeIndex < sortedBridges.length - 1) lines.push("");
+		}
+		return lines;
+	}
+
+	// Group rebalance records by token, then by network — answers "for ANON, how much
+	// native did each chain burn?". Per-network sub-lines use that chain's native ticker.
+	private formatRebalanceTokenLines(records: SpendRecord[]): string[] {
+		const buckets = new Map<
+			TokenSymbol,
+			{
+				usd: number;
+				count: number;
+				anyPriced: boolean;
+				networks: Map<Network, { native: bigint; usd: number; hasPriced: boolean; count: number }>;
+			}
+		>();
+		for (const record of records) {
+			const bucket = buckets.get(record.token) ?? { usd: 0, count: 0, anyPriced: false, networks: new Map() };
+			if (record.usdAmount !== null) {
+				bucket.usd += record.usdAmount;
+				bucket.anyPriced = true;
+			}
+			bucket.count++;
+			const networkBucket = bucket.networks.get(record.network) ?? { native: 0n, usd: 0, hasPriced: false, count: 0 };
+			networkBucket.native += BigInt(record.nativeAmount);
+			if (record.usdAmount !== null) {
+				networkBucket.usd += record.usdAmount;
+				networkBucket.hasPriced = true;
+			}
+			networkBucket.count++;
+			bucket.networks.set(record.network, networkBucket);
+			buckets.set(record.token, bucket);
+		}
+
+		const sortedTokens = [...buckets.entries()].sort((a, b) => b[1].usd - a[1].usd);
+		const lines: string[] = [];
+		for (let tokenIndex = 0; tokenIndex < sortedTokens.length; tokenIndex++) {
+			const [token, bucket] = sortedTokens[tokenIndex];
+			const usd = bucket.anyPriced ? this.formatUsd(bucket.usd) : "—";
+			lines.push(`  ${token}: ${usd}  ·  ${bucket.count} tx`);
+			const sortedNetworks = [...bucket.networks.entries()].sort(
+				(a, b) => (b[1].hasPriced ? b[1].usd : -1) - (a[1].hasPriced ? a[1].usd : -1)
+			);
+			for (const [network, networkBucket] of sortedNetworks) {
+				const meta = this.resolveNativeMeta(network);
+				const native = `${formatAmount(networkBucket.native, meta.decimals)} ${meta.symbol}`;
+				const usdPart = networkBucket.hasPriced ? ` (${this.formatUsd(networkBucket.usd)})` : "";
+				lines.push(`    ${network}: ${native}${usdPart}  ·  ${networkBucket.count} tx`);
+			}
+			if (tokenIndex < sortedTokens.length - 1) lines.push("");
+		}
+		return lines;
+	}
+
+	private collectAllNativeSpendFailures(snapshot: NativeSpendSnapshot): string[] {
+		const lines: string[] = [];
+		for (const entry of Object.values(snapshot.arbSpend.perToken)) {
+			if (!entry) continue;
+			for (const failure of entry.scanFailures) {
+				lines.push(`  ${entry.token} · ${failure.network} · ${failure.intent}: ${this.escapeHtml(failure.detail)}`);
+			}
+		}
+		if (snapshot.rebalanceSpend) {
+			for (const failure of snapshot.rebalanceSpend.scanFailures) {
+				lines.push(`  rebalance · ${failure.network} · ${failure.intent}: ${this.escapeHtml(failure.detail)}`);
+			}
+		}
+		if (snapshot.unattributedSpend) {
+			for (const failure of snapshot.unattributedSpend.scanFailures) {
+				lines.push(`  unattributed · ${failure.network} · ${failure.intent}: ${this.escapeHtml(failure.detail)}`);
+			}
+		}
+		return lines;
 	}
 
 	private buildTokenProfitMessage(entry: TokenProfitEntry): string {

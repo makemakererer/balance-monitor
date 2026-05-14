@@ -1,26 +1,55 @@
 import { ChainType, EvmChainMeta, Network, SvmChainMeta, TokenSymbol } from "../types";
 
 const evmChainMetadata: Partial<Record<Network, EvmChainMeta>> = {
-	[Network.ETH]: { chainId: 1, name: "eth", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.SONIC]: { chainId: 146, name: "sonic", nativeSymbol: TokenSymbol.SONIC, nativeDecimals: 18 },
-	[Network.BASE]: { chainId: 8453, name: "base", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.AVAX]: { chainId: 43114, name: "avax", nativeSymbol: TokenSymbol.AVAX, nativeDecimals: 18 },
-	[Network.BSC]: { chainId: 56, name: "bsc", nativeSymbol: TokenSymbol.BNB, nativeDecimals: 18 },
-	[Network.ARB]: { chainId: 42161, name: "arbitrum", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.OP]: { chainId: 10, name: "optimism", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.ABSTRACT]: { chainId: 2741, name: "abstract", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.INK]: { chainId: 57073, name: "ink", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.SONEIUM]: { chainId: 1868, name: "soneium", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
+	[Network.ETH]: { chainId: 1, name: "eth", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18, failedTxSource: "etherscan" },
+	[Network.SONIC]: { chainId: 146, name: "sonic", nativeSymbol: TokenSymbol.SONIC, nativeDecimals: 18, failedTxSource: "etherscan" },
+	[Network.BASE]: {
+		chainId: 8453,
+		name: "base",
+		nativeSymbol: TokenSymbol.ETH,
+		nativeDecimals: 18,
+		failedTxSource: "blockscout",
+		blockscoutBaseUrl: "https://base.blockscout.com/api"
+	},
+	[Network.AVAX]: { chainId: 43114, name: "avax", nativeSymbol: TokenSymbol.AVAX, nativeDecimals: 18, failedTxSource: "routescan" },
+	[Network.BSC]: { chainId: 56, name: "bsc", nativeSymbol: TokenSymbol.BNB, nativeDecimals: 18, failedTxSource: "moralis" },
+	[Network.ARB]: {
+		chainId: 42161,
+		name: "arbitrum",
+		nativeSymbol: TokenSymbol.ETH,
+		nativeDecimals: 18,
+		failedTxSource: "blockscout",
+		blockscoutBaseUrl: "https://arbitrum.blockscout.com/api"
+	},
+	[Network.OP]: {
+		chainId: 10,
+		name: "optimism",
+		nativeSymbol: TokenSymbol.ETH,
+		nativeDecimals: 18,
+		failedTxSource: "blockscout",
+		blockscoutBaseUrl: "https://optimism.blockscout.com/api"
+	},
+	[Network.ABSTRACT]: { chainId: 2741, name: "abstract", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18, failedTxSource: null },
+	[Network.INK]: { chainId: 57073, name: "ink", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18, failedTxSource: null },
+	[Network.SONEIUM]: {
+		chainId: 1868,
+		name: "soneium",
+		nativeSymbol: TokenSymbol.ETH,
+		nativeDecimals: 18,
+		failedTxSource: "blockscout",
+		blockscoutBaseUrl: "https://soneium.blockscout.com/api"
+	},
 	[Network.CRONOS_ZKEVM]: {
 		chainId: 388,
 		name: "cronos-zkevm",
 		nativeSymbol: TokenSymbol.ZK_CRO,
-		nativeDecimals: 18
+		nativeDecimals: 18,
+		failedTxSource: null
 	},
-	[Network.FLARE]: { chainId: 14, name: "flare", nativeSymbol: TokenSymbol.FLR, nativeDecimals: 18 },
-	[Network.ZORA]: { chainId: 7777777, name: "zora", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18 },
-	[Network.KAVA]: { chainId: 2222, name: "kava", nativeSymbol: TokenSymbol.KAVA, nativeDecimals: 18 },
-	[Network.METIS]: { chainId: 1088, name: "metis", nativeSymbol: TokenSymbol.METIS, nativeDecimals: 18 }
+	[Network.FLARE]: { chainId: 14, name: "flare", nativeSymbol: TokenSymbol.FLR, nativeDecimals: 18, failedTxSource: null },
+	[Network.ZORA]: { chainId: 7777777, name: "zora", nativeSymbol: TokenSymbol.ETH, nativeDecimals: 18, failedTxSource: null },
+	[Network.KAVA]: { chainId: 2222, name: "kava", nativeSymbol: TokenSymbol.KAVA, nativeDecimals: 18, failedTxSource: null },
+	[Network.METIS]: { chainId: 1088, name: "metis", nativeSymbol: TokenSymbol.METIS, nativeDecimals: 18, failedTxSource: null }
 };
 
 const svmChainMetadata: Partial<Record<Network, SvmChainMeta>> = {

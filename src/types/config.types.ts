@@ -60,11 +60,15 @@ enum CexAccountId {
 	GATE = "GATE"
 }
 
+type FailedTxSource = "etherscan" | "blockscout" | "routescan" | "moralis" | null;
+
 interface EvmChainMeta {
 	chainId: number;
 	name: string;
 	nativeSymbol: TokenSymbol;
 	nativeDecimals: number;
+	failedTxSource: FailedTxSource;
+	blockscoutBaseUrl?: string;
 }
 
 interface SvmChainMeta {
@@ -104,6 +108,7 @@ export {
 	CexExchangeId,
 	CexAccountId,
 	EvmChainMeta,
+	FailedTxSource,
 	SvmChainMeta,
 	CexAccountConfig,
 	TokenInfo,

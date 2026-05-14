@@ -7,3 +7,4 @@ export * from "./scheduler.config";
 export * from "./rpc-scan.config";
 export * from "./cctp.config";
 export * from "./profit-calculator.config";
+export * from "./native-spend.config";

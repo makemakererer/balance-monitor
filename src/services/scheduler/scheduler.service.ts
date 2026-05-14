@@ -2,6 +2,7 @@ import * as cron from "node-cron";
 import { schedulerConfig } from "../../config";
 import { log, snapshotExists } from "../../utils";
 import { BalanceCollectorService } from "../balance-collector/balance-collector.service";
+import { NativeSpendCalculatorService } from "../native-spend-calculator/native-spend-calculator.service";
 import { ProfitCalculatorService } from "../profit-calculator/profit-calculator.service";
 import { RemintService } from "../remint/remint.service";
 import { TelegramService } from "../telegram/telegram.service";
@@ -10,6 +11,7 @@ class SchedulerService {
 	private readonly telegram = new TelegramService();
 	private readonly remint = new RemintService();
 	private readonly profitCalculator = new ProfitCalculatorService();
+	private readonly nativeSpendCalculator = new NativeSpendCalculatorService();
 	private readonly collector = new BalanceCollectorService();
 	private isRunning = false;
 	private retryTimer: NodeJS.Timeout | null = null;
@@ -42,6 +44,7 @@ class SchedulerService {
 			if (attempt === 0) await this.notifyDailyRunStart(targetDate);
 			await this.runRemintSafely(targetDate);
 			await this.runProfitCalculatorSafely(targetDate);
+			await this.runNativeSpendSafely(targetDate);
 			await this.collector.collectBalance(targetDate);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
@@ -84,6 +87,16 @@ class SchedulerService {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			log.error(`PROFIT-CALC FAILED — manual review required: ${message}`);
+		}
+	}
+
+	// Native-spend must never block the snapshot either — same safety contract.
+	private async runNativeSpendSafely(targetDate: string): Promise<void> {
+		try {
+			await this.nativeSpendCalculator.calculate(targetDate);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			log.error(`NATIVE-SPEND FAILED — manual review required: ${message}`);
 		}
 	}
 

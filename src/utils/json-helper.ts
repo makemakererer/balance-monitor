@@ -1,10 +1,11 @@
 import * as fs from "fs";
 import * as path from "path";
-import { ProfitSnapshot, ReclaimPendingFile, Snapshot, TokenSymbol } from "../types";
+import { NativeSpendSnapshot, ProfitSnapshot, ReclaimPendingFile, Snapshot, TokenSymbol } from "../types";
 
 const SNAPSHOTS_DIR = "./data/snapshots";
 const RECLAIM_PENDING_DIR = "./data/reclaim-pending";
 const PROFITS_DIR = "./data/profits";
+const NATIVE_SPEND_DIR = "./data/native-spend";
 
 const bigintReplacer = (_key: string, value: unknown): unknown => {
 	return typeof value === "bigint" ? value.toString() : value;
@@ -97,6 +98,34 @@ const profitSnapshotPath = (date: string): string => {
 	return path.join(PROFITS_DIR, `${date}.json`);
 };
 
+// Native-spend snapshot — `data/native-spend/YYYY-MM-DD.json`. Written
+// incrementally by the per-token loop + a final rebalance pass; `grandTotals`
+// is filled only after every section completes, so `nativeSpendSnapshotComplete`
+// distinguishes mid-run state from fully-done state (allows retry resume).
+const writeNativeSpendSnapshot = (snapshot: NativeSpendSnapshot): string => {
+	if (!fs.existsSync(NATIVE_SPEND_DIR)) {
+		fs.mkdirSync(NATIVE_SPEND_DIR, { recursive: true });
+	}
+	const filePath = path.join(NATIVE_SPEND_DIR, `${snapshot.date}.json`);
+	fs.writeFileSync(filePath, JSON.stringify(snapshot, null, 2), "utf-8");
+	return filePath;
+};
+
+const readNativeSpendSnapshot = (date: string): NativeSpendSnapshot | null => {
+	const filePath = path.join(NATIVE_SPEND_DIR, `${date}.json`);
+	if (!fs.existsSync(filePath)) return null;
+	return JSON.parse(fs.readFileSync(filePath, "utf-8")) as NativeSpendSnapshot;
+};
+
+const nativeSpendSnapshotComplete = (date: string): boolean => {
+	const snapshot = readNativeSpendSnapshot(date);
+	return snapshot !== null && snapshot.grandTotals !== null;
+};
+
+const nativeSpendSnapshotPath = (date: string): string => {
+	return path.join(NATIVE_SPEND_DIR, `${date}.json`);
+};
+
 export {
 	writeBalanceSnapshot,
 	snapshotExists,
@@ -107,5 +136,9 @@ export {
 	writeProfitSnapshot,
 	readProfitSnapshot,
 	profitSnapshotComplete,
-	profitSnapshotPath
+	profitSnapshotPath,
+	writeNativeSpendSnapshot,
+	readNativeSpendSnapshot,
+	nativeSpendSnapshotComplete,
+	nativeSpendSnapshotPath
 };
