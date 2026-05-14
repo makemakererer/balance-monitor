@@ -1,0 +1,2346 @@
+{
+  "date": "2026-05-14",
+  "generatedAt": "2026-05-14T17:27:10.828Z",
+  "window": {
+    "fromTimestampSeconds": 1778630400,
+    "toTimestampSeconds": 1778716800,
+    "fromIso": "2026-05-13T00:00:00.000Z",
+    "toIso": "2026-05-14T00:00:00.000Z"
+  },
+  "arbSpend": {
+    "perToken": {
+      "ANON": {
+        "token": "ANON",
+        "fetchedAt": "2026-05-14T17:29:09.695Z",
+        "durationMs": 118867,
+        "records": [
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xbe045c4d79a989066737f2b81797876480df2754d990bd626aa52efa3dc7cfd2",
+            "blockNumber": 25082620,
+            "timestampSeconds": 1778632019,
+            "timestampIso": "2026-05-13T00:26:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "21809849028232",
+            "usdAmount": 0.04984908527855594,
+            "breakdown": {
+              "gas": "16452417398976",
+              "bribe": "5357431629256"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x05a0c51fd01cae7614a54e2fa5bb935693b8c770573a0b3a3cdb15d6915e2dd5",
+            "blockNumber": 25083005,
+            "timestampSeconds": 1778636663,
+            "timestampIso": "2026-05-13T01:44:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "21389886984624",
+            "usdAmount": 0.04905326110609683,
+            "breakdown": {
+              "gas": "15201851183610",
+              "bribe": "6188035801014"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x1778703703569af99e70d54e2727eb1d7fdaf5dddb4da8f8c05b2e1aaf906716",
+            "blockNumber": 25083390,
+            "timestampSeconds": 1778641295,
+            "timestampIso": "2026-05-13T03:01:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "20374413852625",
+            "usdAmount": 0.04673059471212491,
+            "breakdown": {
+              "gas": "14309360600588",
+              "bribe": "6065053252037"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "KaL1T9yK38svYV8YwYn2ztNpyfyrDLNwWhRzF3jLBBsg2UyAFomZ44nLYr8RCUiHnzmj73Tzi8sVEcmwqV4Ecwp",
+            "blockNumber": 419397228,
+            "timestampSeconds": 1778646123,
+            "timestampIso": "2026-05-13T04:22:03.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "1005200",
+            "usdAmount": 0.09624970463465148,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "1000000"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x4cfc0e51ceb79b63ddd19fe19f64ebf38115605b7cb0f5ccb1ae57ea14c8a897",
+            "blockNumber": 25083793,
+            "timestampSeconds": 1778646131,
+            "timestampIso": "2026-05-13T04:22:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "17844718128612",
+            "usdAmount": 0.04105620776051819,
+            "breakdown": {
+              "gas": "13475851566744",
+              "bribe": "4368866561868"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xbcfc75040e6bca0cb1dbc65a359f7cc9112191395dd0b372d610db39bd1992dd",
+            "blockNumber": 70371364,
+            "timestampSeconds": 1778652960,
+            "timestampIso": "2026-05-13T06:16:00.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "13257500000265150",
+            "usdAmount": 0.000680773409391185,
+            "breakdown": {
+              "gas": "13257500000265150"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x4984c1ac79322b8af706d5363a38c8d8955d93033300009c7b90da8a23258153",
+            "blockNumber": 25084363,
+            "timestampSeconds": 1778652971,
+            "timestampIso": "2026-05-13T06:16:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "21066910788595",
+            "usdAmount": 0.04850563143672333,
+            "breakdown": {
+              "gas": "15594011077216",
+              "bribe": "5472899711379"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "34VPNZXF5FXpRochxuqRsHJTLA9qegLvCA4hND56GduPV1QkPL1tQRv8oyMGMMKa3bN2V1JhuSg8vPmZRApgqJAH",
+            "blockNumber": 419428718,
+            "timestampSeconds": 1778658683,
+            "timestampIso": "2026-05-13T07:51:23.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "698760",
+            "usdAmount": 0.06645505343152346,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "693560"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xf504113164bd8b3d932ec74a5422b77ce9d183fcad71cb17d646dfd25702a690",
+            "blockNumber": 25084839,
+            "timestampSeconds": 1778658695,
+            "timestampIso": "2026-05-13T07:51:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "22056828478933",
+            "usdAmount": 0.050730626927870434,
+            "breakdown": {
+              "gas": "12733182376200",
+              "bribe": "9323646102733"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "2yTWEkG2xBJRcpjbsk7wDd7VyvG8Cu7hDnpHa2HPRxfXupNKjjWegGWBH1auu3CMKSeS5iKYcG8rtD9ACxLcP2KB",
+            "blockNumber": 419444091,
+            "timestampSeconds": 1778664821,
+            "timestampIso": "2026-05-13T09:33:41.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "295843",
+            "usdAmount": 0.028330278680776092,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "290643"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x0936ebccee91258ff62b3a925e4de7066c67dbe9ee0f4a221e27481d7d651997",
+            "blockNumber": 25085347,
+            "timestampSeconds": 1778664827,
+            "timestampIso": "2026-05-13T09:33:47.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "27701362342189",
+            "usdAmount": 0.06425787786835493,
+            "breakdown": {
+              "gas": "21946451179620",
+              "bribe": "5754911162569"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "3v94W4oWeQEbyPab4whGLb5hapZF3SvYUgAD8QfWhs4Y4ASaZ97FDiPzmHsnRgf6xtLbtjAYyKRBMq3x81VoTvxv",
+            "blockNumber": 419455057,
+            "timestampSeconds": 1778669197,
+            "timestampIso": "2026-05-13T10:46:37.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "1005200",
+            "usdAmount": 0.09533157831906822,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "1000000"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x4188f25a10e819db262c5b3f366969df85af1390284ce910b6432597409716e5",
+            "blockNumber": 25085709,
+            "timestampSeconds": 1778669207,
+            "timestampIso": "2026-05-13T10:46:47.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "41445867408648",
+            "usdAmount": 0.09561633898146124,
+            "breakdown": {
+              "gas": "18834716865384",
+              "bribe": "22611150543264"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x950871985928658e0a48abb9ccc7bef264a2318e9cb041149c04d4127aa38dd0",
+            "blockNumber": 70420351,
+            "timestampSeconds": 1778680867,
+            "timestampIso": "2026-05-13T14:01:07.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "14656600000293132",
+            "usdAmount": 0.0007165784457596179,
+            "breakdown": {
+              "gas": "14656600000293132"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x5c1ba7943c81b6db6bd580855b86cd9c45ec922fc2148beccd82d5c5c5496177",
+            "blockNumber": 25086679,
+            "timestampSeconds": 1778680895,
+            "timestampIso": "2026-05-13T14:01:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "117125635847552",
+            "usdAmount": 0.2639697245586297,
+            "breakdown": {
+              "gas": "112123006126846",
+              "bribe": "5002629720706"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x407d377bfea0a2145be40fc0f7d13d1d9f7b208f24dba13d711d8be7bd04f388",
+            "blockNumber": 70422451,
+            "timestampSeconds": 1778681934,
+            "timestampIso": "2026-05-13T14:18:54.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "14733300000294666",
+            "usdAmount": 0.0007256940452895737,
+            "breakdown": {
+              "gas": "14733300000294666"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xd28e01b06fed01924b7eca9139613fd7bafd7e9c9904023449914f7a90647020",
+            "blockNumber": 25086766,
+            "timestampSeconds": 1778681939,
+            "timestampIso": "2026-05-13T14:18:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "147100869009451",
+            "usdAmount": 0.3328278196290927,
+            "breakdown": {
+              "gas": "139997748882201",
+              "bribe": "7103120127250"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x0aa77ffb9b17f3031a44be349bfc0b5e9166e743ca7cbeb2200dfd041c252963",
+            "blockNumber": 70428817,
+            "timestampSeconds": 1778685248,
+            "timestampIso": "2026-05-13T15:14:08.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "14737450000294749",
+            "usdAmount": 0.0007224269542371092,
+            "breakdown": {
+              "gas": "14737450000294749"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x4998cbeac726944b434a8284cf8af6bcea0116c8023280516ddf16e43efdd1be",
+            "blockNumber": 25087039,
+            "timestampSeconds": 1778685263,
+            "timestampIso": "2026-05-13T15:14:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "175823248145436",
+            "usdAmount": 0.39687695718854366,
+            "breakdown": {
+              "gas": "167139081766818",
+              "bribe": "8684166378618"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xbc902e730e96663f0524652b24f8bbdb1b3dab45effcfeb2ffd27c5a2f515a07",
+            "blockNumber": 70430216,
+            "timestampSeconds": 1778685941,
+            "timestampIso": "2026-05-13T15:25:41.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "17508000000350160",
+            "usdAmount": 0.0008532766257804494,
+            "breakdown": {
+              "gas": "17508000000350160"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xd67023dc6dd9cc3a55e699d15cc7f6d3073b21c120226b83844ca69c6f92c18d",
+            "blockNumber": 25087096,
+            "timestampSeconds": 1778685947,
+            "timestampIso": "2026-05-13T15:25:47.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "175885779257190",
+            "usdAmount": 0.3963584657680788,
+            "breakdown": {
+              "gas": "157706039677193",
+              "bribe": "18179739579997"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "3VCvfVtD3RQbRGnGCzTYtqM6FUTH6ZeAv5QjDXtcovgEwinnuJWnxg29zWMgLrLiwe5ybxGVs6BEjnDa8iJYKjP7",
+            "blockNumber": 419530282,
+            "timestampSeconds": 1778699263,
+            "timestampIso": "2026-05-13T19:07:43.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "1051545",
+            "usdAmount": 0.0952952590283278,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "1046345"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "ANON",
+            "txHash": "2D3wsrYNHTdYJbKotHxov3nu48zL9ZFGHr6acnE9uF2juzUccKjg8UTWQstapFcRfG6FW17fkz7MqJKqXiucmSCy",
+            "blockNumber": 419530287,
+            "timestampSeconds": 1778699266,
+            "timestampIso": "2026-05-13T19:07:46.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "5200",
+            "usdAmount": 0.00047124502227418187,
+            "breakdown": {
+              "gas": "5200"
+            },
+            "detail": "Solana arb tx reverted (base+priority fee)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x8bf34da7dd61c9e71ea4ceca6754086c8878622735ddf90f099e7162a5bfa26d",
+            "blockNumber": 25088198,
+            "timestampSeconds": 1778699267,
+            "timestampIso": "2026-05-13T19:07:47.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "69903808574388",
+            "usdAmount": 0.15755606001104416,
+            "breakdown": {
+              "gas": "47846084195952",
+              "bribe": "22057724378436"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "4CxW6LEneSLVzWd8FnArCodzh4ZzPbuG4RHPCD9krRFXNoMQR4QZJ6zkP3vYWmBMTPUsU6jsGJiohsGxLmba4hKF",
+            "blockNumber": 419532863,
+            "timestampSeconds": 1778700293,
+            "timestampIso": "2026-05-13T19:24:53.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "465446",
+            "usdAmount": 0.04212524908187527,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "460246"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "BASE",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x7f2f251d14f912d8951c851d9275b438a601a17080dd97c267aece0065e80877",
+            "blockNumber": 45955475,
+            "timestampSeconds": 1778700297,
+            "timestampIso": "2026-05-13T19:24:57.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "4598705541648",
+            "usdAmount": 0.010378792488597877,
+            "breakdown": {
+              "gas": "4598705541648"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "2At3434k5UMUs3Cr87yXvpDekdpMMCj8qMtBTFCY9hnwUpqxYULX8t3DSt9dQDq5xKniYhNhFTdNP6TdWERfQNLJ",
+            "blockNumber": 419534732,
+            "timestampSeconds": 1778701040,
+            "timestampIso": "2026-05-13T19:37:20.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "11418833",
+            "usdAmount": 1.036364670375111,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "11413633"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "4tUvQwDATaiJnstvietfNSUnhEzg1H2BJXBDp9Tp2cWY9GfAziPDY3HCeW1ckq7EPw9N4DVfati1sLa9WBkjcgt9",
+            "blockNumber": 419543956,
+            "timestampSeconds": 1778704722,
+            "timestampIso": "2026-05-13T20:38:42.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "1005200",
+            "usdAmount": 0.09173612125509968,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "1000000"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x5a9c699c774523c27260a4f07c12b4121d833a352c531a34004edc8abf25aed8",
+            "blockNumber": 25088651,
+            "timestampSeconds": 1778704739,
+            "timestampIso": "2026-05-13T20:38:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "25329874216405",
+            "usdAmount": 0.05729537847255191,
+            "breakdown": {
+              "gas": "15584949193254",
+              "bribe": "9744925023151"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x6a603c2bcc42d2216f5987f09bf5edff6056455babb35fff2d8e85c0fce9e149",
+            "blockNumber": 70465542,
+            "timestampSeconds": 1778705294,
+            "timestampIso": "2026-05-13T20:48:14.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "14314450000286289",
+            "usdAmount": 0.0006986411217804531,
+            "breakdown": {
+              "gas": "14314450000286289"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "3oqdiKTUbsJUYYMfwW3NyxVJgxtBoMPXUcZeBg9MgEn9Q5asskeQZSvgYW1TvpvkLWrdPM7e2PqvzykHCU75rnk9",
+            "blockNumber": 419545400,
+            "timestampSeconds": 1778705295,
+            "timestampIso": "2026-05-13T20:48:15.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "15200",
+            "usdAmount": 0.0013859930952810414,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "10000"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x8e84d68e7a61d83b687f4ab610e5fd370960bbad4d6d086b1be2be80e2351cef",
+            "blockNumber": 70465545,
+            "timestampSeconds": 1778705296,
+            "timestampIso": "2026-05-13T20:48:16.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "12996250000259925",
+            "usdAmount": 0.0006334952086785219,
+            "breakdown": {
+              "gas": "12996250000259925"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "2tw2vyLXMVhy1i9oWf4GzgRvo1hUzp6mYSu51jZ34ptp2bzCwKk8Vh3t2Zmpiu58i3d1sMrSyYBaYNEMxwnBKLtz",
+            "blockNumber": 419545404,
+            "timestampSeconds": 1778705297,
+            "timestampIso": "2026-05-13T20:48:17.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "329481",
+            "usdAmount": 0.03004331519909821,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "324281"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x56ee0711f8b0057a7d8e8f0f8c06f7d52ad5772aea163d95f554b7d531a5e5c2",
+            "blockNumber": 70465550,
+            "timestampSeconds": 1778705298,
+            "timestampIso": "2026-05-13T20:48:18.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "18391100000367822",
+            "usdAmount": 0.0008964642671791916,
+            "breakdown": {
+              "gas": "18391100000367822"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "ANON",
+            "txHash": "0x507890b347081e22dfe85818f29ac0d024f6592375b45da0ee9baba3fefabd00",
+            "blockNumber": 70465554,
+            "timestampSeconds": 1778705300,
+            "timestampIso": "2026-05-13T20:48:20.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "13741550000274831",
+            "usdAmount": 0.0006697313968163764,
+            "breakdown": {
+              "gas": "13741550000274831"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xcd921eba31cd2a216df216b72feb4ed6abd6cb0d95be6df54b18721201a51910",
+            "blockNumber": 25088698,
+            "timestampSeconds": 1778705303,
+            "timestampIso": "2026-05-13T20:48:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "45168552782076",
+            "usdAmount": 0.10222275963519467,
+            "breakdown": {
+              "gas": "26457538510260",
+              "bribe": "18711014271816"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xd17ae03fbd24ab8d5728db1aa96ddd4d7a13b8ca328b39a08aa1e94ad99204f9",
+            "blockNumber": 25088699,
+            "timestampSeconds": 1778705315,
+            "timestampIso": "2026-05-13T20:48:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "84043192755246",
+            "usdAmount": 0.19020151328388404,
+            "breakdown": {
+              "gas": "26788011943616",
+              "bribe": "57255180811630"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SONIC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x286a508f5ff89cb989e64057146e47096e014521bf0889bfe582ef4f99db5b9f",
+            "blockNumber": 70465582,
+            "timestampSeconds": 1778705317,
+            "timestampIso": "2026-05-13T20:48:37.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "15862300000317246",
+            "usdAmount": 0.0007730918517722096,
+            "breakdown": {
+              "gas": "15862300000317246"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "5ygiEFqtfj5NUJnCa3tLxrumnTMrKXHyWwuUqmY8FfLAspL1aT59voeY9gUdUeK2Z4PXr5nR618xd2UY7MnYwdR7",
+            "blockNumber": 419552719,
+            "timestampSeconds": 1778708226,
+            "timestampIso": "2026-05-13T21:37:06.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "935308",
+            "usdAmount": 0.08500347155201056,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "930108"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0x17dd53f26db151013d40967a2f371a030fd779266f261b11a5931c3ce6d7b636",
+            "blockNumber": 25088937,
+            "timestampSeconds": 1778708231,
+            "timestampIso": "2026-05-13T21:37:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "26267811028212",
+            "usdAmount": 0.059252052043938915,
+            "breakdown": {
+              "gas": "15876587649376",
+              "bribe": "10391223378836"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BASE",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xea9d224e67708007fcdf254db9c86eb3daa9cb8f9c4d67a8664c42241bf4cad1",
+            "blockNumber": 45963313,
+            "timestampSeconds": 1778715973,
+            "timestampIso": "2026-05-13T23:46:13.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "20137207340860",
+            "usdAmount": 0.04545231384624057,
+            "breakdown": {
+              "gas": "20137207340860"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xf4ea53a60daa080ba100d0e20ea98dd686a52041b50adfac90c965f78d824b80",
+            "blockNumber": 25089576,
+            "timestampSeconds": 1778715983,
+            "timestampIso": "2026-05-13T23:46:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "21388571629600",
+            "usdAmount": 0.048276561725182014,
+            "breakdown": {
+              "gas": "17671001585009",
+              "bribe": "3717570044591"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "SOLANA",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "3j5gxAsk86wzJSPwNQmA5Lw1Wqw2zAbnT4UTN8RdNQju1AbKjqg77mRjJmKTqZJkovxDWbYJEV6fCJA42NDbBi6m",
+            "blockNumber": 419572277,
+            "timestampSeconds": 1778716026,
+            "timestampIso": "2026-05-13T23:47:06.000Z",
+            "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+            "nativeAmount": "1182785",
+            "usdAmount": 0.10777953713471781,
+            "breakdown": {
+              "gas": "5200",
+              "tips": "1177585"
+            },
+            "detail": "Solana arb tx (base+priority fee + validator tips)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "ANON",
+            "txHash": "0xff7e60b70e07751d4ce9fae92f4c562bf284ec40f6ebe00a41c505be7c74e515",
+            "blockNumber": 25089580,
+            "timestampSeconds": 1778716031,
+            "timestampIso": "2026-05-13T23:47:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "24427735168712",
+            "usdAmount": 0.05513628916821675,
+            "breakdown": {
+              "gas": "16844738274834",
+              "bribe": "7582996893878"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          }
+        ],
+        "scanFailures": []
+      },
+      "RIVER": {
+        "token": "RIVER",
+        "fetchedAt": "2026-05-14T17:30:03.449Z",
+        "durationMs": 53633,
+        "records": [
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x32fb6f59a3ecab58fbeb86a46d8612a4683f2392498efc302d9e2bfa10eaa7c7",
+            "blockNumber": 25082935,
+            "timestampSeconds": 1778635811,
+            "timestampIso": "2026-05-13T01:30:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "14482289389290",
+            "usdAmount": 0.03319652835239541,
+            "breakdown": {
+              "gas": "14482289389290"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x57fffb8df5e89df0f2dc51bbf876c7afec517c413ec333a48b0e625afebc6f87",
+            "blockNumber": 25083813,
+            "timestampSeconds": 1778646371,
+            "timestampIso": "2026-05-13T04:26:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "347103022504408",
+            "usdAmount": 0.7986913945090643,
+            "breakdown": {
+              "gas": "15290863446486",
+              "bribe": "331812159057922"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x993778d8d473204672ce09dc9d151425a32ef5f79ef4e1d345eae417c14b0d35",
+            "blockNumber": 97982784,
+            "timestampSeconds": 1778646372,
+            "timestampIso": "2026-05-13T04:26:12.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "116675143814239",
+            "usdAmount": 0.07915815420981515,
+            "breakdown": {
+              "gas": "6462800000000",
+              "bribe": "110212343814239"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0xb65eff277c58b53e20d7b68bcd39f7bfca042d12c572cbe94d2428b7da67694d",
+            "blockNumber": 25083824,
+            "timestampSeconds": 1778646503,
+            "timestampIso": "2026-05-13T04:28:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "1060592828965818",
+            "usdAmount": 2.4404523536446576,
+            "breakdown": {
+              "gas": "14067159737085",
+              "bribe": "1046525669228733"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x921c72ca060f7e18abeb3ca36b603e47571fc5b42d9f0efe7bd906ead7ca53f0",
+            "blockNumber": 97983078,
+            "timestampSeconds": 1778646505,
+            "timestampIso": "2026-05-13T04:28:25.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "6459650000001",
+            "usdAmount": 0.004383698813128672,
+            "breakdown": {
+              "gas": "6459650000000",
+              "bribe": "1"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x6e0951a6c9087d7b49cd21b0a38791484ceb2758d322246f270166048b65b261",
+            "blockNumber": 25084005,
+            "timestampSeconds": 1778648675,
+            "timestampIso": "2026-05-13T05:04:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "13039235470368",
+            "usdAmount": 0.030072190140187666,
+            "breakdown": {
+              "gas": "13039235470368"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x349ee335345ca1696cba462ae946d76a6d9582c3b4b9e95d3f4404304eb0b21c",
+            "blockNumber": 98007056,
+            "timestampSeconds": 1778657310,
+            "timestampIso": "2026-05-13T07:28:30.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "58076964725834",
+            "usdAmount": 0.03932529574985919,
+            "breakdown": {
+              "gas": "6457000000000",
+              "bribe": "51619964725834"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x7500b0a8352a0a34234936198b3092c881d4cf53d11fbe8c6ec9cdaf1cf5fb19",
+            "blockNumber": 98009612,
+            "timestampSeconds": 1778658461,
+            "timestampIso": "2026-05-13T07:47:41.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5662600000000",
+            "usdAmount": 0.003840694978712214,
+            "breakdown": {
+              "gas": "5662600000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x0e00d49ae6edc06042e0033cc7bf0ab00e1ec5a437841663ae5f2b9bf3f87cfa",
+            "blockNumber": 25084821,
+            "timestampSeconds": 1778658479,
+            "timestampIso": "2026-05-13T07:47:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "17458604591896",
+            "usdAmount": 0.040162589627057696,
+            "breakdown": {
+              "gas": "15011988519465",
+              "bribe": "2446616072431"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x7d0c763b7525cab81ced0bf77efb0003cd0d628fd1b8b67999a5bf0371c66c29",
+            "blockNumber": 98009711,
+            "timestampSeconds": 1778658506,
+            "timestampIso": "2026-05-13T07:48:26.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5617700000000",
+            "usdAmount": 0.003811176378047189,
+            "breakdown": {
+              "gas": "5617700000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0xe06d7cd6496f9e53041a0667bd5e26e6ccb25d988ba88e3052bb0778660948fb",
+            "blockNumber": 25085003,
+            "timestampSeconds": 1778660675,
+            "timestampIso": "2026-05-13T08:24:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "19198357914827",
+            "usdAmount": 0.044216195725888814,
+            "breakdown": {
+              "gas": "16962667605872",
+              "bribe": "2235690308955"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0xc14cfaaf4174bbb7abaecbc3abc207f16ea7e874146aa57e414a8f3ba4e59034",
+            "blockNumber": 98018260,
+            "timestampSeconds": 1778662360,
+            "timestampIso": "2026-05-13T08:52:40.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "61252894128081",
+            "usdAmount": 0.041803202792431174,
+            "breakdown": {
+              "gas": "6459800000000",
+              "bribe": "54793094128081"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0xbfce7f4545d0f9ff98968cd48d335301b6182fcffab104601130d4b3b471869e",
+            "blockNumber": 25085147,
+            "timestampSeconds": 1778662403,
+            "timestampIso": "2026-05-13T08:53:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "32118546357710",
+            "usdAmount": 0.07432956137259152,
+            "breakdown": {
+              "gas": "32118546357710"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0xcb72173f58833b8321ddf64ab76645d8df35b860db9f3c350ec4665db1ca8f9b",
+            "blockNumber": 98018993,
+            "timestampSeconds": 1778662690,
+            "timestampIso": "2026-05-13T08:58:10.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5557100000000",
+            "usdAmount": 0.003793101187421286,
+            "breakdown": {
+              "gas": "5557100000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x0da0a59dba3446a1b57e307fbbb4404e785c6e6a429106eaeb6994b5c90c98a0",
+            "blockNumber": 98019045,
+            "timestampSeconds": 1778662713,
+            "timestampIso": "2026-05-13T08:58:33.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5552500000000",
+            "usdAmount": 0.003790182787393024,
+            "breakdown": {
+              "gas": "5552500000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0xb9c2c48d17d209e5a56387067aa7ec8723e9ffab69b26811070be18b13d1a772",
+            "blockNumber": 25085173,
+            "timestampSeconds": 1778662715,
+            "timestampIso": "2026-05-13T08:58:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "23731142869323",
+            "usdAmount": 0.05493989346821625,
+            "breakdown": {
+              "gas": "23731142869323"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x13046f3c32af1e87ea8038ea76f75a19711ea3d588098405b8067c83ca21e4ff",
+            "blockNumber": 25085277,
+            "timestampSeconds": 1778663975,
+            "timestampIso": "2026-05-13T09:19:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "916390876945736",
+            "usdAmount": 2.126128248947559,
+            "breakdown": {
+              "gas": "27110876714328",
+              "bribe": "889280000231408"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0xf72e91b188f43409bebb1d9bd9420d5478fc41a092122076f6a9f3b0f0bd84e9",
+            "blockNumber": 98021848,
+            "timestampSeconds": 1778663977,
+            "timestampIso": "2026-05-13T09:19:37.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "6456500000001",
+            "usdAmount": 0.004404508398613604,
+            "breakdown": {
+              "gas": "6456500000000",
+              "bribe": "1"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x66e3cbb844306bf39fb3bb4b7b0162ed7e16af6e5795527a9699d9576b900beb",
+            "blockNumber": 25085278,
+            "timestampSeconds": 1778663987,
+            "timestampIso": "2026-05-13T09:19:47.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "24850655691400",
+            "usdAmount": 0.05765627135710086,
+            "breakdown": {
+              "gas": "24850655691400"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0xc9bcda858179c05f16fd6435367c8bcf4cca43fed6483c5842006220a9db2311",
+            "blockNumber": 98024448,
+            "timestampSeconds": 1778665148,
+            "timestampIso": "2026-05-13T09:39:08.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5510250000000",
+            "usdAmount": 0.0037741757397321794,
+            "breakdown": {
+              "gas": "5510250000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x13fe73cd3282e1c800b8288bdf4ed6bc23c609a6d70c4b06ed08848d74e1cf5f",
+            "blockNumber": 25085619,
+            "timestampSeconds": 1778668115,
+            "timestampIso": "2026-05-13T10:28:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "262824953204751",
+            "usdAmount": 0.6072611216914996,
+            "breakdown": {
+              "gas": "22867436186420",
+              "bribe": "239957517018331"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x08f1c3dee851534f2294b290bdcdedb5f897a2dcdb7904945e151a449cb0b97c",
+            "blockNumber": 98031037,
+            "timestampSeconds": 1778668117,
+            "timestampIso": "2026-05-13T10:28:37.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "81880756702556",
+            "usdAmount": 0.055829633436948176,
+            "breakdown": {
+              "gas": "6457600000000",
+              "bribe": "75423156702556"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0xf636c52a075adc0921eb8089c63db836eed03e1211d4c1593b487b456224787d",
+            "blockNumber": 98032296,
+            "timestampSeconds": 1778668684,
+            "timestampIso": "2026-05-13T10:38:04.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "8678000000000",
+            "usdAmount": 0.005919106889674809,
+            "breakdown": {
+              "gas": "8678000000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0xe67db785e1b22e71da807f0c409069f8cb0abd4b745a01e9591509043011d1ec",
+            "blockNumber": 25085686,
+            "timestampSeconds": 1778668919,
+            "timestampIso": "2026-05-13T10:41:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "18903536702413",
+            "usdAmount": 0.043633614380349815,
+            "breakdown": {
+              "gas": "16718406580355",
+              "bribe": "2185130122058"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x1ebd50a3c4f776676fe487f1b8160d2eb64eb475959b6d11a9c77bc96d0654fb",
+            "blockNumber": 25085882,
+            "timestampSeconds": 1778671295,
+            "timestampIso": "2026-05-13T11:21:35.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "14465978242188",
+            "usdAmount": 0.033310251415063094,
+            "breakdown": {
+              "gas": "14465978242188"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x176067ec202c1ef2173bb34239c99251ad27fc36c09b6652fb01bb14d3a18873",
+            "blockNumber": 98046138,
+            "timestampSeconds": 1778674921,
+            "timestampIso": "2026-05-13T12:22:01.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5664000000000",
+            "usdAmount": 0.0038450464599321583,
+            "breakdown": {
+              "gas": "5664000000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x82a395602e0c7c753642b37c6365c989719cc10cb7b48a62c2cceacd34665b48",
+            "blockNumber": 98049488,
+            "timestampSeconds": 1778676431,
+            "timestampIso": "2026-05-13T12:47:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "1680350000000",
+            "usdAmount": 0.0011290562005213005,
+            "breakdown": {
+              "gas": "1680350000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x4c962410eaf390dc3d43c2929d7a758d6e37eb8cb79d6fc19797554253851bd4",
+            "blockNumber": 98061427,
+            "timestampSeconds": 1778681813,
+            "timestampIso": "2026-05-13T14:16:53.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "1703650000000",
+            "usdAmount": 0.0011416160665758002,
+            "breakdown": {
+              "gas": "1703650000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0xcd61502a55815bc57a25b9b36fcd805fca422ce9142ebcb1ce75b5428a1887c6",
+            "blockNumber": 25086756,
+            "timestampSeconds": 1778681819,
+            "timestampIso": "2026-05-13T14:16:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "176945785613891",
+            "usdAmount": 0.4005082531008551,
+            "breakdown": {
+              "gas": "149128720273554",
+              "bribe": "27817065340337"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x8a095f7c36538c837a4ca6731fe5f0ce04fcfbbdd2dc4efda5a732924ad2ec04",
+            "blockNumber": 98062940,
+            "timestampSeconds": 1778682495,
+            "timestampIso": "2026-05-13T14:28:15.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "180899114436852",
+            "usdAmount": 0.12171601628339056,
+            "breakdown": {
+              "gas": "6162300000000",
+              "bribe": "174736814436852"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x84de9e09f4517cff03dbbcec2a4ef957edc7173029184946ac74c0d0cadb4e07",
+            "blockNumber": 98062949,
+            "timestampSeconds": 1778682499,
+            "timestampIso": "2026-05-13T14:28:19.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "6084600000000",
+            "usdAmount": 0.00409333317780422,
+            "breakdown": {
+              "gas": "6084600000000"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x10c948d93024fa91a06350a4206da5f55477dd077c2b23ef9b14f7731cdf0f48",
+            "blockNumber": 98063473,
+            "timestampSeconds": 1778682735,
+            "timestampIso": "2026-05-13T14:32:15.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "5617400000000",
+            "usdAmount": 0.0037758071340877027,
+            "breakdown": {
+              "gas": "5617400000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "BASE",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x524b62b0f1f9fa17d99f8149a6e808e168af17e25d90e51f7d632a9e52270233",
+            "blockNumber": 45947229,
+            "timestampSeconds": 1778683805,
+            "timestampIso": "2026-05-13T14:50:05.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "1026012000000",
+            "usdAmount": 0.0023224760210076747,
+            "breakdown": {
+              "gas": "1026012000000"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x6d1d69b2a383af2e508a561d2a2acb9d238895dfb316849f4aa522b154ee940f",
+            "blockNumber": 98075203,
+            "timestampSeconds": 1778688021,
+            "timestampIso": "2026-05-13T16:00:21.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "6424050000000",
+            "usdAmount": 0.004272155109844176,
+            "breakdown": {
+              "gas": "6424050000000"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x593489019c24ad98193e46cb9d707158a99a05b9d0261e81f108a54eaaa7e069",
+            "blockNumber": 25087272,
+            "timestampSeconds": 1778688071,
+            "timestampIso": "2026-05-13T16:01:11.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "58868646001646",
+            "usdAmount": 0.13200924954514434,
+            "breakdown": {
+              "gas": "58868646001646"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x32d6af739d931b86509ae3495472ea8a240a3981c189ba1e589982cd319b514d",
+            "blockNumber": 25087273,
+            "timestampSeconds": 1778688083,
+            "timestampIso": "2026-05-13T16:01:23.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "242319477609035",
+            "usdAmount": 0.543386243136044,
+            "breakdown": {
+              "gas": "242319477609035"
+            },
+            "detail": "arb tx gas"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "SUCCESS",
+            "token": "RIVER",
+            "txHash": "0x260a38fbe181ef28bb69058c8709d90e21317af3ea0673f3f0a3fe46f84dbda6",
+            "blockNumber": 98083124,
+            "timestampSeconds": 1778691590,
+            "timestampIso": "2026-05-13T16:59:50.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "61939934615900",
+            "usdAmount": 0.04151094624052223,
+            "breakdown": {
+              "gas": "6457950000000",
+              "bribe": "55481984615900"
+            },
+            "detail": "arb tx (gas + builder bribe)"
+          },
+          {
+            "network": "BSC",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x8db19d0016995a93784c0be056ce81162d5acc71bfdc2cffd1ccb73fb0408d18",
+            "blockNumber": 98086291,
+            "timestampSeconds": 1778693018,
+            "timestampIso": "2026-05-13T17:23:38.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "7008500000000",
+            "usdAmount": 0.004700852665159415,
+            "breakdown": {
+              "gas": "7008500000000"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0x7e43d9d759be7ce525d646b4d2618b825e2239f7434b2e7e8b8e5e63cd483369",
+            "blockNumber": 25088432,
+            "timestampSeconds": 1778702099,
+            "timestampIso": "2026-05-13T19:54:59.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "20020224258958",
+            "usdAmount": 0.04514042747289815,
+            "breakdown": {
+              "gas": "20020224258958"
+            },
+            "detail": "arb tx reverted"
+          },
+          {
+            "network": "ETH",
+            "intent": "ARBITRAGE",
+            "status": "REVERTED",
+            "token": "RIVER",
+            "txHash": "0xe1ce2cdef27b528bccb51672d0071f6fbc9bc9660f7f58132dbfcbca5a8495a4",
+            "blockNumber": 25089104,
+            "timestampSeconds": 1778710247,
+            "timestampIso": "2026-05-13T22:10:47.000Z",
+            "payer": "0x2274588Fb17C6315210ba8FD117Dc1fC4B816Ea2",
+            "nativeAmount": "17751620338764",
+            "usdAmount": 0.040010593771341786,
+            "breakdown": {
+              "gas": "17751620338764"
+            },
+            "detail": "arb tx reverted"
+          }
+        ],
+        "scanFailures": []
+      }
+    }
+  },
+  "rebalanceSpend": {
+    "fetchedAt": "2026-05-14T17:35:05.027Z",
+    "durationMs": 301446,
+    "records": [
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "0xbf6fad83fd49ed71837f24376b234cb19f68be697e1baf37d06529667376b5bd",
+        "blockNumber": 25083007,
+        "timestampSeconds": 1778636687,
+        "timestampIso": "2026-05-13T01:44:47.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "278506261662197",
+        "usdAmount": 0.6386935539477501,
+        "breakdown": {
+          "gas": "35716352754717",
+          "bribe": "242789908907480"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "0xa18916dcb4c514cf3740da9d6b54b65e7e296b05654b930e0fc6e18aca497bea",
+        "blockNumber": 25083795,
+        "timestampSeconds": 1778646155,
+        "timestampIso": "2026-05-13T04:22:35.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "280407745703231",
+        "usdAmount": 0.6452509641491105,
+        "breakdown": {
+          "gas": "37617836795751",
+          "bribe": "242789908907480"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x16011cd6c84dd63a8ccb65096520870cd29dde1a6515eb7465b275f276b52022",
+        "blockNumber": 97982833,
+        "timestampSeconds": 1778646395,
+        "timestampIso": "2026-05-13T04:26:35.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "2280410997453036",
+        "usdAmount": 1.5469868772382103,
+        "breakdown": {
+          "gas": "34566300000000",
+          "bribe": "2245844697453036"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x94a23f1cb1a77f7000d27755f41bcfafb3f1d01366fc807fa0c35c67dc8909a5",
+        "blockNumber": 97983123,
+        "timestampSeconds": 1778646525,
+        "timestampIso": "2026-05-13T04:28:45.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "2255034310984490",
+        "usdAmount": 1.530278060482669,
+        "breakdown": {
+          "gas": "34566300000000",
+          "bribe": "2220468010984490"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "USDT",
+        "txHash": "0x958cf6b87ef27b9844346b7a811114ed81f00ea2d51a2e43c13d6358e2923994",
+        "blockNumber": 25083827,
+        "timestampSeconds": 1778646539,
+        "timestampIso": "2026-05-13T04:28:59.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "14225750957704",
+        "usdAmount": 0.032733831927700484,
+        "breakdown": {
+          "gas": "14225750957704"
+        },
+        "bridge": "BUNGEE",
+        "detail": "BUNGEE rebalance — USDT"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "USDT",
+        "txHash": "0x24f8bf35fe17f3a5ebac7cdbce180a795bc895cc26bcad04741d1938beddd9a6",
+        "blockNumber": 25083827,
+        "timestampSeconds": 1778646539,
+        "timestampIso": "2026-05-13T04:28:59.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "11952049420280",
+        "usdAmount": 0.027501984118676014,
+        "breakdown": {
+          "gas": "11952049420280"
+        },
+        "bridge": "BUNGEE",
+        "detail": "BUNGEE rebalance — USDT"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0xdff6e2166ad2c06c73e960d4029cef6e66942f0e978f2a0f68f53fda9ab86cc2",
+        "blockNumber": 98007125,
+        "timestampSeconds": 1778657341,
+        "timestampIso": "2026-05-13T07:29:01.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "121122192888526",
+        "usdAmount": 0.08200038306362535,
+        "breakdown": {
+          "gas": "24103950000000",
+          "bribe": "97018242888526"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x9dc4cc54254897607de5ec1cc54f50dfd4d7d745be90d628b01ba04e31d2a46e",
+        "blockNumber": 98007130,
+        "timestampSeconds": 1778657343,
+        "timestampIso": "2026-05-13T07:29:03.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "2360865073610401",
+        "usdAmount": 1.5983175577171518,
+        "breakdown": {
+          "gas": "34566300000000",
+          "bribe": "2326298773610401"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "0xc30ce1ce3c96ec126af9fbb6f5888727dbd8427cba6594ed3fc270c9357df015",
+        "blockNumber": 25084842,
+        "timestampSeconds": 1778658731,
+        "timestampIso": "2026-05-13T07:52:11.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "272430682992920",
+        "usdAmount": 0.6265896003960463,
+        "breakdown": {
+          "gas": "29640774085440",
+          "bribe": "242789908907480"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "0x65a57308dc8f8663f12a0482151a94847b2deb0b0cf9bdcb66676dda505c1fd5",
+        "blockNumber": 25084846,
+        "timestampSeconds": 1778658779,
+        "timestampIso": "2026-05-13T07:52:59.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "72885101614547",
+        "usdAmount": 0.1676353705261024,
+        "breakdown": {
+          "gas": "29073104928175",
+          "bribe": "43811996686372"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0xe8f1c8b4b8dee3500515d74e3c405120d9c9a9257c79803517b7e5640f861df5",
+        "blockNumber": 98018331,
+        "timestampSeconds": 1778662392,
+        "timestampIso": "2026-05-13T08:53:12.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "3276150343943142",
+        "usdAmount": 2.2357244947059147,
+        "breakdown": {
+          "gas": "34566300000000",
+          "bribe": "3241584043943142"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x6be45dcf9ba16cdae4b902e2ae125e4fea52914ec78eee0adca6a84b5f245089",
+        "blockNumber": 98018331,
+        "timestampSeconds": 1778662392,
+        "timestampIso": "2026-05-13T08:53:12.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "121122192888526",
+        "usdAmount": 0.0826567236128257,
+        "breakdown": {
+          "gas": "24103950000000",
+          "bribe": "97018242888526"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0xcc0b13ef748ac2323861c08f5f466005a13206d9cc25dd1a2ab191eff1ed2e85",
+        "blockNumber": 98021919,
+        "timestampSeconds": 1778664009,
+        "timestampIso": "2026-05-13T09:20:09.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "3033751122384434",
+        "usdAmount": 2.069804115323231,
+        "breakdown": {
+          "gas": "34566300000000",
+          "bribe": "2999184822384434"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x076d78f666ca15fcdc4000441dee57e0eccf1d121a42e8f9efc3aedf400c881f",
+        "blockNumber": 98031084,
+        "timestampSeconds": 1778668138,
+        "timestampIso": "2026-05-13T10:28:58.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "2654829824238627",
+        "usdAmount": 1.810459490617184,
+        "breakdown": {
+          "gas": "34566300000000",
+          "bribe": "2620263524238627"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "USDT",
+        "txHash": "0x8d3b7be1dfb93faa7d3a74cda992728fd0f06e61c0d4bbf30e7d9129c74997fe",
+        "blockNumber": 25085621,
+        "timestampSeconds": 1778668139,
+        "timestampIso": "2026-05-13T10:28:59.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "25818608177362",
+        "usdAmount": 0.05965429374616456,
+        "breakdown": {
+          "gas": "25818608177362"
+        },
+        "bridge": "BUNGEE",
+        "detail": "BUNGEE rebalance — USDT"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "qFkd1jmVzKaHfFhKSV5cDMZ5N1oBkHik7U3UJDogNk5efTzMyQQ2HcyXW4phg8oGGvVihKwLxP9SiJWEDXGjGhU",
+        "blockNumber": 419455138,
+        "timestampSeconds": 1778669229,
+        "timestampIso": "2026-05-13T10:47:09.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "7294586",
+        "usdAmount": 0.6918920952685824,
+        "breakdown": {
+          "gas": "7294586"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x06619079199e482afe4d723f67168604676daa7cf9d3ea2f8ad7c7a03a4df35c",
+        "blockNumber": 98065907,
+        "timestampSeconds": 1778683832,
+        "timestampIso": "2026-05-13T14:50:32.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "121122192888526",
+        "usdAmount": 0.08133802490638982,
+        "breakdown": {
+          "gas": "24103950000000",
+          "bribe": "97018242888526"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "SONIC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "0x8c0f749fec55a4393bdc7cb73c53e22c2e8d018093537de5348e55292650f2fc",
+        "blockNumber": 70428877,
+        "timestampSeconds": 1778685280,
+        "timestampIso": "2026-05-13T15:14:40.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "35462655844552368496",
+        "usdAmount": 1.7383725441257751,
+        "breakdown": {
+          "gas": "18458350000369167",
+          "bribe": "35444197494551999329"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "BSC",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "RIVER",
+        "txHash": "0x3e352da670d46d3e1290e18131af9ab563648c092a321436692fbfdb0973fb1b",
+        "blockNumber": 98083195,
+        "timestampSeconds": 1778691622,
+        "timestampIso": "2026-05-13T17:00:22.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "121122192888526",
+        "usdAmount": 0.08123117516504481,
+        "breakdown": {
+          "gas": "24103950000000",
+          "bribe": "97018242888526"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — RIVER"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "3AE6phijkoAvg3V6WbNiqj3uRSQrbEExvebhVQQWCFaHU73rRZDsk569e4ovAXYo71EbBEx48r8bUThDwxCvZUFY",
+        "blockNumber": 419530361,
+        "timestampSeconds": 1778699296,
+        "timestampIso": "2026-05-13T19:08:16.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "8100309",
+        "usdAmount": 0.7340516762041707,
+        "breakdown": {
+          "gas": "8100309"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "5gmjTzf4fvcMxe6GpbTPVZvENfxdd3LjbNhUqBSrdyDBh7E8XbCS12f7NDp6A4HEK8Ry8Y4ceRyEzXybgRYYmZyZ",
+        "blockNumber": 419534814,
+        "timestampSeconds": 1778701072,
+        "timestampIso": "2026-05-13T19:37:52.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "9597489",
+        "usdAmount": 0.8711655542037303,
+        "breakdown": {
+          "gas": "9597489"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "5PfeKh1D43gB1FvuYYh1c4pgeFuFqJQ6RCZrwN9JjivSfbHBvLTcXSf9d8TfCeCE32ZPjmMxW8xJRmE33JBvymnJ",
+        "blockNumber": 419534814,
+        "timestampSeconds": 1778701072,
+        "timestampIso": "2026-05-13T19:37:52.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "935969",
+        "usdAmount": 0.0849580502361098,
+        "breakdown": {
+          "gas": "935969"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "5GrEwFV8mBV1KzGZcsQYkQ2wPMZDMEguDX3sBTbfmrSv3jmv5PxCVQtgPBLKXBGyUyntKJ7PFtZ4SsGR1m1kmY1R",
+        "blockNumber": 419534814,
+        "timestampSeconds": 1778701072,
+        "timestampIso": "2026-05-13T19:37:52.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "594961",
+        "usdAmount": 0.05400470157294325,
+        "breakdown": {
+          "gas": "594961"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      },
+      {
+        "network": "ETH",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "USDC",
+        "txHash": "0xeac4999a1156bc5136ce4227e587333f328981193a82f2af42305a37c5f98be8",
+        "blockNumber": 25088349,
+        "timestampSeconds": 1778701079,
+        "timestampIso": "2026-05-13T19:37:59.000Z",
+        "payer": "0x07ab29cb886dD9E4865f4cB7c479A6739599D5BC",
+        "nativeAmount": "36019416486890",
+        "usdAmount": 0.08121395638006644,
+        "breakdown": {
+          "gas": "36019416486890"
+        },
+        "bridge": "CCTP",
+        "detail": "CCTP rebalance — USDC"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "USDC",
+        "txHash": "5ny1NzjvtsYWBQkT2Uswh1NEArzP6DS7VjQ76f8KdmbSLN7KetKC13EefEQUWyQc4nvb6oR2p8XUZSzmgMq3VBWH",
+        "blockNumber": 419537347,
+        "timestampSeconds": 1778702077,
+        "timestampIso": "2026-05-13T19:54:37.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "958520",
+        "usdAmount": 0.08714350274606364,
+        "breakdown": {
+          "gas": "958520"
+        },
+        "bridge": "CCTP",
+        "detail": "CCTP rebalance — USDC"
+      },
+      {
+        "network": "SOLANA",
+        "intent": "REBALANCE",
+        "status": "SUCCESS",
+        "token": "ANON",
+        "txHash": "4ufF3d7uApHJDdncDbxpb5aR5esHnCBKBCoyy1JPNWfJxs5zinNwcu3aDrvqZMmetjvZai1dLXeRbeitwgaUZiKa",
+        "blockNumber": 419545504,
+        "timestampSeconds": 1778705336,
+        "timestampIso": "2026-05-13T20:48:56.000Z",
+        "payer": "BK38UqHfm5BNtxJiUoyvvG82RthEzBWiS2sLawytc7aJ",
+        "nativeAmount": "1039761",
+        "usdAmount": 0.09480931360148097,
+        "breakdown": {
+          "gas": "1039761"
+        },
+        "bridge": "OFT",
+        "detail": "OFT rebalance — ANON"
+      }
+    ],
+    "scanFailures": []
+  },
+  "unattributedSpend": null,
+  "grandTotals": {
+    "completedAt": "2026-05-14T17:35:05.208Z",
+    "durationMs": 474494,
+    "totalUsd": 30.08,
+    "totalTxCount": 110,
+    "byToken": [
+      {
+        "token": "RIVER",
+        "usdTotal": 19.1,
+        "txCount": 50,
+        "byIntent": [
+          {
+            "intent": "ARBITRAGE",
+            "usdAmount": 7.44,
+            "txCount": 20
+          },
+          {
+            "intent": "REBALANCE",
+            "usdAmount": 11.12,
+            "txCount": 10
+          }
+        ],
+        "failedUsd": 0.54,
+        "failedTxCount": 20
+      },
+      {
+        "token": "ANON",
+        "usdTotal": 10.69,
+        "txCount": 55,
+        "byIntent": [
+          {
+            "intent": "ARBITRAGE",
+            "usdAmount": 4.34,
+            "txCount": 42
+          },
+          {
+            "intent": "REBALANCE",
+            "usdAmount": 6.35,
+            "txCount": 11
+          }
+        ],
+        "failedUsd": 0,
+        "failedTxCount": 2
+      },
+      {
+        "token": "USDC",
+        "usdTotal": 0.17,
+        "txCount": 2,
+        "byIntent": [
+          {
+            "intent": "REBALANCE",
+            "usdAmount": 0.17,
+            "txCount": 2
+          }
+        ],
+        "failedUsd": 0,
+        "failedTxCount": 0
+      },
+      {
+        "token": "USDT",
+        "usdTotal": 0.12,
+        "txCount": 3,
+        "byIntent": [
+          {
+            "intent": "REBALANCE",
+            "usdAmount": 0.12,
+            "txCount": 3
+          }
+        ],
+        "failedUsd": 0,
+        "failedTxCount": 0
+      }
+    ],
+    "byNativeToken": [
+      {
+        "nativeSymbol": "ETH",
+        "nativeDecimals": 18,
+        "nativeAmount": "5405228239996787",
+        "usdAmount": 12.39,
+        "txCount": 48
+      },
+      {
+        "nativeSymbol": "BNB",
+        "nativeDecimals": 18,
+        "nativeAmount": "16989932102591698",
+        "usdAmount": 11.55,
+        "txCount": 31
+      },
+      {
+        "nativeSymbol": "SOL",
+        "nativeDecimals": 9,
+        "nativeAmount": "47935596",
+        "usdAmount": 4.39,
+        "txCount": 20
+      },
+      {
+        "nativeSymbol": "SONIC",
+        "nativeDecimals": 18,
+        "nativeAmount": "35612854344555372466",
+        "usdAmount": 1.75,
+        "txCount": 11
+      }
+    ],
+    "arbitrage": {
+      "intent": "ARBITRAGE",
+      "usdTotal": 11.79,
+      "txCount": 62,
+      "byNetwork": [
+        {
+          "network": "ETH",
+          "nativeAmount": "4167892359479501",
+          "nativeSymbol": "ETH",
+          "nativeDecimals": 18,
+          "usdAmount": 9.55,
+          "txCount": 28,
+          "byToken": [
+            {
+              "token": "RIVER",
+              "nativeAmount": "3061737444052775",
+              "usdAmount": 7.04,
+              "txCount": 9
+            },
+            {
+              "token": "ANON",
+              "nativeAmount": "1106154915426726",
+              "usdAmount": 2.51,
+              "txCount": 19
+            }
+          ],
+          "revertedUsd": 0.5,
+          "revertedTxCount": 9
+        },
+        {
+          "network": "SOLANA",
+          "nativeAmount": "19408801",
+          "nativeSymbol": "SOL",
+          "nativeDecimals": 9,
+          "usdAmount": 1.78,
+          "txCount": 12,
+          "byToken": [
+            {
+              "token": "ANON",
+              "nativeAmount": "19408801",
+              "usdAmount": 1.78,
+              "txCount": 12
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 1
+        },
+        {
+          "network": "BSC",
+          "nativeAmount": "586149608423464",
+          "nativeSymbol": "BNB",
+          "nativeDecimals": 18,
+          "usdAmount": 0.4,
+          "txCount": 10,
+          "byToken": [
+            {
+              "token": "RIVER",
+              "nativeAmount": "586149608423464",
+              "usdAmount": 0.4,
+              "txCount": 10
+            }
+          ],
+          "revertedUsd": 0.04,
+          "revertedTxCount": 11
+        },
+        {
+          "network": "BASE",
+          "nativeAmount": "25761924882508",
+          "nativeSymbol": "ETH",
+          "nativeDecimals": 18,
+          "usdAmount": 0.06,
+          "txCount": 3,
+          "byToken": [
+            {
+              "token": "ANON",
+              "nativeAmount": "24735912882508",
+              "usdAmount": 0.06,
+              "txCount": 2
+            },
+            {
+              "token": "RIVER",
+              "nativeAmount": "1026012000000",
+              "usdAmount": 0,
+              "txCount": 1
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 0
+        },
+        {
+          "network": "SONIC",
+          "nativeAmount": "136456950002729139",
+          "nativeSymbol": "SONIC",
+          "nativeDecimals": 18,
+          "usdAmount": 0.01,
+          "txCount": 9,
+          "byToken": [
+            {
+              "token": "ANON",
+              "nativeAmount": "136456950002729139",
+              "usdAmount": 0.01,
+              "txCount": 9
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 1
+        }
+      ]
+    },
+    "rebalance": {
+      "intent": "REBALANCE",
+      "usdTotal": 17.75,
+      "txCount": 26,
+      "byNetwork": [
+        {
+          "network": "BSC",
+          "nativeAmount": "16345530444168234",
+          "nativeSymbol": "BNB",
+          "nativeDecimals": 18,
+          "usdAmount": 11.12,
+          "txCount": 10,
+          "byToken": [
+            {
+              "token": "RIVER",
+              "nativeAmount": "16345530444168234",
+              "usdAmount": 11.12,
+              "txCount": 10
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 0
+        },
+        {
+          "network": "SOLANA",
+          "nativeAmount": "28521595",
+          "nativeSymbol": "SOL",
+          "nativeDecimals": 9,
+          "usdAmount": 2.62,
+          "txCount": 7,
+          "byToken": [
+            {
+              "token": "ANON",
+              "nativeAmount": "27563075",
+              "usdAmount": 2.53,
+              "txCount": 6
+            },
+            {
+              "token": "USDC",
+              "nativeAmount": "958520",
+              "usdAmount": 0.09,
+              "txCount": 1
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 0
+        },
+        {
+          "network": "ETH",
+          "nativeAmount": "992245617015131",
+          "nativeSymbol": "ETH",
+          "nativeDecimals": 18,
+          "usdAmount": 2.28,
+          "txCount": 8,
+          "byToken": [
+            {
+              "token": "ANON",
+              "nativeAmount": "904229791972895",
+              "usdAmount": 2.08,
+              "txCount": 4
+            },
+            {
+              "token": "USDT",
+              "nativeAmount": "51996408555346",
+              "usdAmount": 0.12,
+              "txCount": 3
+            },
+            {
+              "token": "USDC",
+              "nativeAmount": "36019416486890",
+              "usdAmount": 0.08,
+              "txCount": 1
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 0
+        },
+        {
+          "network": "SONIC",
+          "nativeAmount": "35462655844552368496",
+          "nativeSymbol": "SONIC",
+          "nativeDecimals": 18,
+          "usdAmount": 1.74,
+          "txCount": 1,
+          "byToken": [
+            {
+              "token": "ANON",
+              "nativeAmount": "35462655844552368496",
+              "usdAmount": 1.74,
+              "txCount": 1
+            }
+          ],
+          "revertedUsd": 0,
+          "revertedTxCount": 0
+        }
+      ]
+    },
+    "failed": {
+      "usdTotal": 0.54,
+      "txCount": 22,
+      "byType": {
+        "arbitrage": {
+          "usdAmount": 0.54,
+          "txCount": 22
+        },
+        "rebalance": {
+          "usdAmount": 0,
+          "txCount": 0
+        },
+        "unattributed": {
+          "usdAmount": 0,
+          "txCount": 0
+        }
+      },
+      "byNetwork": [
+        {
+          "network": "ETH",
+          "usdAmount": 0.5,
+          "txCount": 9
+        },
+        {
+          "network": "BSC",
+          "usdAmount": 0.04,
+          "txCount": 11
+        },
+        {
+          "network": "SOLANA",
+          "usdAmount": 0,
+          "txCount": 1
+        },
+        {
+          "network": "SONIC",
+          "usdAmount": 0,
+          "txCount": 1
+        }
+      ]
+    }
+  }
+}

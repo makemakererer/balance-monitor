@@ -75,6 +75,12 @@ class TelegramService {
 		log.success("telegram: daily run start signal sent");
 	}
 
+	public async sendDailyRunFinish(date: string, durationMs: number): Promise<void> {
+		const text = `🎉 <b>Daily run finished</b> — ${date}\n<i>Duration: ${this.formatDuration(durationMs)}</i>`;
+		await this.bot.sendMessage(this.chatId, text, { parse_mode: "HTML" });
+		log.success("telegram: daily run finish signal sent");
+	}
+
 	public async sendRemintStart(date: string, window: RemintWindow): Promise<void> {
 		const windowLine = `${this.formatWindowEdge(window.fromIso)} → ${this.formatWindowEdge(window.toIso)} UTC`;
 		const text = `🔄 <b>Remint started</b> — ${date}\n<i>Window: ${windowLine}</i>`;

@@ -40,12 +40,17 @@ class SchedulerService {
 		}
 		this.isRunning = true;
 		this.cancelPendingRetry();
+		const runStartMs = Date.now();
+		log.important(`DAILY RUN: started — ${targetDate}`);
 		try {
 			if (attempt === 0) await this.notifyDailyRunStart(targetDate);
 			await this.runRemintSafely(targetDate);
 			await this.runProfitCalculatorSafely(targetDate);
 			await this.runNativeSpendSafely(targetDate);
 			await this.collector.collectBalance(targetDate);
+			const durationMs = Date.now() - runStartMs;
+			log.important(`DAILY RUN: finished — ${targetDate} in ${(durationMs / 1000).toFixed(1)}s`);
+			await this.notifyDailyRunFinish(targetDate, durationMs);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			const total = schedulerConfig.maxRetryAttempts + 1;
@@ -67,6 +72,15 @@ class SchedulerService {
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
 			log.error(`telegram daily-run-start signal failed: ${message}`);
+		}
+	}
+
+	private async notifyDailyRunFinish(targetDate: string, durationMs: number): Promise<void> {
+		try {
+			await this.telegram.sendDailyRunFinish(targetDate, durationMs);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			log.error(`telegram daily-run-finish signal failed: ${message}`);
 		}
 	}
 

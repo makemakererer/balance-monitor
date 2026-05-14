@@ -1,0 +1,1542 @@
+{
+  "date": "2026-05-14",
+  "generatedAt": "2026-05-14T17:24:36.336Z",
+  "window": {
+    "fromTimestampSeconds": 1778630400,
+    "toTimestampSeconds": 1778716800,
+    "fromIso": "2026-05-13T00:00:00.000Z",
+    "toIso": "2026-05-14T00:00:00.000Z"
+  },
+  "perToken": {
+    "ANON": {
+      "token": "ANON",
+      "fetchedAt": "2026-05-14T17:26:20.658Z",
+      "durationMs": 104213,
+      "stats": {
+        "period": {
+          "fromIso": "2026-05-13T00:00:00.000Z",
+          "toIso": "2026-05-14T00:00:00.000Z"
+        },
+        "token": "ANON",
+        "totals": {
+          "transactions": 43,
+          "matchedPairs": 20,
+          "unmatched": 3,
+          "matchRate": "93.0%"
+        },
+        "profit": {
+          "profitToken": "USD",
+          "total": 62.36775,
+          "avg": 3.11839,
+          "median": 2.11164,
+          "min": 1.13387,
+          "max": 11.2487
+        },
+        "bestArbitrage": {
+          "profit": 11.2487,
+          "route": "SOLANA → SONIC",
+          "inputHash": "0x6a603c2bcc42d2216f5987f09bf5edff6056455babb35fff2d8e85c0fce9e149",
+          "outputHash": "3oqdiKTUbsJUYYMfwW3NyxVJgxtBoMPXUcZeBg9MgEn9Q5asskeQZSvgYW1TvpvkLWrdPM7e2PqvzykHCU75rnk9",
+          "timestamp": "2026-05-13T20:48:14.000Z"
+        },
+        "worstArbitrage": {
+          "profit": 1.13387,
+          "route": "SONIC → ETH",
+          "inputHash": "0x5c1ba7943c81b6db6bd580855b86cd9c45ec922fc2148beccd82d5c5c5496177",
+          "outputHash": "0x950871985928658e0a48abb9ccc7bef264a2318e9cb041149c04d4127aa38dd0",
+          "timestamp": "2026-05-13T14:01:35.000Z"
+        },
+        "byRoute": [
+          {
+            "route": "SOLANA → SONIC",
+            "count": 2,
+            "totalProfit": 13.77319,
+            "avgProfit": 6.8866,
+            "minProfit": 2.52449,
+            "maxProfit": 11.2487
+          },
+          {
+            "route": "SOLANA → ETH",
+            "count": 5,
+            "totalProfit": 13.50377,
+            "avgProfit": 2.70075,
+            "minProfit": 1.45039,
+            "maxProfit": 4.82364
+          },
+          {
+            "route": "SOLANA → MEXC",
+            "count": 1,
+            "totalProfit": 9.73619,
+            "avgProfit": 9.73619,
+            "minProfit": 9.73619,
+            "maxProfit": 9.73619
+          },
+          {
+            "route": "ETH → SONIC",
+            "count": 3,
+            "totalProfit": 8.63536,
+            "avgProfit": 2.87845,
+            "minProfit": 1.25959,
+            "maxProfit": 5.82375
+          },
+          {
+            "route": "SONIC → ETH",
+            "count": 4,
+            "totalProfit": 7.13286,
+            "avgProfit": 1.78322,
+            "minProfit": 1.13387,
+            "maxProfit": 2.4542
+          },
+          {
+            "route": "ETH → SOLANA",
+            "count": 3,
+            "totalProfit": 5.40685,
+            "avgProfit": 1.80228,
+            "minProfit": 1.13431,
+            "maxProfit": 2.32346
+          },
+          {
+            "route": "BASE → ETH",
+            "count": 1,
+            "totalProfit": 2.81538,
+            "avgProfit": 2.81538,
+            "minProfit": 2.81538,
+            "maxProfit": 2.81538
+          },
+          {
+            "route": "SOLANA → BASE",
+            "count": 1,
+            "totalProfit": 1.36415,
+            "avgProfit": 1.36415,
+            "minProfit": 1.36415,
+            "maxProfit": 1.36415
+          }
+        ],
+        "byNetwork": [
+          {
+            "network": "ETH",
+            "inputCount": 10,
+            "outputCount": 9,
+            "totalCount": 19
+          },
+          {
+            "network": "SOLANA",
+            "inputCount": 3,
+            "outputCount": 9,
+            "totalCount": 12
+          },
+          {
+            "network": "SONIC",
+            "inputCount": 5,
+            "outputCount": 4,
+            "totalCount": 9
+          },
+          {
+            "network": "BASE",
+            "inputCount": 1,
+            "outputCount": 1,
+            "totalCount": 2
+          },
+          {
+            "network": "MEXC",
+            "inputCount": 1,
+            "outputCount": 0,
+            "totalCount": 1
+          }
+        ],
+        "unmatched": {
+          "total": 3,
+          "byType": {
+            "SELL": 0,
+            "BUY": 3
+          },
+          "byNetwork": {
+            "ETH": 3
+          }
+        },
+        "unmatchedStats": {
+          "targetToken": "ANON",
+          "counterToken": "USDC",
+          "totalUnmatched": 3,
+          "targetBought": 1211.7922,
+          "targetSold": 0,
+          "netTarget": 1211.7922,
+          "counterSpent": 885.74367,
+          "counterReceived": 0,
+          "netCounter": -885.74367,
+          "closing": {
+            "action": "SELL",
+            "quantity": 1211.7922,
+            "breakEvenPrice": 0.73094
+          }
+        }
+      },
+      "matched": [
+        {
+          "input": {
+            "hash": "KaL1T9yK38svYV8YwYn2ztNpyfyrDLNwWhRzF3jLBBsg2UyAFomZ44nLYr8RCUiHnzmj73Tzi8sVEcmwqV4Ecwp",
+            "timestamp": "2026-05-13T04:22:03.000Z",
+            "network": "SOLANA",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "348.42262",
+            "amountOut": "257.86231",
+            "blockNumber": 419397228
+          },
+          "output": {
+            "hash": "0x4cfc0e51ceb79b63ddd19fe19f64ebf38115605b7cb0f5ccb1ae57ea14c8a897",
+            "timestamp": "2026-05-13T04:22:11.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "256.72800",
+            "amountOut": "348.42262",
+            "blockNumber": 25083793
+          },
+          "timeDeltaMs": 8000,
+          "route": "ETH → SOLANA",
+          "profitToken": "USDC",
+          "profitAmount": 1.13431
+        },
+        {
+          "input": {
+            "hash": "0xbcfc75040e6bca0cb1dbc65a359f7cc9112191395dd0b372d610db39bd1992dd",
+            "timestamp": "2026-05-13T06:16:00.000Z",
+            "network": "SONIC",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "201.16582",
+            "amountOut": "149.87509",
+            "blockNumber": 70371364
+          },
+          "output": {
+            "hash": "0x4984c1ac79322b8af706d5363a38c8d8955d93033300009c7b90da8a23258153",
+            "timestamp": "2026-05-13T06:16:11.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "148.61550",
+            "amountOut": "201.16582",
+            "blockNumber": 25084363
+          },
+          "timeDeltaMs": 11000,
+          "route": "ETH → SONIC",
+          "profitToken": "USDC",
+          "profitAmount": 1.25959
+        },
+        {
+          "input": {
+            "hash": "34VPNZXF5FXpRochxuqRsHJTLA9qegLvCA4hND56GduPV1QkPL1tQRv8oyMGMMKa3bN2V1JhuSg8vPmZRApgqJAH",
+            "timestamp": "2026-05-13T07:51:23.000Z",
+            "network": "SOLANA",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "505.47369",
+            "amountOut": "376.91245",
+            "blockNumber": 419428718
+          },
+          "output": {
+            "hash": "0xf504113164bd8b3d932ec74a5422b77ce9d183fcad71cb17d646dfd25702a690",
+            "timestamp": "2026-05-13T07:51:35.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "374.58899",
+            "amountOut": "505.47369",
+            "blockNumber": 25084839
+          },
+          "timeDeltaMs": 12000,
+          "route": "ETH → SOLANA",
+          "profitToken": "USDC",
+          "profitAmount": 2.32346
+        },
+        {
+          "input": {
+            "hash": "0x0936ebccee91258ff62b3a925e4de7066c67dbe9ee0f4a221e27481d7d651997",
+            "timestamp": "2026-05-13T09:33:47.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "402.93198",
+            "amountOut": "297.05694",
+            "blockNumber": 25085347
+          },
+          "output": {
+            "hash": "2yTWEkG2xBJRcpjbsk7wDd7VyvG8Cu7hDnpHa2HPRxfXupNKjjWegGWBH1auu3CMKSeS5iKYcG8rtD9ACxLcP2KB",
+            "timestamp": "2026-05-13T09:33:41.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "295.60655",
+            "amountOut": "402.93198",
+            "blockNumber": 419444091
+          },
+          "timeDeltaMs": 6000,
+          "route": "SOLANA → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 1.45039
+        },
+        {
+          "input": {
+            "hash": "0x4188f25a10e819db262c5b3f366969df85af1390284ce910b6432597409716e5",
+            "timestamp": "2026-05-13T10:46:47.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "797.24974",
+            "amountOut": "583.98341",
+            "blockNumber": 25085709
+          },
+          "output": {
+            "hash": "3v94W4oWeQEbyPab4whGLb5hapZF3SvYUgAD8QfWhs4Y4ASaZ97FDiPzmHsnRgf6xtLbtjAYyKRBMq3x81VoTvxv",
+            "timestamp": "2026-05-13T10:46:37.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "580.89544",
+            "amountOut": "797.24974",
+            "blockNumber": 419455057
+          },
+          "timeDeltaMs": 10000,
+          "route": "SOLANA → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 3.08797
+        },
+        {
+          "input": {
+            "hash": "0x5c1ba7943c81b6db6bd580855b86cd9c45ec922fc2148beccd82d5c5c5496177",
+            "timestamp": "2026-05-13T14:01:35.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "197.50831",
+            "amountOut": "143.72522",
+            "blockNumber": 25086679
+          },
+          "output": {
+            "hash": "0x950871985928658e0a48abb9ccc7bef264a2318e9cb041149c04d4127aa38dd0",
+            "timestamp": "2026-05-13T14:01:07.000Z",
+            "network": "SONIC",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "142.59135",
+            "amountOut": "197.50831",
+            "blockNumber": 70420351
+          },
+          "timeDeltaMs": 28000,
+          "route": "SONIC → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 1.13387
+        },
+        {
+          "input": {
+            "hash": "0xd28e01b06fed01924b7eca9139613fd7bafd7e9c9904023449914f7a90647020",
+            "timestamp": "2026-05-13T14:18:59.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "234.50865",
+            "amountOut": "169.72330",
+            "blockNumber": 25086766
+          },
+          "output": {
+            "hash": "0x407d377bfea0a2145be40fc0f7d13d1d9f7b208f24dba13d711d8be7bd04f388",
+            "timestamp": "2026-05-13T14:18:54.000Z",
+            "network": "SONIC",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "168.13404",
+            "amountOut": "234.50865",
+            "blockNumber": 70422451
+          },
+          "timeDeltaMs": 5000,
+          "route": "SONIC → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 1.58926
+        },
+        {
+          "input": {
+            "hash": "0x4998cbeac726944b434a8284cf8af6bcea0116c8023280516ddf16e43efdd1be",
+            "timestamp": "2026-05-13T15:14:23.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "259.58887",
+            "amountOut": "185.84680",
+            "blockNumber": 25087039
+          },
+          "output": {
+            "hash": "0x0aa77ffb9b17f3031a44be349bfc0b5e9166e743ca7cbeb2200dfd041c252963",
+            "timestamp": "2026-05-13T15:14:08.000Z",
+            "network": "SONIC",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "183.89127",
+            "amountOut": "259.58887",
+            "blockNumber": 70428817
+          },
+          "timeDeltaMs": 15000,
+          "route": "SONIC → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 1.95553
+        },
+        {
+          "input": {
+            "hash": "0xd67023dc6dd9cc3a55e699d15cc7f6d3073b21c120226b83844ca69c6f92c18d",
+            "timestamp": "2026-05-13T15:25:47.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "370.40835",
+            "amountOut": "264.55234",
+            "blockNumber": 25087096
+          },
+          "output": {
+            "hash": "0xbc902e730e96663f0524652b24f8bbdb1b3dab45effcfeb2ffd27c5a2f515a07",
+            "timestamp": "2026-05-13T15:25:41.000Z",
+            "network": "SONIC",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "262.09814",
+            "amountOut": "370.40835",
+            "blockNumber": 70430216
+          },
+          "timeDeltaMs": 6000,
+          "route": "SONIC → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 2.4542
+        },
+        {
+          "input": {
+            "hash": "0x8bf34da7dd61c9e71ea4ceca6754086c8878622735ddf90f099e7162a5bfa26d",
+            "timestamp": "2026-05-13T19:07:47.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "797.06112",
+            "amountOut": "558.21499",
+            "blockNumber": 25088198
+          },
+          "output": {
+            "hash": "3VCvfVtD3RQbRGnGCzTYtqM6FUTH6ZeAv5QjDXtcovgEwinnuJWnxg29zWMgLrLiwe5ybxGVs6BEjnDa8iJYKjP7",
+            "timestamp": "2026-05-13T19:07:43.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "553.39135",
+            "amountOut": "797.06112",
+            "blockNumber": 419530282
+          },
+          "timeDeltaMs": 4000,
+          "route": "SOLANA → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 4.82364
+        },
+        {
+          "input": {
+            "hash": "0x7f2f251d14f912d8951c851d9275b438a601a17080dd97c267aece0065e80877",
+            "timestamp": "2026-05-13T19:24:57.000Z",
+            "network": "BASE",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "347.00038",
+            "amountOut": "242.19846",
+            "blockNumber": 45955475
+          },
+          "output": {
+            "hash": "4CxW6LEneSLVzWd8FnArCodzh4ZzPbuG4RHPCD9krRFXNoMQR4QZJ6zkP3vYWmBMTPUsU6jsGJiohsGxLmba4hKF",
+            "timestamp": "2026-05-13T19:24:53.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "240.83431",
+            "amountOut": "347.00038",
+            "blockNumber": 419532863
+          },
+          "timeDeltaMs": 4000,
+          "route": "SOLANA → BASE",
+          "profitToken": "USDC",
+          "profitAmount": 1.36415
+        },
+        {
+          "input": {
+            "hash": "C02__683330997604814848039",
+            "timestamp": "2026-05-13T19:37:21.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDT",
+            "amountIn": "1289.46000",
+            "amountOut": "897.48863",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "2At3434k5UMUs3Cr87yXvpDekdpMMCj8qMtBTFCY9hnwUpqxYULX8t3DSt9dQDq5xKniYhNhFTdNP6TdWERfQNLJ",
+            "timestamp": "2026-05-13T19:37:20.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "887.75244",
+            "amountOut": "1289.46067",
+            "blockNumber": 419534732
+          },
+          "timeDeltaMs": 1000,
+          "route": "SOLANA → MEXC",
+          "profitToken": "USD",
+          "profitAmount": 9.73619
+        },
+        {
+          "input": {
+            "hash": "0x5a9c699c774523c27260a4f07c12b4121d833a352c531a34004edc8abf25aed8",
+            "timestamp": "2026-05-13T20:38:59.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "532.61511",
+            "amountOut": "370.76836",
+            "blockNumber": 25088651
+          },
+          "output": {
+            "hash": "4tUvQwDATaiJnstvietfNSUnhEzg1H2BJXBDp9Tp2cWY9GfAziPDY3HCeW1ckq7EPw9N4DVfati1sLa9WBkjcgt9",
+            "timestamp": "2026-05-13T20:38:42.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "368.50061",
+            "amountOut": "532.61511",
+            "blockNumber": 419543956
+          },
+          "timeDeltaMs": 17000,
+          "route": "SOLANA → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 2.26775
+        },
+        {
+          "input": {
+            "hash": "0x6a603c2bcc42d2216f5987f09bf5edff6056455babb35fff2d8e85c0fce9e149",
+            "timestamp": "2026-05-13T20:48:14.000Z",
+            "network": "SONIC",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "637.16000",
+            "amountOut": "456.63535",
+            "blockNumber": 70465542
+          },
+          "output": {
+            "hash": "3oqdiKTUbsJUYYMfwW3NyxVJgxtBoMPXUcZeBg9MgEn9Q5asskeQZSvgYW1TvpvkLWrdPM7e2PqvzykHCU75rnk9",
+            "timestamp": "2026-05-13T20:48:15.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "445.38665",
+            "amountOut": "637.16000",
+            "blockNumber": 419545400
+          },
+          "timeDeltaMs": 1000,
+          "route": "SOLANA → SONIC",
+          "profitToken": "USDC",
+          "profitAmount": 11.2487
+        },
+        {
+          "input": {
+            "hash": "0x8e84d68e7a61d83b687f4ab610e5fd370960bbad4d6d086b1be2be80e2351cef",
+            "timestamp": "2026-05-13T20:48:16.000Z",
+            "network": "SONIC",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "380.77182",
+            "amountOut": "272.30024",
+            "blockNumber": 70465545
+          },
+          "output": {
+            "hash": "0xcd921eba31cd2a216df216b72feb4ed6abd6cb0d95be6df54b18721201a51910",
+            "timestamp": "2026-05-13T20:48:23.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "266.47649",
+            "amountOut": "380.77182",
+            "blockNumber": 25088698
+          },
+          "timeDeltaMs": 7000,
+          "route": "ETH → SONIC",
+          "profitToken": "USDC",
+          "profitAmount": 5.82375
+        },
+        {
+          "input": {
+            "hash": "0x56ee0711f8b0057a7d8e8f0f8c06f7d52ad5772aea163d95f554b7d531a5e5c2",
+            "timestamp": "2026-05-13T20:48:18.000Z",
+            "network": "SONIC",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "302.92303",
+            "amountOut": "215.55091",
+            "blockNumber": 70465550
+          },
+          "output": {
+            "hash": "2tw2vyLXMVhy1i9oWf4GzgRvo1hUzp6mYSu51jZ34ptp2bzCwKk8Vh3t2Zmpiu58i3d1sMrSyYBaYNEMxwnBKLtz",
+            "timestamp": "2026-05-13T20:48:17.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "213.02642",
+            "amountOut": "302.92303",
+            "blockNumber": 419545404
+          },
+          "timeDeltaMs": 1000,
+          "route": "SOLANA → SONIC",
+          "profitToken": "USDC",
+          "profitAmount": 2.52449
+        },
+        {
+          "input": {
+            "hash": "0x286a508f5ff89cb989e64057146e47096e014521bf0889bfe582ef4f99db5b9f",
+            "timestamp": "2026-05-13T20:48:37.000Z",
+            "network": "SONIC",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "225.64885",
+            "amountOut": "159.91602",
+            "blockNumber": 70465582
+          },
+          "output": {
+            "hash": "0xd17ae03fbd24ab8d5728db1aa96ddd4d7a13b8ca328b39a08aa1e94ad99204f9",
+            "timestamp": "2026-05-13T20:48:35.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "158.36400",
+            "amountOut": "225.64885",
+            "blockNumber": 25088699
+          },
+          "timeDeltaMs": 2000,
+          "route": "ETH → SONIC",
+          "profitToken": "USDC",
+          "profitAmount": 1.55202
+        },
+        {
+          "input": {
+            "hash": "5ygiEFqtfj5NUJnCa3tLxrumnTMrKXHyWwuUqmY8FfLAspL1aT59voeY9gUdUeK2Z4PXr5nR618xd2UY7MnYwdR7",
+            "timestamp": "2026-05-13T21:37:06.000Z",
+            "network": "SOLANA",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "540.93512",
+            "amountOut": "386.28657",
+            "blockNumber": 419552719
+          },
+          "output": {
+            "hash": "0x17dd53f26db151013d40967a2f371a030fd779266f261b11a5931c3ce6d7b636",
+            "timestamp": "2026-05-13T21:37:11.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "384.33749",
+            "amountOut": "540.93512",
+            "blockNumber": 25088937
+          },
+          "timeDeltaMs": 5000,
+          "route": "ETH → SOLANA",
+          "profitToken": "USDC",
+          "profitAmount": 1.94908
+        },
+        {
+          "input": {
+            "hash": "0xf4ea53a60daa080ba100d0e20ea98dd686a52041b50adfac90c965f78d824b80",
+            "timestamp": "2026-05-13T23:46:23.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "550.20040",
+            "amountOut": "390.87646",
+            "blockNumber": 25089576
+          },
+          "output": {
+            "hash": "0xea9d224e67708007fcdf254db9c86eb3daa9cb8f9c4d67a8664c42241bf4cad1",
+            "timestamp": "2026-05-13T23:46:13.000Z",
+            "network": "BASE",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "388.06108",
+            "amountOut": "550.20040",
+            "blockNumber": 45963313
+          },
+          "timeDeltaMs": 10000,
+          "route": "BASE → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 2.81538
+        },
+        {
+          "input": {
+            "hash": "0xff7e60b70e07751d4ce9fae92f4c562bf284ec40f6ebe00a41c505be7c74e515",
+            "timestamp": "2026-05-13T23:47:11.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "ANON",
+            "tokenOut": "USDC",
+            "amountIn": "465.28640",
+            "amountOut": "328.97918",
+            "blockNumber": 25089580
+          },
+          "output": {
+            "hash": "3j5gxAsk86wzJSPwNQmA5Lw1Wqw2zAbnT4UTN8RdNQju1AbKjqg77mRjJmKTqZJkovxDWbYJEV6fCJA42NDbBi6m",
+            "timestamp": "2026-05-13T23:47:06.000Z",
+            "network": "SOLANA",
+            "type": "BUY",
+            "tokenIn": "USDC",
+            "tokenOut": "ANON",
+            "amountIn": "327.10516",
+            "amountOut": "465.28640",
+            "blockNumber": 419572277
+          },
+          "timeDeltaMs": 5000,
+          "route": "SOLANA → ETH",
+          "profitToken": "USDC",
+          "profitAmount": 1.87402
+        }
+      ],
+      "unmatched": [
+        {
+          "hash": "0xbe045c4d79a989066737f2b81797876480df2754d990bd626aa52efa3dc7cfd2",
+          "timestamp": "2026-05-13T00:26:59.000Z",
+          "network": "ETH",
+          "type": "BUY",
+          "tokenIn": "USDC",
+          "tokenOut": "ANON",
+          "amountIn": "282.24989",
+          "amountOut": "388.15186",
+          "blockNumber": 25082620
+        },
+        {
+          "hash": "0x05a0c51fd01cae7614a54e2fa5bb935693b8c770573a0b3a3cdb15d6915e2dd5",
+          "timestamp": "2026-05-13T01:44:23.000Z",
+          "network": "ETH",
+          "type": "BUY",
+          "tokenIn": "USDC",
+          "tokenOut": "ANON",
+          "amountIn": "301.74689",
+          "amountOut": "412.62969",
+          "blockNumber": 25083005
+        },
+        {
+          "hash": "0x1778703703569af99e70d54e2727eb1d7fdaf5dddb4da8f8c05b2e1aaf906716",
+          "timestamp": "2026-05-13T03:01:35.000Z",
+          "network": "ETH",
+          "type": "BUY",
+          "tokenIn": "USDC",
+          "tokenOut": "ANON",
+          "amountIn": "301.74689",
+          "amountOut": "411.01065",
+          "blockNumber": 25083390
+        }
+      ],
+      "scanFailures": []
+    },
+    "RIVER": {
+      "token": "RIVER",
+      "fetchedAt": "2026-05-14T17:27:10.155Z",
+      "durationMs": 49243,
+      "stats": {
+        "period": {
+          "fromIso": "2026-05-13T00:00:00.000Z",
+          "toIso": "2026-05-14T00:00:00.000Z"
+        },
+        "token": "RIVER",
+        "totals": {
+          "transactions": 31,
+          "matchedPairs": 15,
+          "unmatched": 1,
+          "matchRate": "96.8%"
+        },
+        "profit": {
+          "profitToken": "USD",
+          "total": 60.85556,
+          "avg": 4.05704,
+          "median": 0.52846,
+          "min": -5.89684,
+          "max": 26.55204
+        },
+        "bestArbitrage": {
+          "profit": 26.55204,
+          "route": "BSC → ETH",
+          "inputHash": "0xb65eff277c58b53e20d7b68bcd39f7bfca042d12c572cbe94d2428b7da67694d",
+          "outputHash": "0x921c72ca060f7e18abeb3ca36b603e47571fc5b42d9f0efe7bd906ead7ca53f0",
+          "timestamp": "2026-05-13T04:28:23.000Z"
+        },
+        "worstArbitrage": {
+          "profit": -5.89684,
+          "route": "MEXC → BASE",
+          "inputHash": "0x524b62b0f1f9fa17d99f8149a6e808e168af17e25d90e51f7d632a9e52270233",
+          "outputHash": "C02__683258682640674816100",
+          "timestamp": "2026-05-13T14:50:05.000Z"
+        },
+        "byRoute": [
+          {
+            "route": "BSC → ETH",
+            "count": 5,
+            "totalProfit": 66.04681,
+            "avgProfit": 13.20936,
+            "minProfit": 2.04719,
+            "maxProfit": 26.55204
+          },
+          {
+            "route": "BSC → MEXC",
+            "count": 3,
+            "totalProfit": 1.45087,
+            "avgProfit": 0.48362,
+            "minProfit": 0.46091,
+            "maxProfit": 0.52846
+          },
+          {
+            "route": "MEXC → ETH",
+            "count": 2,
+            "totalProfit": 1.24151,
+            "avgProfit": 0.62075,
+            "minProfit": 0.54711,
+            "maxProfit": 0.6944
+          },
+          {
+            "route": "ETH → MEXC",
+            "count": 2,
+            "totalProfit": 1.02989,
+            "avgProfit": 0.51495,
+            "minProfit": 0.51142,
+            "maxProfit": 0.51847
+          },
+          {
+            "route": "MEXC → MEXC",
+            "count": 1,
+            "totalProfit": -0.44673,
+            "avgProfit": -0.44673,
+            "minProfit": -0.44673,
+            "maxProfit": -0.44673
+          },
+          {
+            "route": "BSC → BSC",
+            "count": 1,
+            "totalProfit": -2.56995,
+            "avgProfit": -2.56995,
+            "minProfit": -2.56995,
+            "maxProfit": -2.56995
+          },
+          {
+            "route": "MEXC → BASE",
+            "count": 1,
+            "totalProfit": -5.89684,
+            "avgProfit": -5.89684,
+            "minProfit": -5.89684,
+            "maxProfit": -5.89684
+          }
+        ],
+        "byNetwork": [
+          {
+            "network": "MEXC",
+            "inputCount": 6,
+            "outputCount": 5,
+            "totalCount": 11
+          },
+          {
+            "network": "BSC",
+            "inputCount": 1,
+            "outputCount": 9,
+            "totalCount": 10
+          },
+          {
+            "network": "ETH",
+            "inputCount": 7,
+            "outputCount": 2,
+            "totalCount": 9
+          },
+          {
+            "network": "BASE",
+            "inputCount": 1,
+            "outputCount": 0,
+            "totalCount": 1
+          }
+        ],
+        "unmatched": {
+          "total": 1,
+          "byType": {
+            "SELL": 0,
+            "BUY": 1
+          },
+          "byNetwork": {
+            "MEXC": 1
+          }
+        },
+        "unmatchedStats": {
+          "targetToken": "RIVER",
+          "counterToken": "USDT",
+          "totalUnmatched": 1,
+          "targetBought": 53.91,
+          "targetSold": 0,
+          "netTarget": 53.91,
+          "counterSpent": 362.95409,
+          "counterReceived": 0,
+          "netCounter": -362.95409,
+          "closing": {
+            "action": "SELL",
+            "quantity": 53.91,
+            "breakEvenPrice": 6.73259
+          }
+        }
+      },
+      "matched": [
+        {
+          "input": {
+            "hash": "0x57fffb8df5e89df0f2dc51bbf876c7afec517c413ec333a48b0e625afebc6f87",
+            "timestamp": "2026-05-13T04:26:11.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "54.67338",
+            "amountOut": "352.27321",
+            "blockNumber": 25083813
+          },
+          "output": {
+            "hash": "0x993778d8d473204672ce09dc9d151425a32ef5f79ef4e1d345eae417c14b0d35",
+            "timestamp": "2026-05-13T04:26:12.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "343.78980",
+            "amountOut": "54.67338",
+            "blockNumber": 97982784
+          },
+          "timeDeltaMs": 1000,
+          "route": "BSC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 8.48341
+        },
+        {
+          "input": {
+            "hash": "0xb65eff277c58b53e20d7b68bcd39f7bfca042d12c572cbe94d2428b7da67694d",
+            "timestamp": "2026-05-13T04:28:23.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "54.67338",
+            "amountOut": "370.67409",
+            "blockNumber": 25083824
+          },
+          "output": {
+            "hash": "0x921c72ca060f7e18abeb3ca36b603e47571fc5b42d9f0efe7bd906ead7ca53f0",
+            "timestamp": "2026-05-13T04:28:25.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "344.12205",
+            "amountOut": "54.67338",
+            "blockNumber": 97983078
+          },
+          "timeDeltaMs": 2000,
+          "route": "BSC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 26.55204
+        },
+        {
+          "input": {
+            "hash": "C02__683147577767452672100",
+            "timestamp": "2026-05-13T07:28:31.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "62.48000",
+            "amountOut": "415.29522",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "0x349ee335345ca1696cba462ae946d76a6d9582c3b4b9e95d3f4404304eb0b21c",
+            "timestamp": "2026-05-13T07:28:30.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "414.83372",
+            "amountOut": "62.48310",
+            "blockNumber": 98007056
+          },
+          "timeDeltaMs": 1000,
+          "route": "BSC → MEXC",
+          "profitToken": "USDT",
+          "profitAmount": 0.4615
+        },
+        {
+          "input": {
+            "hash": "0x0e00d49ae6edc06042e0033cc7bf0ab00e1ec5a437841663ae5f2b9bf3f87cfa",
+            "timestamp": "2026-05-13T07:47:59.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "18.76000",
+            "amountOut": "122.59364",
+            "blockNumber": 25084821
+          },
+          "output": {
+            "hash": "C02__683152472323108864100",
+            "timestamp": "2026-05-13T07:47:58.000Z",
+            "network": "MEXC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "121.89924",
+            "amountOut": "18.76000",
+            "blockNumber": 0
+          },
+          "timeDeltaMs": 1000,
+          "route": "MEXC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 0.6944
+        },
+        {
+          "input": {
+            "hash": "C02__683161653310615552100",
+            "timestamp": "2026-05-13T08:24:27.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "12.45000",
+            "amountOut": "82.24343",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "0xe06d7cd6496f9e53041a0667bd5e26e6ccb25d988ba88e3052bb0778660948fb",
+            "timestamp": "2026-05-13T08:24:35.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "81.72496",
+            "amountOut": "12.45000",
+            "blockNumber": 25085003
+          },
+          "timeDeltaMs": 8000,
+          "route": "ETH → MEXC",
+          "profitToken": "USDT",
+          "profitAmount": 0.51847
+        },
+        {
+          "input": {
+            "hash": "C02__683168759438860291100",
+            "timestamp": "2026-05-13T08:52:41.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "65.10000",
+            "amountOut": "428.79450",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "0xc14cfaaf4174bbb7abaecbc3abc207f16ea7e874146aa57e414a8f3ba4e59034",
+            "timestamp": "2026-05-13T08:52:40.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "428.26604",
+            "amountOut": "65.10217",
+            "blockNumber": 98018260
+          },
+          "timeDeltaMs": 1000,
+          "route": "BSC → MEXC",
+          "profitToken": "USDT",
+          "profitAmount": 0.52846
+        },
+        {
+          "input": {
+            "hash": "C02__683170172076265472100",
+            "timestamp": "2026-05-13T08:58:18.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "15.65000",
+            "amountOut": "104.04004",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "C02__683170253970046976100",
+            "timestamp": "2026-05-13T08:58:37.000Z",
+            "network": "MEXC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "104.48677",
+            "amountOut": "15.65000",
+            "blockNumber": 0
+          },
+          "timeDeltaMs": 19000,
+          "route": "MEXC → MEXC",
+          "profitToken": "USDT",
+          "profitAmount": -0.44673
+        },
+        {
+          "input": {
+            "hash": "0x13046f3c32af1e87ea8038ea76f75a19711ea3d588098405b8067c83ca21e4ff",
+            "timestamp": "2026-05-13T09:19:35.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "66.34000",
+            "amountOut": "464.63322",
+            "blockNumber": 25085277
+          },
+          "output": {
+            "hash": "0xf72e91b188f43409bebb1d9bd9420d5478fc41a092122076f6a9f3b0f0bd84e9",
+            "timestamp": "2026-05-13T09:19:37.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "441.84310",
+            "amountOut": "66.34000",
+            "blockNumber": 98021848
+          },
+          "timeDeltaMs": 2000,
+          "route": "BSC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 22.79012
+        },
+        {
+          "input": {
+            "hash": "0x13fe73cd3282e1c800b8288bdf4ed6bc23c609a6d70c4b06ed08848d74e1cf5f",
+            "timestamp": "2026-05-13T10:28:35.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "53.91506",
+            "amountOut": "369.23822",
+            "blockNumber": 25085619
+          },
+          "output": {
+            "hash": "0x08f1c3dee851534f2294b290bdcdedb5f897a2dcdb7904945e151a449cb0b97c",
+            "timestamp": "2026-05-13T10:28:37.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "363.06417",
+            "amountOut": "53.91506",
+            "blockNumber": 98031037
+          },
+          "timeDeltaMs": 2000,
+          "route": "BSC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 6.17405
+        },
+        {
+          "input": {
+            "hash": "0xe67db785e1b22e71da807f0c409069f8cb0abd4b745a01e9591509043011d1ec",
+            "timestamp": "2026-05-13T10:41:59.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "17.57000",
+            "amountOut": "117.40518",
+            "blockNumber": 25085686
+          },
+          "output": {
+            "hash": "C02__683196223800172544100",
+            "timestamp": "2026-05-13T10:41:49.000Z",
+            "network": "MEXC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "116.85807",
+            "amountOut": "17.57000",
+            "blockNumber": 0
+          },
+          "timeDeltaMs": 10000,
+          "route": "MEXC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 0.54711
+        },
+        {
+          "input": {
+            "hash": "C02__683250383128076288100",
+            "timestamp": "2026-05-13T14:17:01.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "16.12000",
+            "amountOut": "109.11002",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "0xcd61502a55815bc57a25b9b36fcd805fca422ce9142ebcb1ce75b5428a1887c6",
+            "timestamp": "2026-05-13T14:16:59.000Z",
+            "network": "ETH",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "108.59860",
+            "amountOut": "16.12156",
+            "blockNumber": 25086756
+          },
+          "timeDeltaMs": 2000,
+          "route": "ETH → MEXC",
+          "profitToken": "USDT",
+          "profitAmount": 0.51142
+        },
+        {
+          "input": {
+            "hash": "0x84de9e09f4517cff03dbbcec2a4ef957edc7173029184946ac74c0d0cadb4e07",
+            "timestamp": "2026-05-13T14:28:19.000Z",
+            "network": "BSC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "62.81051",
+            "amountOut": "426.44739",
+            "blockNumber": 98062949
+          },
+          "output": {
+            "hash": "0x8a095f7c36538c837a4ca6731fe5f0ce04fcfbbdd2dc4efda5a732924ad2ec04",
+            "timestamp": "2026-05-13T14:28:15.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "429.01734",
+            "amountOut": "62.81051",
+            "blockNumber": 98062940
+          },
+          "timeDeltaMs": 4000,
+          "route": "BSC → BSC",
+          "profitToken": "USDT",
+          "profitAmount": -2.56995
+        },
+        {
+          "input": {
+            "hash": "0x524b62b0f1f9fa17d99f8149a6e808e168af17e25d90e51f7d632a9e52270233",
+            "timestamp": "2026-05-13T14:50:05.000Z",
+            "network": "BASE",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDC",
+            "amountIn": "65.89000",
+            "amountOut": "431.78903",
+            "blockNumber": 45947229
+          },
+          "output": {
+            "hash": "C02__683258682640674816100",
+            "timestamp": "2026-05-13T14:50:00.000Z",
+            "network": "MEXC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "437.68587",
+            "amountOut": "65.89000",
+            "blockNumber": 0
+          },
+          "timeDeltaMs": 5000,
+          "route": "MEXC → BASE",
+          "profitToken": "USD",
+          "profitAmount": -5.89684
+        },
+        {
+          "input": {
+            "hash": "0x32d6af739d931b86509ae3495472ea8a240a3981c189ba1e589982cd319b514d",
+            "timestamp": "2026-05-13T16:01:23.000Z",
+            "network": "ETH",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "19.78154",
+            "amountOut": "132.37975",
+            "blockNumber": 25087273
+          },
+          "output": {
+            "hash": "0x6d1d69b2a383af2e508a561d2a2acb9d238895dfb316849f4aa522b154ee940f",
+            "timestamp": "2026-05-13T16:00:21.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "130.33256",
+            "amountOut": "19.78154",
+            "blockNumber": 98075203
+          },
+          "timeDeltaMs": 62000,
+          "route": "BSC → ETH",
+          "profitToken": "USDT",
+          "profitAmount": 2.04719
+        },
+        {
+          "input": {
+            "hash": "C02__683291361226489857100",
+            "timestamp": "2026-05-13T16:59:51.000Z",
+            "network": "MEXC",
+            "type": "SELL",
+            "tokenIn": "RIVER",
+            "tokenOut": "USDT",
+            "amountIn": "63.88000",
+            "amountOut": "428.72695",
+            "blockNumber": 0
+          },
+          "output": {
+            "hash": "0x260a38fbe181ef28bb69058c8709d90e21317af3ea0673f3f0a3fe46f84dbda6",
+            "timestamp": "2026-05-13T16:59:50.000Z",
+            "network": "BSC",
+            "type": "BUY",
+            "tokenIn": "USDT",
+            "tokenOut": "RIVER",
+            "amountIn": "428.26604",
+            "amountOut": "63.88074",
+            "blockNumber": 98083124
+          },
+          "timeDeltaMs": 1000,
+          "route": "BSC → MEXC",
+          "profitToken": "USDT",
+          "profitAmount": 0.46091
+        }
+      ],
+      "unmatched": [
+        {
+          "hash": "C02__683192920475410432100",
+          "timestamp": "2026-05-13T10:28:41.000Z",
+          "network": "MEXC",
+          "type": "BUY",
+          "tokenIn": "USDT",
+          "tokenOut": "RIVER",
+          "amountIn": "362.95409",
+          "amountOut": "53.91000",
+          "blockNumber": 0
+        }
+      ],
+      "scanFailures": []
+    }
+  },
+  "grandTotals": {
+    "completedAt": "2026-05-14T17:27:10.271Z",
+    "durationMs": 154044,
+    "byToken": [
+      {
+        "token": "ANON",
+        "profitToken": "USD",
+        "total": 62.36775,
+        "matchedPairs": 20
+      },
+      {
+        "token": "RIVER",
+        "profitToken": "USD",
+        "total": 60.85556,
+        "matchedPairs": 15
+      }
+    ],
+    "totalMatched": 35,
+    "totalUnmatched": 4,
+    "totalTransactions": 74,
+    "overallMatchRate": "94.6%",
+    "byNetwork": [
+      {
+        "network": "ETH",
+        "inputCount": 17,
+        "outputCount": 11,
+        "totalCount": 28
+      },
+      {
+        "network": "SOLANA",
+        "inputCount": 3,
+        "outputCount": 9,
+        "totalCount": 12
+      },
+      {
+        "network": "MEXC",
+        "inputCount": 7,
+        "outputCount": 5,
+        "totalCount": 12
+      },
+      {
+        "network": "BSC",
+        "inputCount": 1,
+        "outputCount": 9,
+        "totalCount": 10
+      },
+      {
+        "network": "SONIC",
+        "inputCount": 5,
+        "outputCount": 4,
+        "totalCount": 9
+      },
+      {
+        "network": "BASE",
+        "inputCount": 2,
+        "outputCount": 1,
+        "totalCount": 3
+      }
+    ],
+    "byRoute": [
+      {
+        "route": "BSC → ETH",
+        "count": 5,
+        "totalProfit": 66.04681,
+        "avgProfit": 13.20936,
+        "minProfit": 2.04719,
+        "maxProfit": 26.55204
+      },
+      {
+        "route": "SOLANA → SONIC",
+        "count": 2,
+        "totalProfit": 13.77319,
+        "avgProfit": 6.8866,
+        "minProfit": 2.52449,
+        "maxProfit": 11.2487
+      },
+      {
+        "route": "SOLANA → ETH",
+        "count": 5,
+        "totalProfit": 13.50377,
+        "avgProfit": 2.70075,
+        "minProfit": 1.45039,
+        "maxProfit": 4.82364
+      },
+      {
+        "route": "SOLANA → MEXC",
+        "count": 1,
+        "totalProfit": 9.73619,
+        "avgProfit": 9.73619,
+        "minProfit": 9.73619,
+        "maxProfit": 9.73619
+      },
+      {
+        "route": "ETH → SONIC",
+        "count": 3,
+        "totalProfit": 8.63536,
+        "avgProfit": 2.87845,
+        "minProfit": 1.25959,
+        "maxProfit": 5.82375
+      },
+      {
+        "route": "SONIC → ETH",
+        "count": 4,
+        "totalProfit": 7.13286,
+        "avgProfit": 1.78322,
+        "minProfit": 1.13387,
+        "maxProfit": 2.4542
+      },
+      {
+        "route": "ETH → SOLANA",
+        "count": 3,
+        "totalProfit": 5.40685,
+        "avgProfit": 1.80228,
+        "minProfit": 1.13431,
+        "maxProfit": 2.32346
+      },
+      {
+        "route": "BASE → ETH",
+        "count": 1,
+        "totalProfit": 2.81538,
+        "avgProfit": 2.81538,
+        "minProfit": 2.81538,
+        "maxProfit": 2.81538
+      },
+      {
+        "route": "BSC → MEXC",
+        "count": 3,
+        "totalProfit": 1.45087,
+        "avgProfit": 0.48362,
+        "minProfit": 0.46091,
+        "maxProfit": 0.52846
+      },
+      {
+        "route": "SOLANA → BASE",
+        "count": 1,
+        "totalProfit": 1.36415,
+        "avgProfit": 1.36415,
+        "minProfit": 1.36415,
+        "maxProfit": 1.36415
+      },
+      {
+        "route": "MEXC → ETH",
+        "count": 2,
+        "totalProfit": 1.24151,
+        "avgProfit": 0.62075,
+        "minProfit": 0.54711,
+        "maxProfit": 0.6944
+      },
+      {
+        "route": "ETH → MEXC",
+        "count": 2,
+        "totalProfit": 1.02989,
+        "avgProfit": 0.51495,
+        "minProfit": 0.51142,
+        "maxProfit": 0.51847
+      },
+      {
+        "route": "MEXC → MEXC",
+        "count": 1,
+        "totalProfit": -0.44673,
+        "avgProfit": -0.44673,
+        "minProfit": -0.44673,
+        "maxProfit": -0.44673
+      },
+      {
+        "route": "BSC → BSC",
+        "count": 1,
+        "totalProfit": -2.56995,
+        "avgProfit": -2.56995,
+        "minProfit": -2.56995,
+        "maxProfit": -2.56995
+      },
+      {
+        "route": "MEXC → BASE",
+        "count": 1,
+        "totalProfit": -5.89684,
+        "avgProfit": -5.89684,
+        "minProfit": -5.89684,
+        "maxProfit": -5.89684
+      }
+    ]
+  }
+}
