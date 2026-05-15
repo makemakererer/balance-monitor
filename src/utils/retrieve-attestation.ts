@@ -1,5 +1,6 @@
 import { cctpAttestationApiUrl, cctpRateLimits } from "../config";
 import { ApiCctpMessage, ApiCctpResponse } from "../types";
+import { errorMessage } from "./error";
 import { log } from "./logger";
 import { sleep } from "./retry";
 
@@ -27,7 +28,7 @@ async function retrieveAttestation(transactionHash: string, sourceDomain: number
 				log.warning(`attestation HTTP ${response.status} for ${shortHash} (poll ${attempt})`);
 			}
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			log.warning(`attestation fetch error for ${shortHash}: ${message}`);
 		}
 		await sleep(cctpRateLimits.attestationPollIntervalMs);

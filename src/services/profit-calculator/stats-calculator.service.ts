@@ -1,3 +1,4 @@
+import { profitStats } from "../../config";
 import { Network, TokenSymbol } from "../../types";
 import {
 	ArbitrageExtreme,
@@ -14,8 +15,7 @@ import {
 	UnmatchedBreakdown,
 	UnmatchedStats
 } from "../../types/profit-calculator.types";
-
-const BALANCED_POSITION_THRESHOLD = 0.00001;
+import { roundProfit5 } from "../../utils";
 
 class StatsCalculatorService {
 	public calculate(
@@ -71,11 +71,11 @@ class StatsCalculatorService {
 
 		return {
 			profitToken,
-			total: this.round(total),
-			avg: this.round(avg),
-			median: this.round(median),
-			min: this.round(sorted[0]),
-			max: this.round(sorted[sorted.length - 1])
+			total: roundProfit5(total),
+			avg: roundProfit5(avg),
+			median: roundProfit5(median),
+			min: roundProfit5(sorted[0]),
+			max: roundProfit5(sorted[sorted.length - 1])
 		};
 	}
 
@@ -93,7 +93,7 @@ class StatsCalculatorService {
 
 	private toArbitrageExtreme(arb: MatchedArbitrage): ArbitrageExtreme {
 		return {
-			profit: this.round(arb.profitAmount),
+			profit: roundProfit5(arb.profitAmount),
 			route: arb.route,
 			inputHash: arb.input.hash,
 			outputHash: arb.output.hash,
@@ -116,10 +116,10 @@ class StatsCalculatorService {
 			stats.push({
 				route,
 				count: profits.length,
-				totalProfit: this.round(total),
-				avgProfit: this.round(total / profits.length),
-				minProfit: this.round(sorted[0]),
-				maxProfit: this.round(sorted[sorted.length - 1])
+				totalProfit: roundProfit5(total),
+				avgProfit: roundProfit5(total / profits.length),
+				minProfit: roundProfit5(sorted[0]),
+				maxProfit: roundProfit5(sorted[sorted.length - 1])
 			});
 		}
 
@@ -184,7 +184,7 @@ class StatsCalculatorService {
 
 		const netTarget = targetBought - targetSold;
 		const netCounter = counterReceived - counterSpent;
-		const isPositionBalanced = Math.abs(netTarget) < BALANCED_POSITION_THRESHOLD;
+		const isPositionBalanced = Math.abs(netTarget) < profitStats.balancedPositionThreshold;
 
 		let action: "SELL" | "BUY" | "NONE" = "NONE";
 		let quantity = 0;
@@ -200,23 +200,20 @@ class StatsCalculatorService {
 			targetToken,
 			counterToken,
 			totalUnmatched: unmatched.length,
-			targetBought: this.round(targetBought),
-			targetSold: this.round(targetSold),
-			netTarget: this.round(netTarget),
-			counterSpent: this.round(counterSpent),
-			counterReceived: this.round(counterReceived),
-			netCounter: this.round(netCounter),
+			targetBought: roundProfit5(targetBought),
+			targetSold: roundProfit5(targetSold),
+			netTarget: roundProfit5(netTarget),
+			counterSpent: roundProfit5(counterSpent),
+			counterReceived: roundProfit5(counterReceived),
+			netCounter: roundProfit5(netCounter),
 			closing: {
 				action,
-				quantity: this.round(quantity),
-				breakEvenPrice: this.round(breakEvenPrice)
+				quantity: roundProfit5(quantity),
+				breakEvenPrice: roundProfit5(breakEvenPrice)
 			}
 		};
 	}
 
-	private round(value: number): number {
-		return Math.round(value * 100000) / 100000;
-	}
 }
 
 export { StatsCalculatorService };

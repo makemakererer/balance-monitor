@@ -12,7 +12,7 @@ import {
 	TokenBalance,
 	TokenSymbol
 } from "../../../types";
-import { COMMON_DECIMALS, log, retry } from "../../../utils";
+import { COMMON_DECIMALS, errorMessage, log, retry } from "../../../utils";
 
 class CexBalanceService {
 	public async collect(): Promise<ChainSnapshot[]> {
@@ -56,7 +56,7 @@ class CexBalanceService {
 			const balance = await retry(() => exchange.fetchBalance(), `cex ${account.id} fetchBalance`);
 			return this.buildSource(account, network, balance);
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			return {
 				type: SourceType.CEX_ACCOUNT,
 				label: account.id,

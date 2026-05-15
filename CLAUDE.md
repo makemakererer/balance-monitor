@@ -19,6 +19,15 @@ After code changes, always run:
 
 (No prettier in this project.)
 
+## Architecture: calculators vs. orchestrators
+
+- **Calculators + collectors are stateless** (`profit-calculator`, `native-spend-calculator`, `balance-collector`): input is a `Window` (or just `date` for balance-collector), output is data. No file I/O, no Telegram, no resume logic. A calculator runs the same way whether it's the daily 24h window or a 3h ad-hoc range.
+- **`DailyReportService` is THE pipeline facade.** It owns: building the window (from `dailyReportConfig.windowLengthSeconds`), the per-phase safety wraps (`runRemintSafely` / `runReportingSafely`), per-token resume from partial snapshots, all JSON writes (`data/profits/*` + `data/native-spend/*` + `data/snapshots/*`), and all Telegram messaging (daily-run start/finish, per-token cards, daily total, JSON attachments, balance snapshot). Sub-services held as `private readonly`: `RemintService`, `ProfitCalculatorService`, `NativeSpendCalculatorService`, `BalanceCollectorService`, `TelegramService`.
+- **`SchedulerService` is a thin cron driver.** Concurrency guard + retry + day-rollover re-eval. It reads the cron expression from `dailyReportConfig` (NOT `schedulerConfig`) and only calls `dailyReport.run(attempt)`.
+- **Config split:** `daily-report.config.ts` = "how the daily fires" (cronExpression, cronTimezone, windowLengthSeconds — no concrete dates). `scheduler.config.ts` = "what to do on failure" (retry delay + max attempts).
+- **JSON writes happen ONLY inside `DailyReportService`** — except `reclaim-pending/*.json`, which remint owns directly (it must persist even when a later phase throws).
+- **Why this split**: future ad-hoc handlers (Telegram bot buttons that pass a custom `from`/`to`, CLI debug runs) will reuse the same calculators directly without writing daily snapshot files. If snapshot/date semantics leak into calculators, those handlers can't reuse them. Keep the calculator API window-only.
+
 ## Code standards
 
 - TypeScript strict, kebab-case file names (`*.service.ts`, `*.config.ts`, `*.types.ts`)
@@ -30,6 +39,14 @@ After code changes, always run:
 - Self-documenting names; minimal diff per task
 - Top-level facade owns its sub-services as `private readonly`; `start.ts` only instantiates the scheduler
 - **Don't fragment per-domain configs/storages into tiny files** — consolidate into existing per-domain home (`json-helper.ts` for all `data/*` I/O; `cex.config.ts` for everything CEX; `enabled.config.ts` for all on/off flags; `rpc-scan.config.ts` for shared scan knobs; `native-spend.config.ts` for native-spend pools + failed-tx provider limits)
+
+## Deferred refactors (TODO)
+
+- **Single window source, propagated top-down.** Right now `DailyReportService.buildWindow(date)` and `RemintService.buildWindow(date)` each independently rebuild `[date 00:00 UTC − dailyReportConfig.windowLengthSeconds, date 00:00 UTC]`. Two effects:
+  - Duplicated date→window logic in two services (drift risk).
+  - Window length is effectively hardcoded to "exactly 24h ending at midnight UTC of `date`" — `dailyReportConfig.windowLengthSeconds` is the only knob, and changing it doesn't help when the entry point is a Telegram bot button or CLI handler that wants `from`/`to` directly.
+  - Goal: the entry point (scheduler today, bot/CLI tomorrow) builds the `Window` ONCE and passes it down. `DailyReportService.run(window)` accepts a window; it forwards the same window into `remint.remint(window)`. No service builds windows internally. Then `windowLengthSeconds` becomes "default for the cron path" only — ad-hoc callers pass arbitrary ranges (3h backfill, multi-day debug, custom from/to) without touching service code.
+  - Don't ship until there's a concrete second caller (bot/CLI). Premature refactor otherwise.
 
 ## Detailed docs
 

@@ -1,116 +1,47 @@
 import * as cron from "node-cron";
-import { schedulerConfig } from "../../config";
-import { log, snapshotExists } from "../../utils";
-import { BalanceCollectorService } from "../balance-collector/balance-collector.service";
-import { NativeSpendCalculatorService } from "../native-spend-calculator/native-spend-calculator.service";
-import { ProfitCalculatorService } from "../profit-calculator/profit-calculator.service";
-import { RemintService } from "../remint/remint.service";
-import { TelegramService } from "../telegram/telegram.service";
+import { dailyReportConfig, schedulerConfig } from "../../config";
+import { errorMessage, log } from "../../utils";
+import { DailyReportService } from "../daily-report/daily-report.service";
 
 class SchedulerService {
-	private readonly telegram = new TelegramService();
-	private readonly remint = new RemintService();
-	private readonly profitCalculator = new ProfitCalculatorService();
-	private readonly nativeSpendCalculator = new NativeSpendCalculatorService();
-	private readonly collector = new BalanceCollectorService();
+	private readonly dailyReport = new DailyReportService();
 	private isRunning = false;
 	private retryTimer: NodeJS.Timeout | null = null;
 
 	public start(): void {
-		log.info(`scheduler: cron "${schedulerConfig.cronExpression}" ${schedulerConfig.cronTimezone}`);
+		log.info(`scheduler: cron "${dailyReportConfig.cronExpression}" ${dailyReportConfig.cronTimezone}`);
 		cron.schedule(
-			schedulerConfig.cronExpression,
+			dailyReportConfig.cronExpression,
 			() => {
 				void this.runIfNeeded(0);
 			},
-			{ timezone: schedulerConfig.cronTimezone }
+			{ timezone: dailyReportConfig.cronTimezone }
 		);
 		void this.runIfNeeded(0);
 	}
 
 	private async runIfNeeded(attempt: number): Promise<void> {
-		const targetDate = todayUtcDate();
-		if (snapshotExists(targetDate)) {
-			log.info(`scheduler: snapshot for ${targetDate} already exists, skipping`);
-			return;
-		}
 		if (this.isRunning) {
 			log.warning("scheduler: previous run still in progress, skipping");
 			return;
 		}
 		this.isRunning = true;
 		this.cancelPendingRetry();
-		const runStartMs = Date.now();
-		log.important(`DAILY RUN: started — ${targetDate}`);
+		const startDay = todayUtcDate();
 		try {
-			if (attempt === 0) await this.notifyDailyRunStart(targetDate);
-			await this.runRemintSafely(targetDate);
-			await this.runProfitCalculatorSafely(targetDate);
-			await this.runNativeSpendSafely(targetDate);
-			await this.collector.collectBalance(targetDate);
-			const durationMs = Date.now() - runStartMs;
-			log.important(`DAILY RUN: finished — ${targetDate} in ${(durationMs / 1000).toFixed(1)}s`);
-			await this.notifyDailyRunFinish(targetDate, durationMs);
+			await this.dailyReport.run(attempt);
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			const total = schedulerConfig.maxRetryAttempts + 1;
 			log.error(`scheduler: run failed (attempt ${attempt + 1}/${total}): ${message}`);
 			this.schedulePendingRetry(attempt);
 		} finally {
 			this.isRunning = false;
 		}
-		if (todayUtcDate() !== targetDate) {
-			log.info(`scheduler: day rolled over to ${todayUtcDate()} during run, re-evaluating`);
+		if (todayUtcDate() !== startDay) {
+			log.info(`scheduler: day rolled over from ${startDay} to ${todayUtcDate()}, re-evaluating`);
 			this.cancelPendingRetry();
 			void this.runIfNeeded(0);
-		}
-	}
-
-	private async notifyDailyRunStart(targetDate: string): Promise<void> {
-		try {
-			await this.telegram.sendDailyRunStart(targetDate);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`telegram daily-run-start signal failed: ${message}`);
-		}
-	}
-
-	private async notifyDailyRunFinish(targetDate: string, durationMs: number): Promise<void> {
-		try {
-			await this.telegram.sendDailyRunFinish(targetDate, durationMs);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`telegram daily-run-finish signal failed: ${message}`);
-		}
-	}
-
-	// Remint must never block the snapshot — log loudly on failure and continue.
-	private async runRemintSafely(targetDate: string): Promise<void> {
-		try {
-			await this.remint.remint(targetDate);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`REMINT FAILED — manual review required: ${message}`);
-		}
-	}
-
-	// Profit-calc must never block the snapshot either — same safety contract as remint.
-	private async runProfitCalculatorSafely(targetDate: string): Promise<void> {
-		try {
-			await this.profitCalculator.calculate(targetDate);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`PROFIT-CALC FAILED — manual review required: ${message}`);
-		}
-	}
-
-	// Native-spend must never block the snapshot either — same safety contract.
-	private async runNativeSpendSafely(targetDate: string): Promise<void> {
-		try {
-			await this.nativeSpendCalculator.calculate(targetDate);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`NATIVE-SPEND FAILED — manual review required: ${message}`);
 		}
 	}
 

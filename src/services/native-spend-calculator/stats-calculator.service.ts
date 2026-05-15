@@ -1,4 +1,3 @@
-import { evmChainMetadata, svmChainMetadata } from "../../config";
 import { Network, TokenSymbol } from "../../types";
 import {
 	FailedBreakdownEntry,
@@ -19,6 +18,7 @@ import {
 	UnattributedSpendEntry,
 	UnattributedSpendRecord
 } from "../../types/native-spend.types";
+import { compareUsdDescending, resolveNativeMeta, roundUsd2 } from "../../utils";
 
 interface NetworkAccumulator {
 	native: bigint;
@@ -51,7 +51,7 @@ class StatsCalculatorService {
 		const rebalance = this.aggregateIntent(SpendIntent.REBALANCE, rebalSuccess, rebalReverted);
 		const failed = this.aggregateFailed(arbReverted, rebalReverted, unattributed);
 
-		const totalUsd = this.round(arbitrage.usdTotal + rebalance.usdTotal + failed.usdTotal);
+		const totalUsd = roundUsd2(arbitrage.usdTotal + rebalance.usdTotal + failed.usdTotal);
 		const totalTxCount = arbitrage.txCount + rebalance.txCount + failed.txCount;
 
 		return {
@@ -114,35 +114,35 @@ class StatsCalculatorService {
 
 		const networks: IntentNetworkSpend[] = [];
 		for (const [network, bucket] of buckets) {
-			const nativeMeta = this.resolveNativeMeta(network);
+			const nativeMeta = resolveNativeMeta(network);
 			const byToken: IntentNetworkTokenSpend[] = [];
 			for (const [token, tokenBucket] of bucket.tokens) {
 				byToken.push({
 					token,
 					nativeAmount: tokenBucket.native.toString(),
-					usdAmount: tokenBucket.hasPriced ? this.round(tokenBucket.usd) : null,
+					usdAmount: tokenBucket.hasPriced ? roundUsd2(tokenBucket.usd) : null,
 					txCount: tokenBucket.txCount
 				});
 			}
-			byToken.sort((a, b) => this.compareUsd(a.usdAmount, b.usdAmount, a.token, b.token));
+			byToken.sort((a, b) => compareUsdDescending(a.usdAmount, b.usdAmount, a.token, b.token));
 			const reverted = revertedPerNetwork.get(network) ?? { usd: 0, txCount: 0 };
 			networks.push({
 				network,
 				nativeAmount: bucket.native.toString(),
 				nativeSymbol: nativeMeta.symbol,
 				nativeDecimals: nativeMeta.decimals,
-				usdAmount: bucket.hasPriced ? this.round(bucket.usd) : null,
+				usdAmount: bucket.hasPriced ? roundUsd2(bucket.usd) : null,
 				txCount: bucket.txCount,
 				byToken,
-				revertedUsd: this.round(reverted.usd),
+				revertedUsd: roundUsd2(reverted.usd),
 				revertedTxCount: reverted.txCount
 			});
 		}
-		networks.sort((a, b) => this.compareUsd(a.usdAmount, b.usdAmount, a.network, b.network));
+		networks.sort((a, b) => compareUsdDescending(a.usdAmount, b.usdAmount, a.network, b.network));
 
 		return {
 			intent,
-			usdTotal: this.round(usdTotal),
+			usdTotal: roundUsd2(usdTotal),
 			txCount: successRecords.length,
 			byNetwork: networks
 		};
@@ -157,9 +157,9 @@ class StatsCalculatorService {
 			items.reduce((acc, item) => acc + (item.usdAmount ?? 0), 0);
 
 		const byType = {
-			arbitrage: { usdAmount: this.round(sumUsd(arbReverted)), txCount: arbReverted.length } as FailedBreakdownEntry,
-			rebalance: { usdAmount: this.round(sumUsd(rebalReverted)), txCount: rebalReverted.length } as FailedBreakdownEntry,
-			unattributed: { usdAmount: this.round(sumUsd(unattributed)), txCount: unattributed.length } as FailedBreakdownEntry
+			arbitrage: { usdAmount: roundUsd2(sumUsd(arbReverted)), txCount: arbReverted.length } as FailedBreakdownEntry,
+			rebalance: { usdAmount: roundUsd2(sumUsd(rebalReverted)), txCount: rebalReverted.length } as FailedBreakdownEntry,
+			unattributed: { usdAmount: roundUsd2(sumUsd(unattributed)), txCount: unattributed.length } as FailedBreakdownEntry
 		};
 
 		const networkBuckets = new Map<Network, { usd: number; txCount: number }>();
@@ -177,12 +177,12 @@ class StatsCalculatorService {
 
 		const byNetwork: FailedNetworkEntry[] = [];
 		for (const [network, bucket] of networkBuckets) {
-			byNetwork.push({ network, usdAmount: this.round(bucket.usd), txCount: bucket.txCount });
+			byNetwork.push({ network, usdAmount: roundUsd2(bucket.usd), txCount: bucket.txCount });
 		}
 		byNetwork.sort((a, b) => b.usdAmount - a.usdAmount || a.network.localeCompare(b.network));
 
 		const txCount = arbReverted.length + rebalReverted.length + unattributed.length;
-		const usdTotal = this.round(byType.arbitrage.usdAmount + byType.rebalance.usdAmount + byType.unattributed.usdAmount);
+		const usdTotal = roundUsd2(byType.arbitrage.usdAmount + byType.rebalance.usdAmount + byType.unattributed.usdAmount);
 		return { usdTotal, txCount, byType, byNetwork };
 	}
 
@@ -237,16 +237,16 @@ class StatsCalculatorService {
 			for (const intent of [SpendIntent.ARBITRAGE, SpendIntent.REBALANCE]) {
 				const entry = bucket.successByIntent.get(intent);
 				if (!entry || entry.txCount === 0) continue;
-				byIntent.push({ intent, usdAmount: this.round(entry.usdAmount), txCount: entry.txCount });
+				byIntent.push({ intent, usdAmount: roundUsd2(entry.usdAmount), txCount: entry.txCount });
 				successUsd += entry.usdAmount;
 				successTxCount += entry.txCount;
 			}
 			totals.push({
 				token,
-				usdTotal: this.round(successUsd + bucket.failedUsd),
+				usdTotal: roundUsd2(successUsd + bucket.failedUsd),
 				txCount: successTxCount + bucket.failedTxCount,
 				byIntent,
-				failedUsd: this.round(bucket.failedUsd),
+				failedUsd: roundUsd2(bucket.failedUsd),
 				failedTxCount: bucket.failedTxCount
 			});
 		}
@@ -265,7 +265,7 @@ class StatsCalculatorService {
 		>();
 		const ingest = (items: { network: Network; nativeAmount: string; usdAmount: number | null }[]): void => {
 			for (const item of items) {
-				const meta = this.resolveNativeMeta(item.network);
+				const meta = resolveNativeMeta(item.network);
 				const bucket = buckets.get(meta.symbol) ?? {
 					decimals: meta.decimals,
 					native: 0n,
@@ -292,39 +292,18 @@ class StatsCalculatorService {
 				nativeSymbol,
 				nativeDecimals: bucket.decimals,
 				nativeAmount: bucket.native.toString(),
-				usdAmount: bucket.hasPriced ? this.round(bucket.usd) : null,
+				usdAmount: bucket.hasPriced ? roundUsd2(bucket.usd) : null,
 				txCount: bucket.txCount
 			});
 		}
-		totals.sort((a, b) => {
-			const aUsd = a.usdAmount ?? -1;
-			const bUsd = b.usdAmount ?? -1;
-			return bUsd - aUsd || a.nativeSymbol.localeCompare(b.nativeSymbol);
-		});
+		totals.sort((left, right) =>
+			compareUsdDescending(left.usdAmount, right.usdAmount, left.nativeSymbol, right.nativeSymbol)
+		);
 		return totals;
 	}
 
 	private emptyNetworkBucket(): NetworkAccumulator {
 		return { native: 0n, usd: 0, hasPriced: false, txCount: 0, tokens: new Map() };
-	}
-
-	private compareUsd(a: number | null, b: number | null, aKey: string, bKey: string): number {
-		if (a === null && b === null) return aKey.localeCompare(bKey);
-		if (a === null) return 1;
-		if (b === null) return -1;
-		return b - a;
-	}
-
-	private resolveNativeMeta(network: Network): { symbol: TokenSymbol; decimals: number } {
-		const evm = evmChainMetadata[network];
-		if (evm) return { symbol: evm.nativeSymbol, decimals: evm.nativeDecimals };
-		const svm = svmChainMetadata[network];
-		if (svm) return { symbol: svm.nativeSymbol, decimals: svm.nativeDecimals };
-		throw new Error(`[native-spend stats] no chain metadata for network ${network}`);
-	}
-
-	private round(value: number): number {
-		return Math.round(value * 100) / 100;
 	}
 }
 

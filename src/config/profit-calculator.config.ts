@@ -16,4 +16,9 @@ const profitMatcher = {
 	cexAmountToleranceRelative: 0.005
 } as const;
 
-export { profitWindowSeconds, svmExecutorProgramId, profitCexLimits, profitMatcher };
+const profitStats = {
+	// Net target-token position considered balanced (no closing trade implied) when |netTarget| is below this threshold.
+	balancedPositionThreshold: 0.00001
+} as const;
+
+export { profitWindowSeconds, svmExecutorProgramId, profitCexLimits, profitMatcher, profitStats };

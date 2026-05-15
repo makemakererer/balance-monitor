@@ -151,12 +151,14 @@ const rebalanceBridgesByNetwork: Partial<Record<Network, BridgeKind[]>> = {
 const svmOftProgramId: string = "A1oayh35gLkRG8fHcXtfdGJmbsubAeJA7URVVET3h8MZ";
 
 // Native-spend specific scan knobs. Two-pass retry mirrors rpc-scan.config.ts.
+// receiptRetries also covers getBlock — Base in particular is lag-prone and can
+// need 15+ attempts before a flaky public RPC returns the block.
 const nativeSpendScanLimits = {
 	multicallRetries: 5,
 	multicallRetryDelayMs: 1000,
 	multicallMaxPasses: 2,
 	receiptBatchSize: 20,
-	receiptRetries: 5,
+	receiptRetries: 30,
 	receiptRetryDelayMs: 1000,
 	receiptMaxPasses: 2
 } as const;

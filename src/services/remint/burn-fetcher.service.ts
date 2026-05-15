@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ConfirmedSignatureInfo, Connection, ParsedInstruction, PartiallyDecodedInstruction, PublicKey } from "@solana/web3.js";
+import { Connection, ParsedInstruction, ParsedTransactionWithMeta, PartiallyDecodedInstruction, PublicKey } from "@solana/web3.js";
 import { TOKEN_MESSENGER_V2_ABI } from "../../abis";
 import {
 	cctpDomainIds,
@@ -15,7 +15,8 @@ import {
 	vaultExecutorAddresses
 } from "../../config";
 import { BurnTx, Network, RemintWindow } from "../../types";
-import { findEvmBlockAfterTimestamp, findEvmBlockAtOrBeforeTimestamp, log, reportProgress, sleep } from "../../utils";
+import { errorMessage, findEvmBlockAfterTimestamp, findEvmBlockAtOrBeforeTimestamp, log, reportProgress, sleep } from "../../utils";
+import { collectSvmSignaturesInWindow, parseSvmTransactionsInBatches } from "../collectors/svm-rpc-batch";
 
 class BurnFetcherService {
 	public async fetchBurns(window: RemintWindow): Promise<Map<Network, BurnTx[]>> {
@@ -33,7 +34,7 @@ class BurnFetcherService {
 				burnsByNetwork.set(network, burns);
 				log.success(`[${network}] burns collected: ${burns.length}`);
 			} catch (error) {
-				const message = error instanceof Error ? error.message : String(error);
+				const message = errorMessage(error);
 				log.error(`[${network}] burn fetch failed: ${message}`);
 				burnsByNetwork.set(network, []);
 			}
@@ -157,7 +158,7 @@ class BurnFetcherService {
 				}));
 			} catch (error) {
 				retries--;
-				const message = error instanceof Error ? error.message : String(error);
+				const message = errorMessage(error);
 				log.warning(`[${network}] chunk ${start}-${end} failed (${retries} retries left): ${message}`);
 				if (retries === 0) {
 					log.error(`[${network}] gave up on chunk ${start}-${end}`);
@@ -178,179 +179,50 @@ class BurnFetcherService {
 		const privateConnection = new Connection(svmScanPrivateRpcUrl, "confirmed");
 
 		log.info(`[SOLANA] step 1: collecting signatures within window`);
-		const signatures = await this.collectSvmSignaturesInWindow(publicConnection, wallet, window);
+		const signatures = await collectSvmSignaturesInWindow(publicConnection, wallet, window);
 		log.success(`[SOLANA] signatures in window: ${signatures.length}`);
-
 		if (signatures.length === 0) return [];
 
 		log.info(`[SOLANA] step 2: fetching parsed transactions in batches of ${rpcScanLimits.svmTransactionsBatchSize}`);
-		return this.parseSvmBurnsFromSignatures(privateConnection, signatures);
+		const result = await parseSvmTransactionsInBatches<BurnTx>({
+			connection: privateConnection,
+			signatures,
+			progressLabel: "phase 1",
+			mapper: (_sigInfo, tx) => this.svmTxToBurnTx(tx)
+		});
+		if (result.failure) {
+			log.error(`[SOLANA] burn scan partial: ${result.failure.detail}; burns inside those sigs will be missing from this run`);
+		}
+		return result.items;
 	}
 
-	private async collectSvmSignaturesInWindow(
-		connection: Connection,
-		wallet: PublicKey,
-		window: RemintWindow
-	): Promise<ConfirmedSignatureInfo[]> {
-		const collected: ConfirmedSignatureInfo[] = [];
-		let before: string | undefined = undefined;
-		let stoppedByWindow = false;
-		let consecutiveErrors = 0;
+	// Filter: must be a successful CCTP burn tx (DepositForBurn log + TokenMessenger
+	// instruction with the event_account at slot 11). Returns null to skip otherwise.
+	private svmTxToBurnTx(tx: ParsedTransactionWithMeta): BurnTx | null {
+		if (!tx.meta || tx.meta.err) return null;
+		const logs = tx.meta.logMessages?.join(" ") ?? "";
+		if (!logs.includes("DepositForBurn")) return null;
 
-		while (!stoppedByWindow) {
-			try {
-				const page: ConfirmedSignatureInfo[] = await connection.getSignaturesForAddress(wallet, {
-					limit: rpcScanLimits.svmSignaturesPerCall,
-					before
-				});
-				consecutiveErrors = 0;
-				if (page.length === 0) break;
+		const allInstructions: (ParsedInstruction | PartiallyDecodedInstruction)[] = [
+			...tx.transaction.message.instructions,
+			...(tx.meta.innerInstructions?.flatMap((inner) => inner.instructions) ?? [])
+		];
 
-				for (const sig of page) {
-					if (sig.blockTime === null || sig.blockTime === undefined) continue;
-					if (sig.blockTime >= window.toTimestampSeconds) continue;
-					if (sig.blockTime < window.fromTimestampSeconds) {
-						stoppedByWindow = true;
-						break;
-					}
-					collected.push(sig);
-				}
-
-				before = page[page.length - 1].signature;
-				log.info(`[SOLANA] signatures scanned: page=${page.length} kept=${collected.length}`);
-				await sleep(rpcScanLimits.svmSignatureCallDelayMs);
-			} catch (error) {
-				consecutiveErrors++;
-				const message = error instanceof Error ? error.message : String(error);
-				if (consecutiveErrors >= rpcScanLimits.svmSignatureMaxConsecutiveErrors) {
-					throw new Error(
-						`[SOLANA] signature scan aborted after ${consecutiveErrors} consecutive errors: ${message}`
-					);
-				}
-				if (message.includes("429")) {
-					log.warning(
-						`[SOLANA] rate limit (429) ${consecutiveErrors}/${rpcScanLimits.svmSignatureMaxConsecutiveErrors}, backing off ${rpcScanLimits.svmRateLimitBackoffMs}ms`
-					);
-					await sleep(rpcScanLimits.svmRateLimitBackoffMs);
-					continue;
-				}
-				log.warning(
-					`[SOLANA] signature page error ${consecutiveErrors}/${rpcScanLimits.svmSignatureMaxConsecutiveErrors}, retrying: ${message}`
-				);
-				await sleep(rpcScanLimits.svmGenericErrorBackoffMs);
+		let eventAccount: string | undefined;
+		for (const instruction of allInstructions) {
+			if (instruction.programId.toBase58() !== cctpSvmTokenMessengerProgramId) continue;
+			if ("accounts" in instruction && instruction.accounts.length >= 12) {
+				eventAccount = instruction.accounts[11].toBase58();
+				break;
 			}
 		}
 
-		return collected;
-	}
-
-	private async parseSvmBurnsFromSignatures(
-		connection: Connection,
-		signatures: ConfirmedSignatureInfo[]
-	): Promise<BurnTx[]> {
-		const burns: BurnTx[] = [];
-		const signatureStrings = signatures.map((s) => s.signature);
-
-		const allBatches: string[][] = [];
-		for (let offset = 0; offset < signatureStrings.length; offset += rpcScanLimits.svmTransactionsBatchSize) {
-			allBatches.push(signatureStrings.slice(offset, offset + rpcScanLimits.svmTransactionsBatchSize));
-		}
-		const totalBatches = allBatches.length;
-
-		let pending = allBatches;
-		for (let pass = 1; pass <= rpcScanLimits.svmTransactionsBatchMaxPasses; pass++) {
-			if (pending.length === 0) break;
-			if (pass > 1) {
-				log.warning(
-					`[SOLANA] phase 1 retry pass ${pass}/${rpcScanLimits.svmTransactionsBatchMaxPasses}: re-fetching ${pending.length} batch(es) that failed earlier`
-				);
-			}
-
-			const stillFailing: string[][] = [];
-			let bucket = -1;
-			let processed = 0;
-			for (const batch of pending) {
-				const batchBurns = await this.tryFetchBatchBurns(connection, batch);
-				if (batchBurns === null) {
-					stillFailing.push(batch);
-				} else {
-					burns.push(...batchBurns);
-				}
-				processed += batch.length;
-				if (pass === 1) {
-					bucket = reportProgress(`[SOLANA] phase 1`, processed, signatureStrings.length, bucket);
-				}
-			}
-
-			if (pass > 1) {
-				const recovered = pending.length - stillFailing.length;
-				log.info(`[SOLANA] phase 1 retry pass ${pass}: recovered ${recovered}/${pending.length} batch(es)`);
-			}
-			pending = stillFailing;
-		}
-
-		if (pending.length > 0) {
-			const droppedSigs = pending.reduce((sum, batch) => sum + batch.length, 0);
-			log.error(
-				`[SOLANA] phase 1 permanently lost ${pending.length}/${totalBatches} batch(es) = ${droppedSigs} signature(s) after ${rpcScanLimits.svmTransactionsBatchMaxPasses} pass(es); burns inside those sigs will be missing from this run`
-			);
-		}
-
-		return burns;
-	}
-
-	// One attempt at a single signature batch, retried internally up to
-	// svmTransactionsBatchRetries times. Returns null if all retries are exhausted —
-	// the caller will park the batch for the retry pass instead of dropping it.
-	private async tryFetchBatchBurns(connection: Connection, batch: string[]): Promise<BurnTx[] | null> {
-		let retries = rpcScanLimits.svmTransactionsBatchRetries;
-		while (retries > 0) {
-			try {
-				const txs = await connection.getParsedTransactions(batch, {
-					maxSupportedTransactionVersion: 0,
-					commitment: "confirmed"
-				});
-				const batchBurns: BurnTx[] = [];
-				for (const tx of txs) {
-					if (!tx || !tx.meta || tx.meta.err) continue;
-					const logs = tx.meta.logMessages?.join(" ") ?? "";
-					if (!logs.includes("DepositForBurn")) continue;
-
-					const allInstructions: (ParsedInstruction | PartiallyDecodedInstruction)[] = [
-						...tx.transaction.message.instructions,
-						...(tx.meta.innerInstructions?.flatMap((ix) => ix.instructions) ?? [])
-					];
-
-					let eventAccount: string | undefined;
-					for (const instruction of allInstructions) {
-						if (instruction.programId.toBase58() !== cctpSvmTokenMessengerProgramId) continue;
-						if ("accounts" in instruction && instruction.accounts.length >= 12) {
-							eventAccount = instruction.accounts[11].toBase58();
-							break;
-						}
-					}
-
-					batchBurns.push({
-						transactionHash: tx.transaction.signatures[0],
-						blockNumber: tx.slot,
-						blockTime: tx.blockTime ?? undefined,
-						eventAccount
-					});
-				}
-				await sleep(rpcScanLimits.svmTransactionsBatchInterDelayMs);
-				return batchBurns;
-			} catch (error) {
-				retries--;
-				const message = error instanceof Error ? error.message : String(error);
-				log.warning(`[SOLANA] batch failed (${retries} retries left): ${message}`);
-				if (retries === 0) {
-					log.error(`[SOLANA] gave up on batch of ${batch.length} signature(s)`);
-					return null;
-				}
-				await sleep(rpcScanLimits.svmTransactionsBatchRetryDelayMs);
-			}
-		}
-		return null;
+		return {
+			transactionHash: tx.transaction.signatures[0],
+			blockNumber: tx.slot,
+			blockTime: tx.blockTime ?? undefined,
+			eventAccount
+		};
 	}
 }
 

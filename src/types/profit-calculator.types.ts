@@ -119,11 +119,6 @@ interface ScanFailure {
 	detail: string;
 }
 
-interface FetcherResult {
-	transactions: ParsedTransaction[];
-	failures: ScanFailure[];
-}
-
 interface TokenProfitEntry {
 	token: TokenSymbol;
 	fetchedAt: string;
@@ -190,6 +185,5 @@ export {
 	ProfitGrandTotals,
 	ProfitSnapshot,
 	RawArbitrageEvent,
-	ScanFailure,
-	FetcherResult
+	ScanFailure
 };

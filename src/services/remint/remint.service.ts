@@ -1,3 +1,4 @@
+import { dailyReportConfig } from "../../config";
 import {
 	AttestationEntry,
 	BurnTx,
@@ -5,17 +6,15 @@ import {
 	ReclaimPendingEntry,
 	ReclaimPendingFile,
 	RemintChainStats,
+	RemintFailedRoute,
 	RemintReport,
 	RemintWindow
 } from "../../types";
-import { log, reclaimPendingExists, writeReclaimPending } from "../../utils";
+import { errorMessage, log, reclaimPendingExists, writeReclaimPending } from "../../utils";
 import { TelegramService } from "../telegram/telegram.service";
 import { AttestationFetcherService } from "./attestation-fetcher.service";
 import { BurnFetcherService } from "./burn-fetcher.service";
 import { MinterService, ProcessedMint } from "./minter.service";
-
-// remint window length: last 24h before the scheduler tick
-const REMINT_WINDOW_SECONDS = 24 * 60 * 60;
 
 class RemintService {
 	private readonly telegram = new TelegramService();
@@ -36,7 +35,7 @@ class RemintService {
 		try {
 			await this.telegram.sendRemintStart(date, window);
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			log.error(`telegram remint start failed: ${message}`);
 		}
 
@@ -67,7 +66,7 @@ class RemintService {
 		try {
 			await this.telegram.sendRemintFinish(report);
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			log.error(`telegram remint finish failed: ${message}`);
 		}
 		log.important(`REMINT: done in ${this.elapsed(start)}s`);
@@ -80,24 +79,30 @@ class RemintService {
 		durationMs: number
 	): RemintReport {
 		const perChain: RemintChainStats[] = [];
+		const routeFailureCounts = new Map<string, RemintFailedRoute>();
 		let totalMintedRaw = 0n;
 		let totalFailedCount = 0;
 
 		for (const [network, entries] of mintedByNetwork) {
 			let newMintedRaw = 0n;
-			let failedCount = 0;
 			for (const entry of entries) {
 				if (entry.mint) {
 					newMintedRaw += BigInt(entry.attestationData.decodedMessage.decodedMessageBody.amount);
 				} else if (!entry.alreadyMinted) {
-					failedCount++;
+					const routeKey = `${network}->${entry.destinationNetwork}`;
+					const existing = routeFailureCounts.get(routeKey);
+					if (existing) {
+						existing.count++;
+					} else {
+						routeFailureCounts.set(routeKey, { source: network, destination: entry.destinationNetwork, count: 1 });
+					}
+					totalFailedCount++;
 				}
 			}
-			if (newMintedRaw > 0n || failedCount > 0) {
-				perChain.push({ network, newMintedRaw, failedCount });
+			if (newMintedRaw > 0n) {
+				perChain.push({ network, newMintedRaw });
 			}
 			totalMintedRaw += newMintedRaw;
-			totalFailedCount += failedCount;
 		}
 
 		return {
@@ -106,16 +111,18 @@ class RemintService {
 			windowToIso: window.toIso,
 			durationMs,
 			perChain,
+			failedRoutes: Array.from(routeFailureCounts.values()),
 			totalMintedRaw,
 			totalFailedCount
 		};
 	}
 
+	// Window anchored to today's UTC midnight: previous full UTC day. Cron fires
+	// at 00:00 UTC → covers exactly yesterday. Anchoring to `date` (not now) keeps
+	// retries idempotent.
 	private buildWindow(date: string): RemintWindow {
-		const dayStartMs = Date.parse(`${date}T00:00:00Z`);
-		if (Number.isNaN(dayStartMs)) throw new Error(`[remint] invalid date: ${date}`);
-		const toTimestampSeconds = Math.floor(dayStartMs / 1000);
-		const fromTimestampSeconds = toTimestampSeconds - REMINT_WINDOW_SECONDS;
+		const toTimestampSeconds = Math.floor(Date.parse(`${date}T00:00:00Z`) / 1000);
+		const fromTimestampSeconds = toTimestampSeconds - dailyReportConfig.windowLengthSeconds;
 		return {
 			fromTimestampSeconds,
 			toTimestampSeconds,

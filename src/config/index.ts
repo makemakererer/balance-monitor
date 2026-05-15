@@ -8,3 +8,4 @@ export * from "./rpc-scan.config";
 export * from "./cctp.config";
 export * from "./profit-calculator.config";
 export * from "./native-spend.config";
+export * from "./daily-report.config";

@@ -7,11 +7,11 @@ import { RoutescanClient } from "./clients/routescan.client";
 
 class UnsupportedFailedTxChainError extends Error {
 	constructor(public readonly network: Network) {
-		super(`[failed-tx-scanner] no source configured for ${network}`);
+		super(`[failed-tx-collector] no source configured for ${network}`);
 	}
 }
 
-class FailedTxScanner {
+class FailedTxCollector {
 	private readonly etherscan = new EtherscanClient();
 	private readonly blockscout = new BlockscoutClient();
 	private readonly routescan = new RoutescanClient();
@@ -24,7 +24,7 @@ class FailedTxScanner {
 		toBlock: number
 	): Promise<FailedTx[]> {
 		const meta = evmChainMetadata[network];
-		if (!meta) throw new Error(`[failed-tx-scanner] no chain metadata for ${network}`);
+		if (!meta) throw new Error(`[failed-tx-collector] no chain metadata for ${network}`);
 		switch (meta.failedTxSource) {
 			case "etherscan":
 				return this.etherscan.getWalletTxs(network, wallet, fromBlock, toBlock);
@@ -40,4 +40,4 @@ class FailedTxScanner {
 	}
 }
 
-export { FailedTxScanner, UnsupportedFailedTxChainError };
+export { FailedTxCollector, UnsupportedFailedTxChainError };

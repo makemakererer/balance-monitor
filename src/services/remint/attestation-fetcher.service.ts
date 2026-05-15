@@ -1,6 +1,6 @@
 import { cctpDomainIds, cctpRateLimits } from "../../config";
 import { AttestationEntry, BurnTx, Network } from "../../types";
-import { log, reportProgress, retrieveAttestation, sleep } from "../../utils";
+import { errorMessage, log, reportProgress, retrieveAttestation, sleep } from "../../utils";
 
 class AttestationFetcherService {
 	public async fetchAttestations(burnsByNetwork: Map<Network, BurnTx[]>): Promise<Map<Network, AttestationEntry[]>> {
@@ -42,7 +42,7 @@ class AttestationFetcherService {
 						const attestationData = await retrieveAttestation(burn.transactionHash, sourceDomain);
 						attested.push({ ...burn, attestationData });
 					} catch (error) {
-						const message = error instanceof Error ? error.message : String(error);
+						const message = errorMessage(error);
 						log.warning(`[${network}] attestation failed for ${burn.transactionHash.slice(0, 10)}…: ${message}`);
 						stillFailing.push(burn);
 					}

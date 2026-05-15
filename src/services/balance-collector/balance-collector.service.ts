@@ -1,14 +1,6 @@
 import { isStableSymbol } from "../../config";
 import { ChainSnapshot, GrandTotals, Network, Snapshot, TokenBalance, TokenSymbol } from "../../types";
-import {
-	COMMON_DECIMALS,
-	convertDecimals,
-	findTokenSource,
-	log,
-	readPreviousTotals,
-	writeBalanceSnapshot
-} from "../../utils";
-import { TelegramService } from "../telegram/telegram.service";
+import { COMMON_DECIMALS, convertDecimals, findTokenSource, log } from "../../utils";
 import { CexBalanceService } from "./fetchers/cex-balance.service";
 import { EvmBalanceService } from "./fetchers/evm-balance.service";
 import { SvmBalanceService } from "./fetchers/svm-balance.service";
@@ -17,26 +9,9 @@ class BalanceCollectorService {
 	private readonly evm = new EvmBalanceService();
 	private readonly svm = new SvmBalanceService();
 	private readonly cex = new CexBalanceService();
-	private readonly telegram = new TelegramService();
 
-	public async collectBalance(date: string): Promise<void> {
-		const start = Date.now();
-		log.info(`balance snapshot: starting fetch for ${date}`);
-		const snapshot = await this.collectSnapshot(date);
-		log.info(`balance snapshot: collected in ${this.elapsed(start)}s`);
-		const previousTotals = readPreviousTotals(snapshot.date);
-		const filePath = writeBalanceSnapshot(snapshot);
-		log.success(`balance snapshot: saved → ${filePath}`);
-		try {
-			await this.telegram.sendSnapshot(snapshot, previousTotals);
-			log.success(`balance snapshot: done in ${this.elapsed(start)}s`);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`telegram send failed: ${message}`);
-		}
-	}
-
-	private async collectSnapshot(date: string): Promise<Snapshot> {
+	// Stateless: returns the snapshot data. Caller persists + sends Telegram.
+	public async collectSnapshot(date: string): Promise<Snapshot> {
 		log.info("EVM: fetching enabled chains");
 		log.info("SVM: fetching enabled Solana wallet");
 		log.info("CEX: fetching enabled accounts");
@@ -57,18 +32,12 @@ class BalanceCollectorService {
 		const [evmChains, svmChains, cexChains] = await Promise.all([evmPromise, svmPromise, cexPromise]);
 		const chains = [...evmChains, ...svmChains, ...cexChains];
 
-		log.info("computing grand totals");
-
 		return {
 			date,
 			generatedAt: new Date().toISOString(),
 			chains,
 			grandTotals: this.computeGrandTotals(chains)
 		};
-	}
-
-	private elapsed(startMillis: number): string {
-		return ((Date.now() - startMillis) / 1000).toFixed(1);
 	}
 
 	private computeGrandTotals(chains: ChainSnapshot[]): GrandTotals {

@@ -14,7 +14,7 @@ import {
 	Network,
 	PoolRef
 } from "../../types";
-import { findEvmBlockAtOrBeforeTimestamp, log, sleep } from "../../utils";
+import { errorMessage, findEvmBlockAtOrBeforeTimestamp, log, sleep } from "../../utils";
 
 const Q192 = 2n ** 192n;
 // Internal price scale: stable-per-native rendered as an 18-decimal bigint
@@ -253,7 +253,7 @@ class PriceResolverService {
 				return this.sqrtPriceToUsd(sqrtPriceX96, pool);
 			} catch (error) {
 				retries--;
-				const message = error instanceof Error ? error.message : String(error);
+				const message = errorMessage(error);
 				log.warning(`[price:${logContext}] block ${blockNumber} failed (${retries} retries left): ${message}`);
 				if (retries === 0) {
 					log.error(`[price:${logContext}] gave up on block ${blockNumber}`);

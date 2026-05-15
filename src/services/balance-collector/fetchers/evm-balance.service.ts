@@ -21,7 +21,7 @@ import {
 	TokenBalance,
 	TokenSymbol
 } from "../../../types";
-import { log, retry } from "../../../utils";
+import { errorMessage, log, retry } from "../../../utils";
 
 const NATIVE_ADDRESS_SENTINEL = "native";
 
@@ -105,7 +105,7 @@ class EvmBalanceService {
 				chainTotals: this.computeChainTotals(sources, meta)
 			};
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			const message = errorMessage(error);
 			return this.buildFailedChain(network, meta, vaultEntries, message);
 		} finally {
 			provider.destroy();

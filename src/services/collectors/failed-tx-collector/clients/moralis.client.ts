@@ -1,6 +1,6 @@
 import { evmChainMetadata, loadMoralisApiKey, moralisLimits } from "../../../../config";
 import { FailedTx, MoralisRawTx, MoralisResponse, Network } from "../../../../types";
-import { log, RequestThrottle } from "../../../../utils";
+import { errorMessage, log, RequestThrottle } from "../../../../utils";
 import { sleep } from "../../../../utils/retry";
 
 class MoralisClient {
@@ -90,7 +90,7 @@ class MoralisClient {
 				return { items: body.result.map(parseMoralisTx), nextCursor: body.cursor };
 			} catch (error) {
 				retries--;
-				const message = error instanceof Error ? error.message : String(error);
+				const message = errorMessage(error);
 				log.warning(
 					`[moralis][${network}] page ${page} request failed (${retries} retries left): ${message}`
 				);

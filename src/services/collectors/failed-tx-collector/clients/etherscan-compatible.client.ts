@@ -1,5 +1,5 @@
 import { EtherscanCompatibleResponse, FailedTx, Network, ProviderLimits } from "../../../../types";
-import { log, RequestThrottle } from "../../../../utils";
+import { errorMessage, log, RequestThrottle } from "../../../../utils";
 import { sleep } from "../../../../utils/retry";
 
 abstract class EtherscanCompatibleClient {
@@ -93,7 +93,7 @@ abstract class EtherscanCompatibleClient {
 				return parseTxs(body);
 			} catch (error) {
 				retries--;
-				const message = error instanceof Error ? error.message : String(error);
+				const message = errorMessage(error);
 				log.warning(
 					`[${this.providerName}][${network}] page ${page} request failed (${retries} retries left): ${message}`
 				);

@@ -18,7 +18,7 @@ import {
 	TokenBalance,
 	TokenSymbol
 } from "../../../types";
-import { log, retry } from "../../../utils";
+import { errorMessage, log, retry } from "../../../utils";
 
 const NATIVE_ADDRESS_SENTINEL = "native";
 
@@ -83,7 +83,7 @@ class SvmBalanceService {
 		splResult: SplAccountsResult
 	): TokenBalance[] {
 		if (splResult.status === "rejected") {
-			const message = splResult.reason instanceof Error ? splResult.reason.message : String(splResult.reason);
+			const message = errorMessage(splResult.reason);
 			log.error(`[SOLANA] SPL batch fetch failed: ${message}`);
 			return tokenSymbols.map((symbol, index) => ({
 				symbol,
@@ -107,7 +107,7 @@ class SvmBalanceService {
 				const decoded = AccountLayout.decode(accountInfo.data);
 				return { symbol, address: mint, amount: decoded.amount, decimals, error: null };
 			} catch (error) {
-				const message = error instanceof Error ? error.message : String(error);
+				const message = errorMessage(error);
 				log.error(`[SOLANA] SPL decode failed for ${mint}: ${message}`);
 				return { symbol, address: mint, amount: null, decimals, error: `decode failed: ${message}` };
 			}
@@ -116,7 +116,7 @@ class SvmBalanceService {
 
 	private buildNative(meta: SvmChainMeta, nativeResult: NativeLamportsResult): TokenBalance {
 		if (nativeResult.status === "rejected") {
-			const message = nativeResult.reason instanceof Error ? nativeResult.reason.message : String(nativeResult.reason);
+			const message = errorMessage(nativeResult.reason);
 			log.error(`[SOLANA] native fetch failed: ${message}`);
 			return {
 				symbol: meta.nativeSymbol,

@@ -9,7 +9,6 @@ import {
 	TransactionMessage,
 	VersionedTransaction
 } from "@solana/web3.js";
-import { getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { MESSAGE_TRANSMITTER_V2_ABI } from "../../abis";
 import {
 	cctpEvmMessageTransmitterAddress,
@@ -19,12 +18,11 @@ import {
 	cctpSvmMasterLookupTable,
 	cctpSvmMessageTransmitterProgramId,
 	evmChainMetadata,
-	networkRpcUrls,
-	tokensToChain
+	networkRpcUrls
 } from "../../config";
 import { getCctpMintInstruction } from "../../solana-instructions";
 import { ApiCctpMessage, AttestationEntry, MintOutcome, Network } from "../../types";
-import { log, reportProgress, retry } from "../../utils";
+import { errorMessage, log, reportProgress, retry } from "../../utils";
 
 interface ProcessedMint extends AttestationEntry {
 	destinationNetwork: Network;
@@ -80,7 +78,7 @@ class MinterService {
 							log.success(`[${sourceNetwork}] mint success → ${destinationNetwork} amount=${amount} hash=${txHash}`);
 						}
 					} catch (error) {
-						const message = error instanceof Error ? error.message : String(error);
+						const message = errorMessage(error);
 						log.error(`[${sourceNetwork}] mint failed for ${this.shortHash(entry.transactionHash)}: ${message}`);
 						minted.push({ ...entry, destinationNetwork, mint: null, alreadyMinted: false });
 					}
@@ -136,8 +134,9 @@ class MinterService {
 		const connection = new Connection(svmScanPrivateRpcUrl, "confirmed");
 		const payer = Keypair.fromSecretKey(bs58.decode(process.env.SVM_PRIVATE_KEY as string));
 
-		const usdcMint = new PublicKey(tokensToChain[Network.SOLANA].USDC);
-		const userUsdcAta = getAssociatedTokenAddressSync(usdcMint, payer.publicKey);
+		// CCTP V2 checks the recipient ATA against the on-chain mintRecipient field — must use what
+		// the burn declared, not payer's own ATA (payer is signer/fee-payer only, may differ from recipient).
+		const userUsdcAta = this.decodeSvmMintRecipient(attestation.decodedMessage.decodedMessageBody.mintRecipient);
 		const lookupTableAccount = (await connection.getAddressLookupTable(new PublicKey(cctpSvmMasterLookupTable))).value;
 
 		const sourceDomain = Number(attestation.decodedMessage.sourceDomain);
@@ -189,6 +188,15 @@ class MinterService {
 	private disposeProviders(): void {
 		for (const provider of this.evmProviders.values()) provider.destroy();
 		this.evmProviders.clear();
+	}
+
+	// Circle API may return mintRecipient as 0x-hex bytes32 or as a base58 Solana pubkey;
+	// both decode to the same 32-byte SPL token account.
+	private decodeSvmMintRecipient(mintRecipient: string): PublicKey {
+		if (mintRecipient.startsWith("0x")) {
+			return new PublicKey(Buffer.from(mintRecipient.slice(2), "hex"));
+		}
+		return new PublicKey(mintRecipient);
 	}
 
 	private formatBurnTokenAsBytes32(burnToken: string, sourceNetwork: Network): `0x${string}` {

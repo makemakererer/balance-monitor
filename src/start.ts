@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { SchedulerService } from "./services/scheduler/scheduler.service";
-import { log } from "./utils";
+import { errorMessage, log } from "./utils";
 
 function main(): void {
 	const scheduler = new SchedulerService();
@@ -10,7 +10,7 @@ function main(): void {
 try {
 	main();
 } catch (error) {
-	const message = error instanceof Error ? error.message : String(error);
+	const message = errorMessage(error);
 	log.error(`fatal: ${message}`);
 	process.exit(1);
 }

@@ -95,13 +95,19 @@ interface RemintWindow {
 	toIso: string;
 }
 
-// Per-source-chain breakdown for the Telegram finish report.
-// newMintedRaw = USDC actually minted in THIS run (already-minted entries do not count).
-// failedCount = attestations that neither minted nor were already-minted (RPC/exec error).
+// Per-source-chain breakdown of successful mints (network = source chain of the burn).
+// newMintedRaw = USDC actually minted in THIS run; already-minted entries are excluded.
 interface RemintChainStats {
 	network: Network;
 	newMintedRaw: bigint;
-	failedCount: number;
+}
+
+// Failure attribution is route-based — the operator needs to know where the mint
+// actually failed (destination), not just where the burn originated.
+interface RemintFailedRoute {
+	source: Network;
+	destination: Network;
+	count: number;
 }
 
 interface RemintReport {
@@ -110,6 +116,7 @@ interface RemintReport {
 	windowToIso: string;
 	durationMs: number;
 	perChain: RemintChainStats[];
+	failedRoutes: RemintFailedRoute[];
 	totalMintedRaw: bigint;
 	totalFailedCount: number;
 }
@@ -126,5 +133,6 @@ export {
 	ReclaimPendingFile,
 	RemintWindow,
 	RemintChainStats,
+	RemintFailedRoute,
 	RemintReport
 };

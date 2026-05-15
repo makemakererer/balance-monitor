@@ -76,12 +76,6 @@ interface NativeSpendScanFailure {
 	detail: string;
 }
 
-interface FetcherSpendResult {
-	records: SpendRecord[];
-	unattributedRecords: UnattributedSpendRecord[];
-	failures: NativeSpendScanFailure[];
-}
-
 interface TokenArbSpendEntry {
 	token: TokenSymbol;
 	fetchedAt: string;
@@ -212,7 +206,6 @@ export {
 	SpendRecord,
 	UnattributedSpendRecord,
 	NativeSpendScanFailure,
-	FetcherSpendResult,
 	TokenArbSpendEntry,
 	RebalanceSpendEntry,
 	UnattributedSpendEntry,

@@ -1,124 +1,53 @@
-import { profitWindowSeconds, tradingTokens } from "../../config";
+import { Trade } from "ccxt";
+import { ethers } from "ethers";
+import { cexAccounts, exchangeIdToNetwork, loadMonitoredSvmWallet, tokenConfig } from "../../config";
 import {
-	GrandTotalsByToken,
+	CexArbCollected,
+	EvmArbCollected,
+	EvmArbCollectedNetwork,
 	MatchedArbitrage,
+	Network,
 	NetworkBreakdown,
 	ParsedTransaction,
 	ProfitGrandTotals,
 	ProfitSnapshot,
 	ProfitWindow,
 	RouteStats,
+	ScanFailure,
+	SvmParsedTx,
+	SvmTxCollected,
 	TokenProfitEntry,
-	TokenProfitStatistics,
 	TokenSymbol,
 	TypeRoute
 } from "../../types";
-import {
-	log,
-	profitSnapshotComplete,
-	readProfitSnapshot,
-	writeProfitSnapshot
-} from "../../utils";
-import { TelegramService } from "../telegram/telegram.service";
+import { SvmMintInfo, buildSvmMintLookup, log, roundProfit5 } from "../../utils";
 import { ArbitrageMatcherService } from "./arbitrage-matcher.service";
 import { StatsCalculatorService } from "./stats-calculator.service";
-import { CexArbitrageFetcher } from "./fetchers/cex-arbitrage.fetcher";
-import { EvmArbitrageFetcher } from "./fetchers/evm-arbitrage.fetcher";
-import { SvmArbitrageFetcher } from "./fetchers/svm-arbitrage.fetcher";
 
 class ProfitCalculatorService {
-	private readonly telegram = new TelegramService();
-	private readonly evm = new EvmArbitrageFetcher();
-	private readonly svm = new SvmArbitrageFetcher();
-	private readonly cex = new CexArbitrageFetcher();
 	private readonly matcher = new ArbitrageMatcherService();
 	private readonly stats = new StatsCalculatorService();
 
-	public async calculate(date: string): Promise<void> {
-		if (profitSnapshotComplete(date)) {
-			log.info(`profit-calc: snapshot for ${date} already complete, skipping`);
-			return;
-		}
+	// Stateless per-token compute. Takes raw on-chain/CEX data already collected
+	// by the orchestrator and produces a TokenProfitEntry. No I/O.
+	public calculateForToken(args: {
+		token: TokenSymbol;
+		window: ProfitWindow;
+		evmData: EvmArbCollected;
+		svm: SvmTxCollected;
+		cexData: CexArbCollected;
+	}): TokenProfitEntry {
+		const { token, window, evmData, svm, cexData } = args;
+		const tokenStart = Date.now();
 
-		const window = this.buildWindow(date);
-		const runStart = Date.now();
-		log.important(`PROFIT-CALC: window ${window.fromIso} → ${window.toIso}`);
+		const evmTransactions = this.buildEvmTransactions(evmData, window);
+		const svmTransactions = this.buildSvmTransactions(svm.arbTxs, token);
+		const cexTransactions = this.buildCexTransactions(cexData);
 
-		const enabledTokens = (Object.keys(tradingTokens) as TokenSymbol[]).filter((token) => tradingTokens[token]);
-		log.info(`profit-calc: ${enabledTokens.length} trading token(s): ${enabledTokens.join(", ")}`);
-
-		try {
-			await this.telegram.sendProfitCalcStart(window, enabledTokens);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`telegram profit-calc start failed: ${message}`);
-		}
-
-		const snapshot = this.loadOrInitSnapshot(date, window);
-
-		for (let index = 0; index < enabledTokens.length; index++) {
-			const token = enabledTokens[index];
-			const progress = `(${index + 1}/${enabledTokens.length})`;
-
-			if (snapshot.perToken[token]) {
-				log.info(`profit-calc: ${token} ${progress} already in snapshot, skipping`);
-				continue;
-			}
-
-			log.important(`profit-calc: ${token} ${progress} starting`);
-			try {
-				await this.telegram.sendTokenProfitStart(token, index + 1);
-			} catch (error) {
-				const message = error instanceof Error ? error.message : String(error);
-				log.error(`telegram token-profit-start ${token} failed: ${message}`);
-			}
-			const tokenStart = Date.now();
-			const entry = await this.calculateForToken(token, window, tokenStart);
-			snapshot.perToken[token] = entry;
-			writeProfitSnapshot(snapshot);
-			log.success(`profit-calc: ${token} ${progress} done in ${this.elapsed(tokenStart)}s`);
-
-			try {
-				await this.telegram.sendTokenProfitReport(entry);
-			} catch (error) {
-				const message = error instanceof Error ? error.message : String(error);
-				log.error(`telegram token-profit ${token} failed: ${message}`);
-			}
-		}
-
-		const grandTotals = this.computeGrandTotals(snapshot, Date.now() - runStart);
-		snapshot.grandTotals = grandTotals;
-		writeProfitSnapshot(snapshot);
-		log.important(`PROFIT-CALC: done in ${this.elapsed(runStart)}s`);
-
-		try {
-			await this.telegram.sendProfitGrandTotals(snapshot);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`telegram profit grand-totals failed: ${message}`);
-		}
-
-		try {
-			await this.telegram.sendProfitSnapshotFile(date);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			log.error(`telegram profit snapshot file failed: ${message}`);
-		}
-	}
-
-	private async calculateForToken(
-		token: TokenSymbol,
-		window: ProfitWindow,
-		tokenStart: number
-	): Promise<TokenProfitEntry> {
-		const [evmResult, svmResult, cexResult] = await Promise.all([
-			this.evm.fetchByToken(token, window),
-			this.svm.fetchByToken(token, window),
-			this.cex.fetchByToken(token, window)
-		]);
-		const transactions = [...evmResult.transactions, ...svmResult.transactions, ...cexResult.transactions];
+		const transactions = [...evmTransactions, ...svmTransactions, ...cexTransactions];
 		transactions.sort((a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp));
-		const scanFailures = [...evmResult.failures, ...svmResult.failures, ...cexResult.failures];
+
+		const scanFailures: ScanFailure[] = [...evmData.failures, ...svm.failures, ...cexData.failures];
 
 		const matchResult = this.matcher.match(transactions);
 		const stats = this.stats.calculate(token, window, transactions, matchResult);
@@ -134,38 +63,11 @@ class ProfitCalculatorService {
 		};
 	}
 
-	private loadOrInitSnapshot(date: string, window: ProfitWindow): ProfitSnapshot {
-		const existing = readProfitSnapshot(date);
-		if (existing && existing.grandTotals === null) {
-			log.info(`profit-calc: resuming partial snapshot (${Object.keys(existing.perToken).length} token(s) already done)`);
-			return existing;
-		}
-		return {
-			date,
-			generatedAt: new Date().toISOString(),
-			window,
-			perToken: {},
-			grandTotals: null
-		};
-	}
-
-	private buildWindow(date: string): ProfitWindow {
-		const dayStartMs = Date.parse(`${date}T00:00:00Z`);
-		if (Number.isNaN(dayStartMs)) throw new Error(`[profit-calc] invalid date: ${date}`);
-		const toTimestampSeconds = Math.floor(dayStartMs / 1000);
-		const fromTimestampSeconds = toTimestampSeconds - profitWindowSeconds;
-		return {
-			fromTimestampSeconds,
-			toTimestampSeconds,
-			fromIso: new Date(fromTimestampSeconds * 1000).toISOString(),
-			toIso: new Date(toTimestampSeconds * 1000).toISOString()
-		};
-	}
-
-	private computeGrandTotals(snapshot: ProfitSnapshot, durationMs: number): ProfitGrandTotals {
+	// Grand totals across all per-token entries in the snapshot.
+	public computeGrandTotals(snapshot: ProfitSnapshot): ProfitGrandTotals {
 		const entries = Object.values(snapshot.perToken).filter((entry): entry is TokenProfitEntry => entry !== undefined);
 
-		const byToken: GrandTotalsByToken[] = entries.map((entry) => ({
+		const byToken = entries.map((entry) => ({
 			token: entry.token,
 			profitToken: entry.stats.profit.profitToken,
 			total: entry.stats.profit.total,
@@ -186,6 +88,7 @@ class ProfitCalculatorService {
 		const overallMatchRate = totalTransactions > 0
 			? (((totalMatched * 2) / totalTransactions) * 100).toFixed(1) + "%"
 			: "0.0%";
+		const durationMs = entries.reduce((sum, entry) => sum + entry.durationMs, 0);
 
 		return {
 			completedAt: new Date().toISOString(),
@@ -197,6 +100,210 @@ class ProfitCalculatorService {
 			overallMatchRate,
 			byNetwork: this.aggregateByNetwork(allTransactions),
 			byRoute: this.aggregateByRoute(allMatched)
+		};
+	}
+
+	private buildEvmTransactions(evmData: EvmArbCollected, window: ProfitWindow): ParsedTransaction[] {
+		const out: ParsedTransaction[] = [];
+		for (const networkData of evmData.perNetwork) {
+			out.push(...this.buildEvmTransactionsForNetwork(networkData, window));
+		}
+		return out;
+	}
+
+	private buildEvmTransactionsForNetwork(
+		networkData: EvmArbCollectedNetwork,
+		window: ProfitWindow
+	): ParsedTransaction[] {
+		const out: ParsedTransaction[] = [];
+		for (const raw of networkData.events) {
+			const block = networkData.blocks.get(raw.blockNumber);
+			if (!block) continue;
+			if (block.timestamp < window.fromTimestampSeconds || block.timestamp > window.toTimestampSeconds) continue;
+
+			const tokenInMeta = tokenConfig[raw.tokenInAddress];
+			const tokenOutMeta = tokenConfig[raw.tokenOutAddress];
+			if (!tokenInMeta) {
+				log.warning(
+					`[${networkData.network}] unknown tokenIn ${raw.tokenInAddress} in tx ${raw.transactionHash} — dropping event`
+				);
+				continue;
+			}
+			if (!tokenOutMeta) {
+				log.warning(
+					`[${networkData.network}] unknown tokenOut ${raw.tokenOutAddress} in tx ${raw.transactionHash} — dropping event`
+				);
+				continue;
+			}
+			out.push({
+				hash: raw.transactionHash,
+				timestamp: new Date(block.timestamp * 1000).toISOString(),
+				network: networkData.network,
+				type: raw.type,
+				tokenIn: tokenInMeta.symbol,
+				tokenOut: tokenOutMeta.symbol,
+				amountIn: parseFloat(ethers.formatUnits(raw.amountIn, tokenInMeta.decimals)).toFixed(5),
+				amountOut: parseFloat(ethers.formatUnits(raw.amountOut, tokenOutMeta.decimals)).toFixed(5),
+				blockNumber: raw.blockNumber
+			});
+		}
+		return out;
+	}
+
+	private buildSvmTransactions(arbTxs: SvmParsedTx[], targetToken: TokenSymbol): ParsedTransaction[] {
+		const mintLookup = buildSvmMintLookup();
+		const walletAddress = loadMonitoredSvmWallet();
+		const out: ParsedTransaction[] = [];
+		for (const { sigInfo, tx } of arbTxs) {
+			if (!tx.meta || tx.meta.err) continue;
+			const changes = this.getSvmTokenBalanceChanges(tx, walletAddress, mintLookup);
+			if (changes.length < 2) continue;
+
+			const received = changes.find((c) => c.change > 0n);
+			const sent = changes.find((c) => c.change < 0n);
+			if (!received || !sent) continue;
+
+			const receivedMeta = mintLookup.get(received.mint);
+			const sentMeta = mintLookup.get(sent.mint);
+			if (!receivedMeta || !sentMeta) continue;
+			if (receivedMeta.symbol !== targetToken && sentMeta.symbol !== targetToken) continue;
+			if (sigInfo.blockTime === null || sigInfo.blockTime === undefined) continue;
+
+			const type = sentMeta.symbol === targetToken ? TypeRoute.SELL : TypeRoute.BUY;
+			const amountIn = parseFloat(ethers.formatUnits(-sent.change, sentMeta.decimals)).toFixed(5);
+			const amountOut = parseFloat(ethers.formatUnits(received.change, receivedMeta.decimals)).toFixed(5);
+
+			out.push({
+				hash: sigInfo.signature,
+				timestamp: new Date(sigInfo.blockTime * 1000).toISOString(),
+				network: Network.SOLANA,
+				type,
+				tokenIn: sentMeta.symbol,
+				tokenOut: receivedMeta.symbol,
+				amountIn,
+				amountOut,
+				blockNumber: sigInfo.slot
+			});
+		}
+		return out;
+	}
+
+	private buildCexTransactions(cexData: CexArbCollected): ParsedTransaction[] {
+		const out: ParsedTransaction[] = [];
+		for (const entry of cexData.perMarket) {
+			const baseSymbol = this.parseCexSymbolPart(entry.market.symbol, 0);
+			const quoteSymbol = this.parseCexSymbolPart(entry.market.symbol, 1);
+			if (!baseSymbol || !quoteSymbol) {
+				log.warning(
+					`[profit:cex][${entry.market.accountId}] symbol "${entry.market.symbol}" has unknown base/quote — skipping`
+				);
+				continue;
+			}
+			const network = exchangeIdToNetwork[cexAccounts[entry.market.accountId].exchangeId];
+			const orderGroups = this.groupTradesByOrder(entry.trades);
+			for (const fills of orderGroups) {
+				const parsed = this.orderToTransaction(fills, baseSymbol, quoteSymbol, network);
+				if (parsed) out.push(parsed);
+			}
+		}
+		return out;
+	}
+
+	private getSvmTokenBalanceChanges(
+		tx: SvmParsedTx["tx"],
+		walletAddress: string,
+		mintLookup: Map<string, SvmMintInfo>
+	): { mint: string; change: bigint }[] {
+		const pre = tx.meta?.preTokenBalances ?? [];
+		const post = tx.meta?.postTokenBalances ?? [];
+		const changes: { mint: string; change: bigint }[] = [];
+
+		for (const postEntry of post) {
+			if (postEntry.owner !== walletAddress) continue;
+			const preEntry = pre.find((b) => b.mint === postEntry.mint && b.owner === postEntry.owner);
+			const preAmount = preEntry ? BigInt(preEntry.uiTokenAmount.amount) : 0n;
+			const postAmount = BigInt(postEntry.uiTokenAmount.amount);
+			const change = postAmount - preAmount;
+			if (change !== 0n && mintLookup.has(postEntry.mint)) {
+				changes.push({ mint: postEntry.mint, change });
+			}
+		}
+		return changes;
+	}
+
+	private parseCexSymbolPart(marketSymbol: string, index: 0 | 1): TokenSymbol | null {
+		const parts = marketSymbol.split("/");
+		if (parts.length !== 2) return null;
+		const raw = parts[index];
+		const enumValues = Object.values(TokenSymbol);
+		return enumValues.includes(raw as TokenSymbol) ? (raw as TokenSymbol) : null;
+	}
+
+	// Group fills by order id so partial fills of one market order roll up into a single arbitrage leg.
+	// Fills without an order id stand alone (treated as a single-fill order).
+	private groupTradesByOrder(trades: Trade[]): Trade[][] {
+		const groups = new Map<string, Trade[]>();
+		const standalone: Trade[][] = [];
+		for (const trade of trades) {
+			const orderId = trade.order;
+			if (!orderId) {
+				standalone.push([trade]);
+				continue;
+			}
+			const existing = groups.get(orderId);
+			if (existing) existing.push(trade);
+			else groups.set(orderId, [trade]);
+		}
+		return [...groups.values(), ...standalone];
+	}
+
+	private orderToTransaction(
+		fills: Trade[],
+		baseSymbol: TokenSymbol,
+		quoteSymbol: TokenSymbol,
+		network: Network
+	): ParsedTransaction | null {
+		const first = fills[0];
+		if (!first.side) return null;
+		const isBuy = first.side === "buy";
+
+		let baseAmount = 0;
+		let quoteAmount = 0;
+		let feeBase = 0;
+		let feeQuote = 0;
+		let earliestTimestamp = first.timestamp ?? 0;
+
+		for (const fill of fills) {
+			baseAmount += fill.amount ?? 0;
+			quoteAmount += fill.cost ?? (fill.price ?? 0) * (fill.amount ?? 0);
+
+			const feeCost = fill.fee?.cost ?? 0;
+			if (feeCost > 0) {
+				if (fill.fee?.currency === baseSymbol) feeBase += feeCost;
+				else if (fill.fee?.currency === quoteSymbol) feeQuote += feeCost;
+			}
+
+			if (fill.timestamp != null && fill.timestamp < earliestTimestamp) {
+				earliestTimestamp = fill.timestamp;
+			}
+		}
+
+		// Mirror on-chain "amountOut after fee": deduct fee from the received side.
+		const receivedAmount = isBuy ? baseAmount - feeBase : quoteAmount - feeQuote;
+		const sentAmount = isBuy ? quoteAmount : baseAmount;
+		const timestampSec = Math.floor(earliestTimestamp / 1000);
+		if (timestampSec <= 0) return null;
+
+		return {
+			hash: first.order ?? first.id ?? `${first.timestamp}-${first.symbol}`,
+			timestamp: new Date(timestampSec * 1000).toISOString(),
+			network,
+			type: isBuy ? TypeRoute.BUY : TypeRoute.SELL,
+			tokenIn: isBuy ? quoteSymbol : baseSymbol,
+			tokenOut: isBuy ? baseSymbol : quoteSymbol,
+			amountIn: sentAmount.toFixed(5),
+			amountOut: receivedAmount.toFixed(5),
+			blockNumber: 0
 		};
 	}
 
@@ -234,21 +341,13 @@ class ProfitCalculatorService {
 			stats.push({
 				route,
 				count: profits.length,
-				totalProfit: this.round(total),
-				avgProfit: this.round(total / profits.length),
-				minProfit: this.round(sorted[0]),
-				maxProfit: this.round(sorted[sorted.length - 1])
+				totalProfit: roundProfit5(total),
+				avgProfit: roundProfit5(total / profits.length),
+				minProfit: roundProfit5(sorted[0]),
+				maxProfit: roundProfit5(sorted[sorted.length - 1])
 			});
 		}
 		return stats.sort((a, b) => b.totalProfit - a.totalProfit);
-	}
-
-	private round(value: number): number {
-		return Math.round(value * 100000) / 100000;
-	}
-
-	private elapsed(startMillis: number): string {
-		return ((Date.now() - startMillis) / 1000).toFixed(1);
 	}
 }
 
